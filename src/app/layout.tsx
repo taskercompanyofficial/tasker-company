@@ -8,6 +8,7 @@ import AuthProvider from "@/providers/AuthProvider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import BackToTop from "@/components/base/BackToTop";
 import { description, keywords, title } from "@/lib/Meta";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: title,
@@ -63,6 +64,7 @@ export default function RootLayout({
           </ThemeProvider>
         </AuthProvider>
         <BackToTop />
+        <SpeedInsights />
         <Toaster position="bottom-right" richColors closeButton />
       </body>
     </html>
