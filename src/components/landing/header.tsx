@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useScroll } from "@/hooks/use-scroll";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { DashboardIcon } from "@radix-ui/react-icons";
 
 const navigation = [
   { name: "Home", href: "#home" },
@@ -41,7 +43,7 @@ const navigation = [
 export function LandingHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [cartCount] = useState(3); // Example cart count
-
+  const session = useSession();
   const scroll = useScroll();
 
   return (
@@ -176,13 +178,23 @@ export function LandingHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="hidden items-center space-x-2 md:flex">
-            <Link
-              href="/login"
-              className={buttonVariants({ variant: "ghost" })}
-            >
-              <LogIn className="mr-2 h-4 w-4" />
-              Login
-            </Link>
+            {session.data?.token ? (
+              <Link
+                href="/dashboard"
+                className={buttonVariants({ variant: "ghost" })}
+              >
+                <DashboardIcon className="mr-2 h-4 w-4" />
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className={buttonVariants({ variant: "ghost" })}
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </Link>
+            )}
             <Button size="sm" effect="shineHover">
               <Download className="mr-2 h-4 w-4" />
               Profile

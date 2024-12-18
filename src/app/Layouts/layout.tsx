@@ -22,7 +22,7 @@ export default function LoginLayoutComponent({
     <>
       <div className="absolute left-4 top-6 md:top-2">
         <h2 className="flex w-full items-center justify-center gap-1 text-center text-xl font-bold text-neutral-800 dark:text-neutral-200">
-          <Image src="/icon.png" alt="Icon " width={50} height={50} />
+          <Image src="/icon.png" alt="Icon " width={80} height={80} />
           Tasker Company
         </h2>
       </div>
