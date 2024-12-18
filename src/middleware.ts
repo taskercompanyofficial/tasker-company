@@ -13,6 +13,12 @@ export const config = {
     "/users/:path*",
     "/brands/:path*",
     "/complaints/:path*",
+    "/services/:path*",
+    "/categories/:path*",
+    "/sub-services/:path*",
     "/projects/:path*",
+    "/tasks/:path*",
+    "/settings/:path*",
+    "/profile/:path*",
   ],
 };
