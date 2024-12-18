@@ -95,8 +95,11 @@ export default function Contact() {
                 data-original="#000000"
               />
             </svg>
-            <a href="javascript:void(0)" className="ml-3 text-sm text-current">
-              info@example.com
+            <a
+              href="mailto:info@taskercompany.com"
+              className="ml-3 text-sm text-current"
+            >
+              info@taskercompany.com
             </a>
           </li>
           <li className="flex items-center text-yellow-400">
@@ -112,8 +115,8 @@ export default function Contact() {
                 data-original="#000000"
               ></path>
             </svg>
-            <a href="javascript:void(0)" className="ml-3 text-sm text-current">
-              +158 996 888
+            <a href="tel:+923025117000" className="ml-3 text-sm text-current">
+              +92 302-5117000
             </a>
           </li>
         </ul>
