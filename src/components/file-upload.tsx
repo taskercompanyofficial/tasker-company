@@ -92,7 +92,7 @@ export function FileUpload({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`relative flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-xl bg-slate-800 text-slate-300 transition-colors duration-200 ${isDragging ? "border-2 border-slate-600 bg-slate-700" : ""} `}
+      className={`relative flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-xl bg-gray-50 text-slate-300 transition-colors duration-200 dark:bg-slate-800 ${isDragging ? "border-2 border-slate-600 bg-slate-700" : ""} `}
     >
       <input
         ref={fileInputRef}

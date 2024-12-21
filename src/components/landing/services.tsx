@@ -9,6 +9,9 @@ import {
 import { motion } from "framer-motion";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import useFetch from "@/hooks/usefetch";
+import { API_URL } from "@/lib/apiEndPoints";
+import { CategoriesType } from "@/types";
 
 const featureCardVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -101,6 +104,9 @@ const Services: React.FC = () => {
       linkHref: "#see-more",
     },
   ];
+  const { data, isLoading, error } = useFetch<CategoriesType>(
+    API_URL + "/fetch-categories-ids",
+  );
 
   return (
     <section className="mt-28 p-4 sm:px-10" id="services">
@@ -139,26 +145,28 @@ const Services: React.FC = () => {
               <FaAngleRight />
             </Link>
           </motion.div>
-
-          {/* Right Content */}
-          <motion.div
-            className="grid gap-8 sm:grid-cols-2"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 1, delay: 0.5 },
-              },
-            }}
-          >
-            {services.map((service, idx) => (
-              <FeatureCard key={idx} index={idx} {...service} />
-            ))}
-          </motion.div>
+          {isLoading && <div>Loading...</div>}
+          {error && <div>Error: {error.message}</div>}
+          {data && (
+            <motion.div
+              className="grid gap-8 sm:grid-cols-2"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 1, delay: 0.5 },
+                },
+              }}
+            >
+              {services.map((service, idx) => (
+                <FeatureCard key={idx} index={idx} {...service} />
+              ))}
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { UserNav } from "@/components/admin-panel/user-nav";
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
-import { getUserDetails } from "@/lib/getUserDetails";
 import { MdChangeCircle } from "react-icons/md";
 import {
   Tooltip,

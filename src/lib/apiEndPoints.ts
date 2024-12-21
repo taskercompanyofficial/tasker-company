@@ -10,6 +10,7 @@ export const UPDATE_PROFILE = "/update/profile_pic";
 export const CATEGORIES = "/categories";
 export const SERVICES = "/services";
 export const SUBSERVICES = "/sub-services";
+export const COMPLAINTS = "/complaints";
 export const BRANCHES = "/branches";
 export const NETWORKS = "/networks";
 export const OFFERS = "/offers";

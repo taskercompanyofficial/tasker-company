@@ -96,9 +96,14 @@ export const brandsMeta = {
     "Discover premium brands and service providers partnered with Tasker. Quality assured maintenance and repair services for your home and business needs.",
 };
 export const branchesMeta = {
-  title: "Service Locations | Tasker Branch Network",
+  title: "Branches Locations | Tasker Branch Network",
   description:
     "Find Tasker's service branches across Pakistan. Quality maintenance and repair services available in your area through our extensive network.",
+};
+export const branchesCreateMeta = {
+  title: "Create Branch | Tasker Branch Management",
+  description:
+    "Add a new branch to Tasker to expand your service offerings and reach more customers in your area.",
 };
 export const categoreisMeta = {
   title: "Service Categories | Browse Professional Services",
@@ -112,6 +117,16 @@ export const categoriesCreateMeta = {
 };
 export const subServicesMeta = {
   title: "Specialized Services | Detailed Service Options",
+  description:
+    "Browse detailed sub-services on Tasker for specific maintenance and repair needs. Find exactly the professional service you're looking for.",
+};
+export const complaintsMeta = {
+  title: "Complaints | Tasker Complaints",
+  description:
+    "Browse detailed sub-services on Tasker for specific maintenance and repair needs. Find exactly the professional service you're looking for.",
+};
+export const complaintsCreateMeta = {
+  title: "Create Complaint | Tasker Complaints",
   description:
     "Browse detailed sub-services on Tasker for specific maintenance and repair needs. Find exactly the professional service you're looking for.",
 };

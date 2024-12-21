@@ -6,8 +6,6 @@ import {
   Menu,
   Search,
   ShoppingCart,
-  Phone,
-  MapPin,
   LogIn,
   Bell,
   Download,
@@ -49,36 +47,8 @@ export function LandingHeader() {
   return (
     <header
       id="home"
-      className={`top-0 z-50 w-full bg-primary backdrop-blur supports-[backdrop-filter]:bg-white/60 ${!scroll ? "block" : "sticky shadow-sm"}`}
+      className={`top-0 z-50 w-full bg-primary backdrop-blur transition-all duration-300 supports-[backdrop-filter]:bg-white/60 ${!scroll ? "block py-2" : "sticky shadow-lg"}`}
     >
-      <AnimatePresence>
-        {!scroll && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="border-b"
-          >
-            <div className="flex h-10 items-center justify-between bg-yellow-200 px-4 text-sm">
-              <div className="flex items-center space-x-4 text-xs md:text-sm">
-                <a href="tel:+923025117000" className="flex items-center">
-                  <Phone className="mr-2 h-4 w-4 text-primary" />+ (92)
-                  3025117000
-                </a>
-                <span className="flex items-center">
-                  <MapPin className="mr-2 h-4 w-4 text-primary" />
-                  E150/, DHA Main Boulevard, Lahore
-                </span>
-              </div>
-              <div className="hidden items-center space-x-4 md:flex">
-                <Link href="#">Contact Us</Link>
-                <Link href="#">FAQ</Link>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <div className="flex h-16 items-center px-4">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Image src="/icon.png" alt="Icon" width={50} height={50} />
@@ -90,7 +60,7 @@ export function LandingHeader() {
           <ul className="flex items-center">
             {navigation.map((item) => (
               <li key={item.name}>
-                <Link
+                <a
                   href={item.href}
                   className={`${buttonVariants({
                     variant: "ghost",
@@ -98,7 +68,7 @@ export function LandingHeader() {
                   })} hover:bg-transparent`}
                 >
                   {item.name}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
@@ -181,19 +151,19 @@ export function LandingHeader() {
             {session.data?.token ? (
               <Link
                 href="/dashboard"
-                className={buttonVariants({ variant: "ghost" })}
+                className={buttonVariants({ variant: "secondary" })}
               >
                 <DashboardIcon className="mr-2 h-4 w-4" />
                 Dashboard
               </Link>
             ) : (
-              <Link
+              <a
                 href="/login"
-                className={buttonVariants({ variant: "ghost" })}
+                className={buttonVariants({ variant: "secondary" })}
               >
                 <LogIn className="mr-2 h-4 w-4" />
                 Login
-              </Link>
+              </a>
             )}
             <Button size="sm" effect="shineHover">
               <Download className="mr-2 h-4 w-4" />
@@ -211,7 +181,7 @@ export function LandingHeader() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="pr-0">
-              <MobileNav />
+              <MobileNav session={session} />
             </SheetContent>
           </Sheet>
         </div>
@@ -220,24 +190,34 @@ export function LandingHeader() {
   );
 }
 
-function MobileNav() {
+function MobileNav({ session }: { session: any }) {
   return (
     <div className="flex flex-col space-y-3 px-2 text-base">
       {navigation.map((item) => (
-        <Link
+        <a
           key={item.name}
           href={item.href}
           className="rounded-md px-4 py-2 font-medium transition-colors hover:bg-accent"
         >
           {item.name}
-        </Link>
+        </a>
       ))}
       <Separator />
-      <Button size="sm">
-        <LogIn className="mr-2 h-4 w-4" />
-        Login
-      </Button>
-      <Button size="sm">
+      {session.data?.token ? (
+        <Link
+          href="/dashboard"
+          className={buttonVariants({ variant: "ghost" })}
+        >
+          <DashboardIcon className="mr-2 h-4 w-4" />
+          Dashboard
+        </Link>
+      ) : (
+        <Link href="/login" className={buttonVariants({ variant: "ghost" })}>
+          <LogIn className="mr-2 h-4 w-4" />
+          Login
+        </Link>
+      )}
+      <Button size="sm" effect="shineHover">
         <Download className="mr-2 h-4 w-4" />
         Profile
       </Button>

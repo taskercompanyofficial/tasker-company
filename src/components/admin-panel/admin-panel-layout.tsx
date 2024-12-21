@@ -8,7 +8,7 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 
 export default function AdminPanelLayout({
   children,
-  role
+  role,
 }: {
   children: React.ReactNode;
   role: string | undefined;
@@ -18,24 +18,24 @@ export default function AdminPanelLayout({
   if (!sidebar) return null;
 
   return (
-    <>
+    <div>
       <Sidebar role={role} />
       <main
         className={cn(
-          "min-h-[calc(100vh_-_56px)] transition-[margin-left] ease-in-out duration-300",
-          sidebar?.isOpen === false ? "lg:ml-[50px]" : "lg:ml-60"
+          "min-h-[calc(100vh_-_56px)] transition-[margin-left] duration-300 ease-in-out",
+          sidebar?.isOpen === false ? "lg:ml-[50px]" : "lg:ml-60",
         )}
       >
         {children}
       </main>
       <footer
         className={cn(
-          "transition-[margin-left] ease-in-out duration-300",
-          sidebar?.isOpen === false ? "lg:ml-[50px]" : "lg:ml-72"
+          "transition-[margin-left] duration-300 ease-in-out",
+          sidebar?.isOpen === false ? "lg:ml-[50px]" : "lg:ml-72",
         )}
       >
         <Footer />
       </footer>
-    </>
+    </div>
   );
 }

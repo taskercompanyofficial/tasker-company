@@ -1,11 +1,13 @@
-import {
-  MdHome,
-  MdSupervisedUserCircle,
-  MdOutlineSettings,
-} from "react-icons/md";
+import { MdHome, MdOutlineSettings } from "react-icons/md";
 import { AiFillProduct } from "react-icons/ai";
-import { IoColorFilterSharp } from "react-icons/io5";
-import { ClipboardList, Layers, MapPin } from "lucide-react";
+import {
+  Briefcase,
+  ClipboardList,
+  Handshake,
+  Layers,
+  MapPin,
+  User,
+} from "lucide-react";
 type Submenu = {
   href: string;
   label: string;
@@ -54,51 +56,19 @@ export function getMenuList(
           icon: ClipboardList,
           submenus: [],
         },
-        {
-          href: "/filters",
-          label: "Reports",
-          active: pathname.includes("/filters"),
-
-          icon: IoColorFilterSharp,
-          submenus: [
-            {
-              href: "/filters/clicks",
-              label: "Clicks",
-              active: pathname === "clicks",
-            },
-            {
-              href: "/filters/conversions",
-              label: "Conversions",
-              active: pathname === "/conversions",
-            },
-            {
-              href: "/filters/offers-report",
-              label: "Offer report",
-              active: pathname === "/offers-report",
-            },
-            {
-              href: "/filters/user-report",
-              label: "User report",
-              active: pathname === "/user-report",
-            },
-          ],
-        },
       ],
     },
   ];
 
-  if (role !== "user") {
-    menuItems[0].menus.push({
-      href: "/users",
-      label: "Users",
-      active: pathname.includes("/users"),
-      icon: MdSupervisedUserCircle,
-      submenus: [],
-    });
-  }
-
   if (role === "admin" || role === "administrator") {
     menuItems[0].menus.push(
+      {
+        href: "/users",
+        label: "Users",
+        active: pathname === "/users",
+        icon: User,
+        submenus: [],
+      },
       {
         href: "#",
         label: "All Services",
@@ -130,6 +100,20 @@ export function getMenuList(
         label: "Branches",
         active: pathname === "/branches",
         icon: MapPin,
+        submenus: [],
+      },
+      {
+        href: "/authorized-brands",
+        label: "Authorized Brands",
+        active: pathname === "/authorized-brands",
+        icon: Handshake,
+        submenus: [],
+      },
+      {
+        href: "/our-projects",
+        label: "Our Projects",
+        active: pathname === "/our-projects",
+        icon: Briefcase,
         submenus: [],
       },
     );

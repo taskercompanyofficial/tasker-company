@@ -35,5 +35,9 @@ export function formatDate(
 }
 
 export const getImageUrl = (path: string): string => {
+  return `${Env.API_URL}/storage/${path}`;
+};
+
+export const getImageUrlFromStorage = (path: string): string => {
   return `${Env.API_URL}/public/storage/${path}`;
 };

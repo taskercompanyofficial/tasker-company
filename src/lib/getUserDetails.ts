@@ -3,6 +3,7 @@ import { API_URL } from "@/lib/apiEndPoints";
 import axios from "axios";
 import { User } from "@/types";
 import { auth } from "auth";
+import { signOut } from "next-auth/react";
 
 interface UserDetailsWithToken {
   userDetails: User | null;
@@ -12,8 +13,11 @@ interface UserDetailsWithToken {
 export async function getUserDetails(): Promise<UserDetailsWithToken> {
   const session = await auth();
   const token = session?.token;
-
+  const signout = async () => {
+    await signOut();
+  };
   if (!token) {
+    signout;
     return { userDetails: null, token: "" };
   }
 

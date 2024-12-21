@@ -1,6 +1,4 @@
-"use client";
-
-import About from "@/components/landing/about";
+import AnimatedBackground from "@/components/landing/background";
 import Contact from "@/components/landing/Contact";
 import Footer from "@/components/landing/footer";
 import { LandingHeader } from "@/components/landing/header";
@@ -13,10 +11,10 @@ import WhyChooseUs from "@/components/landing/why-choose-us";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col scroll-smooth">
+    <div>
+      <AnimatedBackground />
       <LandingHeader />
       <Hero />
-      <About />
       <Services />
       <MissionVision />
       <WhyChooseUs />
