@@ -2,17 +2,21 @@
 import { toast } from "sonner";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import useForm from "@/hooks/use-fom";
-import { API_URL, USERS } from "@/lib/apiEndPoints";
+import { API_URL, WORKERS } from "@/lib/apiEndPoints";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { TextareaInput } from "@/components/TextareaInput";
 import { useRouter } from "next/navigation";
-import { workersType } from "@/types";
+import { dataTypeIds, workersType } from "@/types";
 import { FileUpload } from "@/components/file-upload";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { SelectInput } from "@/components/SelectInput";
 import { getRoleOptions } from "@/lib/otpions";
+import useFetch from "@/hooks/usefetch";
+import SearchSelect from "@/components/ui/search-select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 export default function Form({
   rowCurrent,
@@ -23,6 +27,24 @@ export default function Form({
 }) {
   const router = useRouter();
   const session = useSession();
+  const {
+    data: branchesData,
+    error: branchesError,
+    isLoading: branchesLoading,
+  } = useFetch<dataTypeIds[]>(`${API_URL}/fetch-branches`);
+  const [citiesUrl, setCitiesUrl] = useState<string>(
+    `${API_URL}/fetch-cities?country_id=167`,
+  );
+  const {
+    data: statesData,
+    error: statesError,
+    isLoading: statesLoading,
+  } = useFetch<dataTypeIds[]>(`${API_URL}/fetch-states?country_id=167`);
+  const {
+    data: citiesData,
+    error: citiesError,
+    isLoading: citiesLoading,
+  } = useFetch<dataTypeIds[]>(citiesUrl);
   const token = session.data?.token || "";
   const {
     data: formData,
@@ -36,10 +58,12 @@ export default function Form({
     contact_email: rowCurrent?.contact_email || "",
     phone_number: rowCurrent?.phone_number || "",
     secondary_phone_number: rowCurrent?.secondary_phone_number || "",
+    password: "",
     full_address: rowCurrent?.full_address || "",
     state: rowCurrent?.state || "",
     city: rowCurrent?.city || "",
     salary: rowCurrent?.salary || "",
+    branch_id: rowCurrent?.branch_id || "",
     cnic_front: null as File | null,
     cnic_back: null as File | null,
     account_maintanance_certificate: null as File | null,
@@ -54,9 +78,10 @@ export default function Form({
     role: rowCurrent?.role || "",
     status: rowCurrent?.status || "",
     is_verified: rowCurrent?.is_verified || "",
+    notification: rowCurrent?.notification || "",
   });
 
-  const path = endPoint || API_URL + USERS;
+  const path = endPoint || API_URL + WORKERS;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -89,7 +114,15 @@ export default function Form({
       setformData({ ...formData, [field]: file });
     }
   };
-
+  const handleImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    field: string,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setformData({ ...formData, [field]: file });
+    }
+  };
   return (
     <div className="relative rounded bg-white p-4 shadow-sm dark:bg-slate-950">
       <div className="mb-6">
@@ -134,6 +167,8 @@ export default function Form({
                 errorMessage={errors.contact_email}
                 required
               />
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
               <LabelInputContainer
                 type="tel"
                 id="phone-number"
@@ -165,29 +200,72 @@ export default function Form({
                 errorMessage={errors.salary}
                 required
               />
+              <LabelInputContainer
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                label="Password"
+                value={formData.password}
+                onChange={(e) => setformData("password", e.target.value)}
+                errorMessage={errors.password}
+                required
+              />
             </div>
 
-            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <LabelInputContainer
-                type="text"
-                id="state"
-                placeholder="Enter state"
-                label="State"
-                value={formData.state}
-                onChange={(e) => setformData("state", e.target.value)}
-                errorMessage={errors.state}
-                required
-              />
-              <LabelInputContainer
-                type="text"
-                id="city"
-                placeholder="Enter city"
-                label="City"
-                value={formData.city}
-                onChange={(e) => setformData("city", e.target.value)}
-                errorMessage={errors.city}
-                required
-              />
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+              {!branchesLoading && branchesData ? (
+                <SearchSelect
+                  options={branchesData}
+                  label="Branch"
+                  value={formData.branch_id}
+                  onChange={(e) => setformData("branch_id", e)}
+                  className="mt-2"
+                  error={errors.branch_id}
+                  width="full"
+                />
+              ) : (
+                <div className="mt-2 space-y-1">
+                  <Skeleton className="h-3 w-[20%]" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              )}
+              {!statesLoading && statesData ? (
+                <SearchSelect
+                  options={statesData}
+                  label="State"
+                  value={formData.state}
+                  onChange={(e) => {
+                    setformData("state", e);
+                    setCitiesUrl(
+                      `${API_URL}/fetch-cities?country_id=167&state_id=${e}`,
+                    );
+                  }}
+                  className="mt-2"
+                  error={errors.state}
+                  width="full"
+                />
+              ) : (
+                <div className="mt-2 space-y-1">
+                  <Skeleton className="h-3 w-[20%]" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              )}
+              {!citiesLoading && citiesData ? (
+                <SearchSelect
+                  options={citiesData}
+                  label="City"
+                  value={formData.city}
+                  onChange={(e) => setformData("city", e)}
+                  className="mt-2"
+                  error={errors.city}
+                  width="full"
+                />
+              ) : (
+                <div className="mt-2 space-y-1">
+                  <Skeleton className="h-3 w-[20%]" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              )}
             </div>
 
             <div className="mt-4">
@@ -213,7 +291,7 @@ export default function Form({
                 id="cnic-front"
                 onSelect={(e: React.ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files?.[0]) {
-                    handleFileSelect(e.target.files[0], "cnic_front");
+                    handleImageChange(e, "cnic_front");
                   }
                 }}
                 label="CNIC Front"
@@ -225,7 +303,7 @@ export default function Form({
                 id="cnic-back"
                 onSelect={(e: React.ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files?.[0]) {
-                    handleFileSelect(e.target.files[0], "cnic_back");
+                    handleImageChange(e, "cnic_back");
                   }
                 }}
                 label="CNIC Back"
@@ -240,16 +318,14 @@ export default function Form({
                 id="account-maintenance-certificate"
                 onSelect={(e: React.ChangeEvent<HTMLInputElement>) => {
                   if (e.target.files?.[0]) {
-                    handleFileSelect(
-                      e.target.files[0],
-                      "account_maintanance_certificate",
-                    );
+                    handleImageChange(e, "account_maintanance_certificate");
                   }
                 }}
                 label="Account Maintenance Certificate"
                 accept=".pdf,.doc,.docx"
                 required
               />
+              <LabelInputContainer />
               <LabelInputContainer
                 type="file"
                 id="blank-check"
@@ -371,6 +447,16 @@ export default function Form({
                 ]}
                 onChange={(e) => setformData("is_verified", e)}
                 selected={formData.is_verified}
+              />
+              <SelectInput
+                label="Notification"
+                options={[
+                  { label: "Email", value: "email" },
+                  { label: "SMS", value: "sms" },
+                  { label: "Both", value: "both" },
+                ]}
+                onChange={(e) => setformData("notification", e)}
+                selected={formData.notification}
               />
             </div>
           </div>

@@ -38,7 +38,7 @@ export default async function DashboardLayout({
             <Separator orientation="vertical" className="mr-2 h-4" />
           </div>
         </header>
-        <main className="min-h-screen p-4">{children}</main>
+        <main className="min-h-screen bg-gray-50 p-4">{children}</main>
         <footer className="mt-8 border-t border-gray-200 bg-gray-50">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="xl:grid xl:grid-cols-3 xl:gap-8">

@@ -15,6 +15,8 @@ export const statusOptions = [
   { value: "active", label: "Active" },
   { value: "inactive", label: "Inactive" },
   { value: "paused", label: "Paused" },
+];
+export const ComplaintStatusOptions = [
   { value: "open", label: "Open" },
   { value: "part-demand", label: "Part Demand" },
   { value: "service-lifting", label: "Service Lifting" },

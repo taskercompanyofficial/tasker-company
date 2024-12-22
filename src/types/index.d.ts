@@ -31,6 +31,7 @@ export type workersType = {
   contact_email: string;
   phone_number: string;
   secondary_phone_number: string;
+  branch_id: string;
   salary: string;
   full_address: string;
   state: string;
@@ -50,6 +51,7 @@ export type workersType = {
   role: string;
   status: string;
   is_verified: string;
+  notification: string;
 };
 export type BranchesType = {
   id: string;

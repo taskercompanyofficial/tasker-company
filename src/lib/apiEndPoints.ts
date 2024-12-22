@@ -13,4 +13,4 @@ export const SUBSERVICES = "/sub-services";
 export const COMPLAINTS = "/complaints";
 export const BRANCHES = "/branches";
 export const BRANDS = "/authorized-brands";
-export const USERS = "/users";
+export const WORKERS = "/workers";
