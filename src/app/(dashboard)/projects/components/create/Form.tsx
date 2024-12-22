@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import useForm from "@/hooks/use-fom";
-import { API_URL, BRANDS } from "@/lib/apiEndPoints";
+import { API_URL, BRANCHES } from "@/lib/apiEndPoints";
 import revalidate from "@/action/revalidate";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
+import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/file-upload";
 
 export default function Form() {
@@ -22,6 +23,8 @@ export default function Form() {
   const token = session.data?.token || "";
   const { data, setData, post, processing, errors, reset } = useForm({
     name: "",
+    branch_contact_no: "",
+    branch_address: "",
     status: "",
     image: null as File | null,
   });
@@ -29,7 +32,7 @@ export default function Form() {
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
     post(
-      API_URL + BRANDS,
+      API_URL + BRANCHES,
       {
         onSuccess: (response) => {
           toast.success(response.message);
@@ -52,17 +55,32 @@ export default function Form() {
   return (
     <form className="w-full p-2 sm:p-0" onSubmit={submit}>
       <div className="w-full">
-        <Label>Brand Logo</Label>
         <FileUpload onFileSelect={handleFileSelect} />
         <LabelInputContainer
-          label="Brand Name"
+          label="Branch Name"
           type="text"
           value={data.name}
           onChange={(e) => setData("name", e.target.value)}
           required
           id="large-url"
-          placeholder="Brand Name"
+          placeholder="Lahore Branch"
           errorMessage={errors.name}
+        />
+        <LabelInputContainer
+          label="Branch Contact no"
+          type="number"
+          value={data.branch_contact_no}
+          onChange={(e) => setData("branch_contact_no", e.target.value)}
+          required
+          id="contact-no"
+          placeholder="eg: XXXXXXXXX"
+          errorMessage={errors.branch_contact_no}
+        />
+        <Label>Address:</Label>
+        <Textarea
+          value={data.branch_address}
+          placeholder="write the branch address..."
+          onChange={(e) => setData("branch_address", e.target.value)}
         />
         <div className="mb-1">
           <Label>Status</Label>

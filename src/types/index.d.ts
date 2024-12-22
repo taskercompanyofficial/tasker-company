@@ -25,13 +25,50 @@ export interface User {
   domain_id: string;
   token: string;
 }
-
+export type workersType = {
+  full_name: string;
+  father_name: string;
+  contact_email: string;
+  phone_number: string;
+  secondary_phone_number: string;
+  salary: string;
+  full_address: string;
+  state: string;
+  city: string;
+  zip_code: string;
+  cnic_front: string;
+  cnic_back: string;
+  account_maintenance_certificate: string;
+  blank_check: string;
+  reference_1_name: string;
+  reference_1_number: string;
+  reference_1_cnic: string;
+  reference_2_name: string;
+  reference_2_number: string;
+  reference_2_cnic: string;
+  profile_image: string;
+  role: string;
+  status: string;
+  is_verified: string;
+};
 export type BranchesType = {
   id: string;
   unique_id: string;
   name: string;
   branch_contact_no: string;
   branch_address: string;
+  open: number;
+  closed: number;
+  others: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
+export type BrandsType = {
+  id: string;
+  unique_id: string;
+  name: string;
+  log: strig;
   open: number;
   closed: number;
   others: number;

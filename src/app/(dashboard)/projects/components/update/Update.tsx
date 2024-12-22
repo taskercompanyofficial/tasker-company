@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { API_URL, BRANDS } from "@/lib/apiEndPoints";
+import { API_URL, BRANCHES } from "@/lib/apiEndPoints";
 import {
   Credenza,
   CredenzaContent,
@@ -19,28 +19,51 @@ import {
 } from "@/components/ui/credenza";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import SubmitBtn from "@/components/ui/submit-button";
+import { Textarea } from "@/components/ui/textarea";
 import useForm from "@/hooks/use-fom";
-import { BrandsType } from "@/types";
+import { BranchesType } from "@/types";
 import { toast } from "sonner";
 import revalidate from "@/action/revalidate";
 import { useSession } from "next-auth/react";
-import { FileUpload } from "@/components/file-upload";
 
-export default function BrandsUpdate({
+interface UpdateProps {
+  token: string;
+  domainEndpoint: string;
+  rowCurrent: any;
+}
+
+interface UpdateState {
+  name: string;
+  status: string;
+  users_ids: string;
+}
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface UserType {
+  unique_id: string;
+  name: string;
+}
+
+export default function BranchUpdate({
   rowCurrent,
 }: {
-  rowCurrent: BrandsType;
+  rowCurrent: BranchesType;
 }) {
   const session = useSession();
   const token = session.data?.token || "";
   const [updateOpen, setUpdateOpen] = useState(false);
   const { data, setData, put, processing, errors } = useForm({
     name: rowCurrent.name,
-    image: null as File | null,
+    branch_contact_no: rowCurrent.branch_contact_no,
+    branch_address: rowCurrent.branch_address,
     status: rowCurrent.status,
   });
 
-  const endPoint = `${API_URL + BRANDS}/${rowCurrent.id}`;
+  const endPoint = `${API_URL + BRANCHES}/${rowCurrent.id}`;
 
   const update = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -57,11 +80,6 @@ export default function BrandsUpdate({
       },
       token,
     );
-  };
-  const handleFileSelect = (file: File | null) => {
-    if (file) {
-      setData({ ...data, image: file });
-    }
   };
   return (
     <>
@@ -80,17 +98,31 @@ export default function BrandsUpdate({
           </CredenzaHeader>
           <form className="w-full p-2 sm:p-0" onSubmit={update}>
             <div className="w-full">
-              <Label>Brand Logo</Label>
-              <FileUpload onFileSelect={handleFileSelect} />
               <LabelInputContainer
-                label="Brand Name"
+                label="Branch Name"
                 type="text"
                 value={data.name}
                 onChange={(e) => setData("name", e.target.value)}
                 required
                 id="large-url"
-                placeholder="Brand Name"
+                placeholder="Lahore Branch"
                 errorMessage={errors.name}
+              />
+              <LabelInputContainer
+                label="Branch Contact no"
+                type="number"
+                value={data.branch_contact_no}
+                onChange={(e) => setData("branch_contact_no", e.target.value)}
+                required
+                id="contact-no"
+                placeholder="eg: XXXXXXXXX"
+                errorMessage={errors.branch_contact_no}
+              />
+              <Label>Address:</Label>
+              <Textarea
+                value={data.branch_address}
+                placeholder="write the branch address..."
+                onChange={(e) => setData("branch_address", e.target.value)}
               />
               <div className="mb-1">
                 <Label>Status</Label>
@@ -113,7 +145,7 @@ export default function BrandsUpdate({
             </div>
             <SubmitBtn
               processing={processing}
-              label={`Update Brand ${rowCurrent.name}`}
+              label={`Update Branch ${rowCurrent.name}`}
               className="w-full"
             />
           </form>

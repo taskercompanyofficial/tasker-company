@@ -1,6 +1,5 @@
-import { auth } from "auth";
 import React from "react";
 
-export default async function page() {
+export default function page() {
   return <div></div>;
 }

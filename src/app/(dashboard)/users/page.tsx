@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { API_URL, SERVICES } from "@/lib/apiEndPoints";
+import { API_URL, USERS } from "@/lib/apiEndPoints";
 import { getUserDetails } from "@/lib/getUserDetails";
 import { FaLock } from "react-icons/fa";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
 import { Metadata } from "next";
 import { DateRangePicker } from "@/components/date-range-picker (1)";
-import { subServicesMeta } from "@/lib/Meta";
+import { usersMeta } from "@/lib/Meta";
 
 const DataFetcher = lazy(() => import("./components/DataFetcher"));
 
@@ -20,8 +20,8 @@ interface UserProps {
 }
 
 export const metadata: Metadata = {
-  title: `${subServicesMeta.title} | Tasker Company`,
-  description: subServicesMeta.description,
+  title: `${usersMeta.title} | Tasker Company`,
+  description: usersMeta.description,
 };
 
 const page: React.FC<UserProps> = async ({ searchParams }) => {
@@ -45,7 +45,7 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
     );
   }
 
-  const pageEndPoint = `${API_URL}${SERVICES}`;
+  const pageEndPoint = `${API_URL}${USERS}`;
   const queryString = Object.entries(searchParams)
     .filter(([_, value]) => value !== undefined && value !== "")
     .map(
@@ -84,9 +84,9 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg">{subServicesMeta.title}</h2>
+            <h2 className="text-lg">{usersMeta.title}</h2>
             <p className="hidden text-sm text-gray-500 sm:block">
-              {subServicesMeta.description}
+              {usersMeta.description}
             </p>
           </div>
           <DateRangePicker />

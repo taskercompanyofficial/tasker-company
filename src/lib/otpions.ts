@@ -1,22 +1,16 @@
-export const getRoleOptions = (role: string) => {
-  switch (role) {
-    case "administrator":
-      return [
-        { value: "admin", label: "Admin" },
-        { value: "manager", label: "Manager" },
-        { value: "user", label: "User" },
-      ];
-    case "admin":
-      return [
-        { value: "manager", label: "Manager" },
-        { value: "user", label: "User" },
-      ];
-    case "manager":
-      return [{ value: "user", label: "User" }];
-    default:
-      return [];
-  }
-};
+export const getRoleOptions = [
+  { value: "branch-manager", label: "Branch Manager" },
+  { value: "technician", label: "Technician" },
+  { value: "accountant", label: "Accountant" },
+  { value: "receptionist", label: "Receptionist" },
+  { value: "driver", label: "Driver" },
+  { value: "sales-manager", label: "Sales Manager" },
+  { value: "sales-executive", label: "Sales Executive" },
+  { value: "sales-assistant", label: "Sales Assistant" },
+  { value: "cso", label: "CSO" },
+  { value: "csr", label: "CSR" },
+];
+
 export const statusOptions = [
   { value: "active", label: "Active" },
   { value: "inactive", label: "Inactive" },

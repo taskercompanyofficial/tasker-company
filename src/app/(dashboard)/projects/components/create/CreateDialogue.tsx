@@ -20,14 +20,14 @@ export default function Create() {
           className="flex w-full items-center gap-1 sm:w-fit"
         >
           <FaPlus />
-          Add New Brand
+          Add New Branch
         </Button>
       </CredenzaTrigger>
       <CredenzaContent className="sm:max-w-[425px]">
         <CredenzaHeader>
-          <CredenzaTitle>Add Brand</CredenzaTitle>
+          <CredenzaTitle>Add Branch</CredenzaTitle>
           <CredenzaDescription>
-            Add a new brand to access complaints via custom brands.
+            Add a new branch to access complaints via custom branches.
           </CredenzaDescription>
         </CredenzaHeader>
         <Form />

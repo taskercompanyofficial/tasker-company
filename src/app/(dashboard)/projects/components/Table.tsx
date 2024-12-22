@@ -4,7 +4,7 @@ import { DataTable } from "@/components/base/table";
 import SelectInput from "@/components/base/tableComponents/filters/select-input";
 import { statusOptions } from "@/lib/otpions";
 import Create from "./create/CreateDialogue";
-import { BrandsColumns } from "@/TableColumns/Brands-columns";
+import { BranchesColumns } from "@/TableColumns/Branches-columns";
 import SearchInput from "@/components/base/tableComponents/filters/search-input";
 
 export default function Table({
@@ -18,7 +18,7 @@ export default function Table({
     <DataTable
       data={data.data}
       endPoint={endPoint}
-      columns={BrandsColumns()}
+      columns={BranchesColumns()}
       pagination={data.pagination}
       FacedFilter={
         <TableFacedFilter>

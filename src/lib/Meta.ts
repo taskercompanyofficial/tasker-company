@@ -90,21 +90,28 @@ export const subServicesCreateMeta = {
     "Add specialized sub-services to better categorize your professional offerings on Tasker. Help customers find exactly the service they need.",
 };
 
-export const brandsMeta = {
-  title: "Top Service Brands | Tasker's Trusted Partners",
+export const usersMeta = {
+  title: "Users | Tasker Users",
   description:
-    "Discover premium brands and service providers partnered with Tasker. Quality assured maintenance and repair services for your home and business needs.",
+    "Find Tasker's service branches across Pakistan. Quality maintenance and repair services available in your area through our extensive network.",
 };
+export const usersCreateMeta = {
+  title: "Create User | Tasker Users",
+  description:
+    "Add new users to Tasker. Quality maintenance and repair services available in your area through our extensive network.",
+};
+
 export const branchesMeta = {
   title: "Branches Locations | Tasker Branch Network",
   description:
     "Find Tasker's service branches across Pakistan. Quality maintenance and repair services available in your area through our extensive network.",
 };
-export const branchesCreateMeta = {
-  title: "Create Branch | Tasker Branch Management",
+export const brandsMeta = {
+  title: "Authorized Brands | Tasker's Trusted Partners",
   description:
-    "Add a new branch to Tasker to expand your service offerings and reach more customers in your area.",
+    "Explore Tasker's authorized brands. Quality assured maintenance and repair services for your home and business needs.",
 };
+
 export const categoreisMeta = {
   title: "Service Categories | Browse Professional Services",
   description:

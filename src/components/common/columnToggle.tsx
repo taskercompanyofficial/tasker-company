@@ -43,7 +43,7 @@ export function DataTableViewOptions<TData>({
           })
         }
       >
-        <DownloadIcon className="mr-2 size-4" aria-hidden="true" />
+        <DownloadIcon className="mr-2 h-4 w-4" aria-hidden="true" />
         Export
       </Button>
       <DropdownMenu>
@@ -51,7 +51,7 @@ export function DataTableViewOptions<TData>({
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto hidden h-8 lg:flex"
+            className="ml-auto hidden lg:flex"
           >
             <MixerHorizontalIcon className="mr-2 h-4 w-4" />
             View

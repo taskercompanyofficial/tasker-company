@@ -6,14 +6,14 @@ import Link from "next/link";
 export default function Create() {
   return (
     <Link
-      href="/sub-services/create"
+      href="/users/create"
       className={`flex w-full items-center gap-1 sm:w-fit ${buttonVariants({
         variant: "outline",
         size: "sm",
       })}`}
     >
       <FaPlus />
-      Add New
+      Add New User
     </Link>
   );
 }

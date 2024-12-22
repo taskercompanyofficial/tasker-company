@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { API_URL, BRANDS } from "@/lib/apiEndPoints";
+import { API_URL, BRANCHES } from "@/lib/apiEndPoints";
 import { getUserDetails } from "@/lib/getUserDetails";
 import { FaLock } from "react-icons/fa";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
 import { Metadata } from "next";
 import { DateRangePicker } from "@/components/date-range-picker (1)";
-import { brandsMeta } from "@/lib/Meta";
+import { branchesMeta } from "@/lib/Meta";
 
 const DataFetcher = lazy(() => import("./components/DataFetcher"));
 
@@ -25,8 +25,8 @@ interface UserProps {
   searchParams: SearchParams;
 }
 export const metadata: Metadata = {
-  title: `${brandsMeta.title} | Tasker Company`,
-  description: brandsMeta.description,
+  title: `${branchesMeta.title} | Tasker Company`,
+  description: branchesMeta.description,
 };
 // Utility function to build query string dynamically
 const buildQueryParams = (params: Record<string, string | undefined>) => {
@@ -60,7 +60,7 @@ const Users: React.FC<UserProps> = async ({ searchParams }) => {
     );
   }
 
-  const pageEndPoint = `${API_URL}${BRANDS}`;
+  const pageEndPoint = `${API_URL}${BRANCHES}`;
   const queryParams = buildQueryParams({
     q: searchParams?.q,
     page: searchParams?.page,
@@ -100,9 +100,9 @@ const Users: React.FC<UserProps> = async ({ searchParams }) => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg">{brandsMeta.title}</h2>
+            <h2 className="text-lg">{branchesMeta.title}</h2>
             <p className="hidden text-sm text-gray-500 sm:block">
-              {brandsMeta.description}
+              {branchesMeta.description}
             </p>
           </div>
           <DateRangePicker />

@@ -1,9 +1,9 @@
 import React from "react";
-import { API_URL, SUBSERVICES } from "@/lib/apiEndPoints";
+import { API_URL, SERVICES } from "@/lib/apiEndPoints";
 import { fetchData } from "@/app/dataFetch/fetchData";
 import { getImageUrl } from "@/lib/utils";
 import { description, keywords, title } from "@/lib/Meta";
-import Form from "../../components/form";
+import View from "./view";
 
 // Function to dynamically generate metadata
 export async function generateMetadata({
@@ -14,7 +14,7 @@ export async function generateMetadata({
   const slug = params.slug;
 
   // Fetch the data for the slug
-  const endPoint = `${API_URL}${SUBSERVICES}/${slug}`;
+  const endPoint = `${API_URL}${SERVICES}/${slug}`;
   const response = await fetchData({ endPoint });
 
   const image = response?.data?.image
@@ -25,13 +25,13 @@ export async function generateMetadata({
   const imagePath = getImageUrl(image);
   const keywordsArray = response.data.keywords.split(",");
   return {
-    title: `${response.data.name} | Sub Services ${title}`, // Dynamic title
+    title: `${response.data.name} | Services ${title}`, // Dynamic title
     description: response.data.description || { description },
     keywords: [keywords, keywordsArray],
     openGraph: {
-      title: `${response.data.name} | Sub Services ${title}`, // Dynamic title
+      title: `${response.data.name} | Services ${title}`, // Dynamic title
       description: response.data.description || { description },
-      url: `https://taskercompany.com/sub-services/${slug}`, // Adjust URL to your app structure
+      url: `https://taskercompany.com/services/${slug}`, // Adjust URL to your app structure
       siteName: "Tasker Company",
       images: [
         {
@@ -56,18 +56,8 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
 
-  const endPoint = `${API_URL}${SUBSERVICES}/${slug}`;
+  const endPoint = `${API_URL}${SERVICES}/${slug}`;
   const response = await fetchData({ endPoint });
 
-  return (
-    <>
-      <div className="mb-2">
-        <h2 className="font-serif text-lg font-semibold uppercase">{slug}</h2>
-        <p className="hidden font-serif text-sm text-gray-500 sm:block">
-          {response.data.description}
-        </p>
-      </div>
-      <Form rowCurrent={response.data} endPoint={endPoint} />
-    </>
-  );
+  return <View data={response.data} />;
 }

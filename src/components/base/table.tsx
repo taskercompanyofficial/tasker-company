@@ -71,23 +71,21 @@ export function DataTable<TData, TValue>({
           <DataTableViewOptions table={table} />
         </div>
       </div>
-      <div className="my-2 w-full rounded-md border bg-white shadow dark:bg-gray-900">
-        <Table>
+      <div className="my-2 w-full max-w-full overflow-x-auto rounded-md border bg-white shadow dark:bg-gray-900">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="whitespace-nowrap">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -122,6 +120,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
       <div className="pt-3">
         <DataTablePagination
           table={table}

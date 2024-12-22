@@ -14,7 +14,7 @@ type Submenu = {
   active: boolean;
 };
 
-type Menu = {
+export type Menu = {
   href: string;
   label: string;
   active: boolean;
@@ -22,7 +22,7 @@ type Menu = {
   submenus: Submenu[];
 };
 
-type Group = {
+export type Group = {
   groupLabel: string;
   menus: Menu[];
 };
@@ -33,7 +33,7 @@ export function getMenuList(
 ): Group[] {
   let menuItems: Group[] = [
     {
-      groupLabel: "",
+      groupLabel: "Platform",
       menus: [
         {
           href: "/dashboard",
