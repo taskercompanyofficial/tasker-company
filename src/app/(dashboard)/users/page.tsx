@@ -36,7 +36,7 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
         </div>
         <h2 className="text-lg">You do not have access to this page.</h2>
         <p>
-          Please click here to go back
+          Please click here to go back to the home page
           <Link href="/" className="text-blue-600">
             Home
           </Link>
