@@ -18,10 +18,12 @@ export default function Home() {
       <Services />
       <MissionVision />
       <WhyChooseUs />
-      <ReviewProcess />
-      <Contact />
-      <SocialLinks />
-      <Footer />
+      <div className="bg-white">
+        <ReviewProcess />
+        <Contact />
+        <SocialLinks />
+        <Footer />
+      </div>
     </div>
   );
 }
