@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
 import { Metadata } from "next";
 import { DateRangePicker } from "@/components/date-range-picker (1)";
-import { categoreisMeta } from "@/lib/Meta";
+import { complaintsMeta } from "@/lib/Meta";
 
 const DataFetcher = lazy(() => import("./components/DataFetcher"));
 
@@ -18,8 +18,8 @@ interface UserProps {
 }
 
 export const metadata: Metadata = {
-  title: `${categoreisMeta.title} | Tasker Company`,
-  description: categoreisMeta.description,
+  title: `${complaintsMeta.title} | Tasker Company`,
+  description: complaintsMeta.description,
 };
 
 const page: React.FC<UserProps> = async ({ searchParams }) => {
@@ -65,9 +65,9 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg">{categoreisMeta.title}</h2>
+            <h2 className="text-lg">{complaintsMeta.title}</h2>
             <p className="hidden text-sm text-gray-500 sm:block">
-              {categoreisMeta.description}
+              {complaintsMeta.description}
             </p>
           </div>
           <DateRangePicker />

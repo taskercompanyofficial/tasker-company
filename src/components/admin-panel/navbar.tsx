@@ -11,13 +11,13 @@ import revalidate from "../revalidate";
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { User } from "@/types";
+import { SidebarTrigger } from "../ui/sidebar";
 export default async function Navbar({ user }: { user: User | null }) {
   return (
-    <header className="w-full border-b bg-white">
+    <header className="w-full border-b bg-white dark:bg-gray-800">
       <div className="mx-4 flex h-14 items-center justify-between sm:mx-4">
         <div className="flex items-center space-x-4 lg:space-x-0">
-          <SheetMenu role={user?.role} />
-          <h1 className="font-bold"></h1>
+          <SidebarTrigger className="-ml-1" />
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <div className="mx-1 mt-1 p-1">
@@ -36,8 +36,8 @@ export default async function Navbar({ user }: { user: User | null }) {
               </TooltipProvider>
             </form>
           </div>
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <div className="relative ml-auto hidden flex-1 md:block md:grow-0">
+            <Search className="absolute left-2.5 top-[15px] h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."

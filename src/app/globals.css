@@ -39,6 +39,8 @@ body {
     --chart-10: 240 3.7% 15.9%;
     --chart-11: 240 4.8% 95.9%;
     --radius: 0.5rem;
+    --navbar-background: 240 5.9% 10%;
+    --navbar-foreground: 240 4.8% 95.9%;
     --sidebar-background: 201.3 96.3% 32.2%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 202 80.3% 23.9%;
@@ -84,7 +86,8 @@ body {
     --chart-9: 240 4.8% 95.9%;
     --chart-10: 240 3.7% 15.9%;
     --chart-11: 240 4.8% 95.9%;
-
+    --navbar-background: 240 5.9% 10%;
+    --navbar-foreground: 240 4.8% 95.9%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

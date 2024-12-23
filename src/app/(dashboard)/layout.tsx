@@ -1,13 +1,13 @@
 import { Metadata } from "next";
 import { getUserDetails } from "@/lib/getUserDetails";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import Navbar from "@/components/admin-panel/navbar";
 export const metadata: Metadata = {
   title: "Dashboard | LogicPulse",
   description: "An Evesome platform",
@@ -24,14 +24,11 @@ export default async function DashboardLayout({
     <SidebarProvider>
       <AppSidebar role={role} />
       <SidebarInset className="overflow-hidden">
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-          </div>
-        </header>
-        <main className="min-h-screen bg-gray-50 p-4">{children}</main>
-        <footer className="mt-8 border-t border-gray-200 bg-gray-50">
+        <Navbar user={user.userDetails} />
+        <main className="min-h-screen bg-gray-50 p-4 dark:bg-gray-900">
+          {children}
+        </main>
+        <footer className="mt-8 border-t">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="xl:grid xl:grid-cols-3 xl:gap-8">
               <div className="space-y-8 xl:col-span-1">
