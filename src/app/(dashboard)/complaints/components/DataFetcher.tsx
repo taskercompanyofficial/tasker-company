@@ -9,11 +9,13 @@ interface DataFetcherProps {
   endPoint: string;
   pageEndPoint: string;
   role: string;
+  included?: boolean;
 }
 
 const DataFetcher: React.FC<DataFetcherProps> = async ({
   endPoint,
   pageEndPoint,
+  included,
 }) => {
   const response = await fetchData({ endPoint });
   if (!response?.data?.data) {
@@ -29,7 +31,7 @@ const DataFetcher: React.FC<DataFetcherProps> = async ({
 
   return (
     <>
-      <PageChart chartData={response.data.chart_data} />
+      {!included && <PageChart chartData={response.data.chart_data} />}
       <Table data={response.data} endPoint={pageEndPoint} />
     </>
   );

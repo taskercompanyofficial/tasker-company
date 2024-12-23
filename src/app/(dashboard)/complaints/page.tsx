@@ -15,6 +15,7 @@ interface SearchParams {
 
 interface UserProps {
   searchParams: SearchParams;
+  included?: boolean;
 }
 
 export const metadata: Metadata = {
@@ -22,7 +23,10 @@ export const metadata: Metadata = {
   description: complaintsMeta.description,
 };
 
-const ComplaintsPage: React.FC<UserProps> = async ({ searchParams }) => {
+const ComplaintsPage: React.FC<UserProps> = async ({
+  searchParams,
+  included,
+}) => {
   const user = await getUserDetails();
   const role = user?.userDetails?.role || "user";
 
@@ -63,19 +67,22 @@ const ComplaintsPage: React.FC<UserProps> = async ({ searchParams }) => {
           </>
         }
       >
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg">{complaintsMeta.title}</h2>
-            <p className="hidden text-sm text-gray-500 sm:block">
-              {complaintsMeta.description}
-            </p>
+        {!included && (
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg">{complaintsMeta.title}</h2>
+              <p className="hidden text-sm text-gray-500 sm:block">
+                {complaintsMeta.description}
+              </p>
+            </div>
+            <DateRangePicker />
           </div>
-          <DateRangePicker />
-        </div>
+        )}
         <DataFetcher
           endPoint={endPoint}
           pageEndPoint={pageEndPoint}
           role={role}
+          included={included}
         />
       </Suspense>
     </>

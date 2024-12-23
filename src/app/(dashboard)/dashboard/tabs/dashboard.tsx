@@ -17,7 +17,7 @@ export default async function Dashboard({
     <div className="space-y-4">
       <FirstChart data={complaintsByStatus?.data} />
       <SecondChart data={complaintsByStatus?.data} />
-      <ComplaintsPage searchParams={searchParams} />
+      <ComplaintsPage searchParams={searchParams} included />
     </div>
   );
 }
