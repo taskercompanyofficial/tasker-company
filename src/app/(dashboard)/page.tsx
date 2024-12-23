@@ -7,17 +7,22 @@ import Notifications from "./dashboard/tabs/notifications";
 import Reports from "./dashboard/tabs/reports";
 import Dashboard from "./dashboard/tabs/dashboard";
 import { Metadata } from "next";
+import Accouncment from "@/components/dashboard/Accouncment";
 
 export const metadata: Metadata = {
   title: dashboardMeta.title,
   description: dashboardMeta.description,
 };
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: any;
+}) {
   const user = await getUserDetails();
   const userRole = user?.userDetails?.role;
   return (
     <div className="space-y-4">
-      {user?.token}
+      <Accouncment username={user?.userDetails?.name} />
       <Tabs defaultValue="dashboard">
         <TabsList>
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
@@ -38,7 +43,7 @@ export default async function DashboardPage() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="dashboard" className="space-y-4">
-          <Dashboard />
+          <Dashboard searchParams={searchParams} />
         </TabsContent>
         <TabsContent value="analytics" className="space-y-4">
           <Analytics />

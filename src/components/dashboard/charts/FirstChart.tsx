@@ -1,70 +1,85 @@
+import React, { Suspense } from "react";
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import React from "react";
 import { IoCloseCircleOutline, IoCodeWorkingOutline } from "react-icons/io5";
-import { MdCancelScheduleSend } from "react-icons/md";
+import { MdOutlineReportProblem } from "react-icons/md";
+import { ClipboardList } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default async function FirstChart() {
+// Define types for the status configuration
+type StatusConfigType = {
+  [key: string]: { icon: JSX.Element; description: string };
+};
+
+type ComplaintData = {
+  status: string;
+  count: number;
+};
+
+const statusConfig: StatusConfigType = {
+  open: {
+    icon: <IoCodeWorkingOutline className="h-4 w-4" />,
+    description: "Complaints currently open and unresolved.",
+  },
+  closed: {
+    icon: <IoCloseCircleOutline className="h-4 w-4" />,
+    description: "Complaints resolved and closed.",
+  },
+  cancelled: {
+    icon: <MdOutlineReportProblem className="h-4 w-4" />,
+    description: "Complaints canceled by users or admins.",
+  },
+  total: {
+    icon: <ClipboardList className="h-4 w-4" />,
+    description: "Total complaints created or updated in the range.",
+  },
+};
+
+// Skeleton loader component
+
+// Chart component
+function ComplaintsChart({
+  complaintsInRange,
+}: {
+  complaintsInRange: ComplaintData[];
+}) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Open Complaints</CardTitle>
-          <IoCodeWorkingOutline className="h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">$45,231.89</div>
-          <p className="text-xs text-muted-foreground">
-            +20.1% from last month
-          </p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Closed Complaints
-          </CardTitle>
-          <IoCloseCircleOutline className="h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+2350</div>
-          <p className="text-xs text-muted-foreground">
-            +180.1% from last month
-          </p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Cancelled Complaints
-          </CardTitle>
-          <MdCancelScheduleSend className="h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+12,234</div>
-          <p className="text-xs text-muted-foreground">+19% from last month</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="h-4 w-4 text-muted-foreground"
-          >
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-          </svg>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+573</div>
-          <p className="text-xs text-muted-foreground">+201 since last hour</p>
-        </CardContent>
-      </Card>
+      {complaintsInRange.map((item) => (
+        <Card key={item.status}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              {item.status.charAt(0).toUpperCase() + item.status.slice(1)}{" "}
+              Complaints
+            </CardTitle>
+            {statusConfig[item.status]?.icon || null}
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{item.count}</div>
+            <p className="text-xs text-muted-foreground">
+              {statusConfig[item.status]?.description ||
+                "No description available."}
+            </p>
+          </CardContent>
+        </Card>
+      ))}
     </div>
+  );
+}
+
+// Wrapper component using Suspense
+export default function FirstChart({ data }: { data: any }) {
+  return (
+    <Suspense
+      fallback={
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Skeleton className="h-[200px] w-full" />
+          <Skeleton className="h-[200px] w-full" />
+          <Skeleton className="h-[200px] w-full" />
+          <Skeleton className="h-[200px] w-full" />
+        </div>
+      }
+    >
+      <ComplaintsChart complaintsInRange={data.complaints_in_range || []} />
+    </Suspense>
   );
 }
