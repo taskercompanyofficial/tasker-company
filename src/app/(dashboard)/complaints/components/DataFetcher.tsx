@@ -29,7 +29,6 @@ const DataFetcher: React.FC<DataFetcherProps> = async ({
 
   return (
     <>
-      <PageChart chartData={response.data.chart_data} />
       <Table data={response.data} endPoint={pageEndPoint} />
     </>
   );
