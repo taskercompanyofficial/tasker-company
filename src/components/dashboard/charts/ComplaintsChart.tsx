@@ -11,6 +11,7 @@ import {
   YAxis,
   LabelList,
 } from "recharts";
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -80,10 +81,19 @@ export function ActiveComplaintsChart({
 }: {
   chartData: { status: string; count: number }[]; // Only status and count
 }) {
+  const router = useRouter();
+
   // Function to dynamically get color based on the status
   const getFillColor = (status: string) => {
     // Return the color for the given status, or gray if the status is not defined in chartConfig
     return chartConfig[status as keyof ChartConfig]?.color || "gray";
+  };
+
+  // Handle bar click event
+  const handleBarClick = (data: any) => {
+    if (data) {
+      window.open(`/complaints?status=${data.status}`, "_blank");
+    }
   };
 
   return (
@@ -124,7 +134,12 @@ export function ActiveComplaintsChart({
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="count" barSize={40} radius={4}>
+            <Bar
+              dataKey="count"
+              barSize={40}
+              radius={4}
+              onClick={(data, index) => handleBarClick(data)} // Attach click handler
+            >
               <LabelList
                 position="top"
                 offset={12}

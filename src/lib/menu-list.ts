@@ -36,9 +36,9 @@ export function getMenuList(
       groupLabel: "Platform",
       menus: [
         {
-          href: "/dashboard",
+          href: "/",
           label: "Dashboard",
-          active: pathname === "/dashboard",
+          active: pathname === "/",
           icon: MdHome,
           submenus: [],
         },
