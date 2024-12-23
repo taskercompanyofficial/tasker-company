@@ -9,8 +9,8 @@ export default async function FirstChart() {
   });
 
   // Prepare chart-friendly data for active and today's complaints
-  const activeComplaints = complaintsByStatus.data.active_complaints;
-  const todayComplaints = complaintsByStatus.data.today_complaints;
+  const activeComplaints = complaintsByStatus?.data?.active_complaints || [];
+  const todayComplaints = complaintsByStatus?.data?.today_complaints || [];
 
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
