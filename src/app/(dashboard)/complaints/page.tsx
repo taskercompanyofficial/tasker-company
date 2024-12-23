@@ -22,10 +22,7 @@ export const metadata: Metadata = {
   description: complaintsMeta.description,
 };
 
-const ComplaintsPage: React.FC<UserProps> = async ({
-  searchParams,
-  included,
-}) => {
+const ComplaintsPage: React.FC<UserProps> = async ({ searchParams }) => {
   const user = await getUserDetails();
   const role = user?.userDetails?.role || "user";
 

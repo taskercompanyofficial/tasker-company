@@ -12,16 +12,16 @@ export default async function Dashboard({
   const complaintsByStatus = await fetchData({
     endPoint: `${API_URL}/get/complaintByStatus`,
   });
-  const pageEndPoint = `${API_URL}${COMPLAINTS}`;
+  const EndPoint = `${API_URL}${COMPLAINTS}`;
   const response = await fetchData({
-    endPoint: `${API_URL}/complaints`,
+    endPoint: EndPoint,
   });
 
   return (
     <div className="space-y-4">
       <FirstChart data={complaintsByStatus?.data} />
       <SecondChart data={complaintsByStatus?.data} />
-      <Table data={response.data} endPoint={pageEndPoint} />
+      <Table data={response.data} endPoint={EndPoint} />
     </div>
   );
 }
