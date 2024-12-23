@@ -1,12 +1,12 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Dashboard from "./tabs/dashboard";
-import { Metadata } from "next";
 import { dashboardMeta } from "@/lib/Meta";
 import { getUserDetails } from "@/lib/getUserDetails";
-import Analytics from "./tabs/analytics";
-import Notifications from "./tabs/notifications";
-import Reports from "./tabs/reports";
+import Analytics from "./dashboard/tabs/analytics";
+import Notifications from "./dashboard/tabs/notifications";
+import Reports from "./dashboard/tabs/reports";
+import Dashboard from "./dashboard/tabs/dashboard";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: dashboardMeta.title,

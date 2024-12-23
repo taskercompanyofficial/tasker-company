@@ -9,7 +9,7 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    "/:path*",
+    "/",
     "/dashboard/:path*",
     "/users/:path*",
     "/brands/:path*",
