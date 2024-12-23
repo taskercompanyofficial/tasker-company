@@ -5,7 +5,7 @@ import SelectInput from "@/components/base/tableComponents/filters/select-input"
 import { statusOptions } from "@/lib/otpions";
 import SearchInput from "@/components/base/tableComponents/filters/search-input";
 import Create from "../create/Create";
-import { CategoriesColumns } from "@/TableColumns/Categories-columns";
+import { ComplaintsColumns } from "@/TableColumns/complaints-columns";
 
 export default function Table({
   endPoint,
@@ -18,7 +18,7 @@ export default function Table({
     <DataTable
       data={data.data}
       endPoint={endPoint}
-      columns={CategoriesColumns()}
+      columns={ComplaintsColumns()}
       pagination={data.pagination}
       FacedFilter={
         <TableFacedFilter>
