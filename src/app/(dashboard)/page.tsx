@@ -17,6 +17,7 @@ export default async function DashboardPage() {
   const userRole = user?.userDetails?.role;
   return (
     <div className="space-y-4">
+      {user?.token}
       <Tabs defaultValue="dashboard">
         <TabsList>
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>

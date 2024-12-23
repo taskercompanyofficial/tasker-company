@@ -99,7 +99,7 @@ export function ActiveComplaintsChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Active Complaints</CardTitle>
+        <CardTitle>Active Complaints</CardTitle>
         <CardDescription>Complaint Status Breakdown</CardDescription>
       </CardHeader>
       <CardContent>
@@ -138,7 +138,7 @@ export function ActiveComplaintsChart({
               dataKey="count"
               barSize={40}
               radius={4}
-              onClick={(data, index) => handleBarClick(data)} // Attach click handler
+              onClick={(data) => handleBarClick(data)} // Attach click handler
             >
               <LabelList
                 position="top"

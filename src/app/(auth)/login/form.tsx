@@ -25,7 +25,7 @@ export default function Form() {
           email: data.email,
           password: data.password,
           redirect: true,
-          callbackUrl: "/dashboard",
+          callbackUrl: "/",
         });
         toast.success(response.message);
       },
