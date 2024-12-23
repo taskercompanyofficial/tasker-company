@@ -1,11 +1,11 @@
-import React, { Suspense, lazy } from "react";
-import { API_URL, COMPLAINTS, CATEGORIES } from "@/lib/apiEndPoints";
 import { getUserDetails } from "@/lib/getUserDetails";
+import React, { Suspense, lazy } from "react";
+import { Metadata } from "next";
+import { complaintsMeta } from "@/lib/Meta";
+import { API_URL, CATEGORIES } from "@/lib/apiEndPoints";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
-import { Metadata } from "next";
 import { DateRangePicker } from "@/components/date-range-picker (1)";
-import { complaintsMeta } from "@/lib/Meta";
 
 const DataFetcher = lazy(() => import("./components/DataFetcher"));
 
@@ -23,10 +23,10 @@ export const metadata: Metadata = {
   description: complaintsMeta.description,
 };
 
-const ComplaintsPage: React.FC<UserProps> = async ({
+export default async function ComplaintsPage({
   searchParams,
   included,
-}) => {
+}: UserProps) {
   const user = await getUserDetails();
   const role = user?.userDetails?.role || "user";
 
@@ -87,6 +87,4 @@ const ComplaintsPage: React.FC<UserProps> = async ({
       </Suspense>
     </>
   );
-};
-
-export default ComplaintsPage;
+}

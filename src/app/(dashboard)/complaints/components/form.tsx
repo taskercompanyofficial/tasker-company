@@ -73,11 +73,10 @@ export default function Form() {
               autoFocus
               id="applicant-email"
               placeholder="Applicant email"
-              label="Email"
+              label="Email (optional)"
               value={data.applicant_email}
               onChange={(e) => setData("applicant_email", e.target.value)}
               errorMessage={errors.applicant_email}
-              required
             />
             <LabelInputContainer
               type="number"
