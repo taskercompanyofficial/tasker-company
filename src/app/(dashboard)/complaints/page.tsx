@@ -1,11 +1,11 @@
-import { getUserDetails } from "@/lib/getUserDetails";
 import React, { Suspense, lazy } from "react";
-import { Metadata } from "next";
-import { complaintsMeta } from "@/lib/Meta";
-import { API_URL, CATEGORIES } from "@/lib/apiEndPoints";
+import { API_URL, COMPLAINTS, CATEGORIES } from "@/lib/apiEndPoints";
+import { getUserDetails } from "@/lib/getUserDetails";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
+import { Metadata } from "next";
 import { DateRangePicker } from "@/components/date-range-picker (1)";
+import { complaintsMeta } from "@/lib/Meta";
 
 const DataFetcher = lazy(() => import("./components/DataFetcher"));
 
@@ -15,7 +15,6 @@ interface SearchParams {
 
 interface UserProps {
   searchParams: SearchParams;
-  included?: boolean;
 }
 
 export const metadata: Metadata = {
@@ -23,10 +22,10 @@ export const metadata: Metadata = {
   description: complaintsMeta.description,
 };
 
-export default async function ComplaintsPage({
+const ComplaintsPage: React.FC<UserProps> = async ({
   searchParams,
   included,
-}: UserProps) {
+}) => {
   const user = await getUserDetails();
   const role = user?.userDetails?.role || "user";
 
@@ -67,24 +66,23 @@ export default async function ComplaintsPage({
           </>
         }
       >
-        {!included && (
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg">{complaintsMeta.title}</h2>
-              <p className="hidden text-sm text-gray-500 sm:block">
-                {complaintsMeta.description}
-              </p>
-            </div>
-            <DateRangePicker />
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg">{complaintsMeta.title}</h2>
+            <p className="hidden text-sm text-gray-500 sm:block">
+              {complaintsMeta.description}
+            </p>
           </div>
-        )}
+          <DateRangePicker />
+        </div>
         <DataFetcher
           endPoint={endPoint}
           pageEndPoint={pageEndPoint}
           role={role}
-          included={included}
         />
       </Suspense>
     </>
   );
-}
+};
+
+export default ComplaintsPage;
