@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Create() {
   return (
     <Link
-      href="/categories/create"
+      href="/complaints/create"
       className={`flex w-full items-center gap-1 sm:w-fit ${buttonVariants({
         variant: "outline",
         size: "sm",

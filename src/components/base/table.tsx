@@ -64,7 +64,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="my-3 flex flex-col md:flex-row md:items-center">
+      <div className="my-3 flex flex-col gap-2 md:flex-row md:items-center">
         {FacedFilter && <>{FacedFilter}</>}
         <div className="flex gap-2">
           {Create && <>{Create}</>}
