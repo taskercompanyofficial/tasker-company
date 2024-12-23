@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { API_URL, COMPLAINTS } from "@/lib/apiEndPoints";
+import { API_URL, COMPLAINTS, CATEGORIES } from "@/lib/apiEndPoints";
 import { getUserDetails } from "@/lib/getUserDetails";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
@@ -26,7 +26,7 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
   const user = await getUserDetails();
   const role = user?.userDetails?.role || "user";
 
-  const pageEndPoint = `${API_URL}${COMPLAINTS}`;
+  const pageEndPoint = `${API_URL}${CATEGORIES}`;
   const queryString = Object.entries(searchParams)
     .filter(([_, value]) => value !== undefined && value !== "")
     .map(
