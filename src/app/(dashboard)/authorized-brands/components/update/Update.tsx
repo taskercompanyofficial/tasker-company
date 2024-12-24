@@ -58,9 +58,9 @@ export default function BrandsUpdate({
       token,
     );
   };
-  const handleFileSelect = (file: File | null) => {
-    if (file) {
-      setData({ ...data, image: file });
+  const handleFileSelect = (files: File[]) => {
+    if (files.length > 0) {
+      setData({ ...data, image: files[0] });
     }
   };
   return (
