@@ -29,7 +29,7 @@ export default function BasicForm({
     applicant_whatsapp: complaint?.applicant_whatsapp || "",
     applicant_adress: complaint?.applicant_adress || "",
     description: complaint?.description || "",
-    status: complaint?.status || "open",
+    status: complaint?.status || "",
   });
   const url = endpoint || API_URL + COMPLAINTS;
   const method = endpoint ? put : post;

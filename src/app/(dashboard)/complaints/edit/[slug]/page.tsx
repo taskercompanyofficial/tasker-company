@@ -30,8 +30,7 @@ export default async function page({ params }: { params: { slug: string } }) {
         {response.data.complaint_heading}
       </h1>
       <p className="text-medium">{response.data.description}</p>
-
-      <Form complaint={response.data} />
+      {JSON.stringify(response.data)}
     </div>
   );
 }
