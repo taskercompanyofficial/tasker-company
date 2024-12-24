@@ -44,9 +44,9 @@ export default function Form() {
     ); // Pass the token as the third parameter
   };
 
-  const handleFileSelect = (file: File | null) => {
-    if (file) {
-      setData({ ...data, image: file });
+  const handleFileSelect = (files: File[]) => {
+    if (files.length > 0) {
+      setData({ ...data, image: files[0] });
     }
   };
   return (
