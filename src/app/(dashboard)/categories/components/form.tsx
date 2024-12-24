@@ -59,9 +59,9 @@ export default function Form({
       setData({ ...data, image: file });
     }
   };
-  const handleFileSelect = (file: File | null) => {
-    if (file) {
-      setData({ ...data, hero_image: file });
+  const handleFileSelect = (files: File[]) => {
+    if (files.length > 0) {
+      setData({ ...data, hero_image: files[0] });
     }
   };
   return (

@@ -79,9 +79,9 @@ export default function Form({
     );
   };
 
-  const handleFileSelect = (file: File | null) => {
-    if (file) {
-      setformData({ ...formData, hero_image: file });
+  const handleFileSelect = (files: File[]) => {
+    if (files.length > 0) {
+      setformData({ ...formData, hero_image: files[0] });
     }
   };
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

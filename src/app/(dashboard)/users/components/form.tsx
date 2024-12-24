@@ -123,13 +123,15 @@ export default function Form({
       setformData({ ...formData, [field]: file });
     }
   };
+  const handImageSelect = (files: File[]) => {
+    if (files.length > 0) {
+      setformData({ ...formData, profile_image: files[0] });
+    }
+  };
   return (
     <div className="relative rounded bg-white p-4 shadow-sm dark:bg-slate-950">
       <div className="mb-6">
-        <FileUpload
-          onFileSelect={(file) => handleFileSelect(file, "profile_image")}
-          accept="image/*"
-        />
+        <FileUpload onFileSelect={(file) => handImageSelect} accept="image/*" />
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
