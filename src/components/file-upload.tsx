@@ -5,38 +5,64 @@ import Image from "next/image";
 import { Upload, X } from "lucide-react";
 
 interface FileUploadProps {
-  onFileSelect?: (file: File | null) => void;
+  onFileSelect?: (files: File[]) => void;
   accept?: string;
   maxSize?: number;
+  maxFiles?: number;
 }
 
 export function FileUpload({
   onFileSelect,
-  accept = "image/svg+xml,image/png,image/jpeg,image/gif",
-  maxSize = 5 * 1024 * 1024, // 5MB default
+  accept = "image/svg+xml,image/png,image/jpeg,image/gif,video/mp4,video/webm",
+  maxSize = 10 * 1024 * 1024, // 10MB default
+  maxFiles = 5,
 }: FileUploadProps) {
   const [isDragging, setIsDragging] = React.useState(false);
-  const [preview, setPreview] = React.useState<string | null>(null);
+  const [previews, setPreviews] = React.useState<
+    Array<{ url: string; type: string }>
+  >([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleFile = React.useCallback(
-    (file: File) => {
-      if (file.size > maxSize) {
-        alert(`File size should not exceed ${maxSize / (1024 * 1024)}MB`);
+  const handleFiles = React.useCallback(
+    (files: File[]) => {
+      if (previews.length + files.length > maxFiles) {
+        alert(`Maximum ${maxFiles} files allowed`);
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      const newFiles = files.filter((file) => {
+        if (file.size > maxSize) {
+          alert(`File ${file.name} exceeds ${maxSize / (1024 * 1024)}MB`);
+          return false;
+        }
+        if (!accept.split(",").some((type) => file.type.match(type.trim()))) {
+          alert(`File ${file.name} has invalid type`);
+          return false;
+        }
+        return true;
+      });
 
-      if (onFileSelect) {
-        onFileSelect(file);
-      }
+      const newPreviews = newFiles.map((file) => {
+        return new Promise<{ url: string; type: string }>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            resolve({
+              url: e.target?.result as string,
+              type: file.type.startsWith("video") ? "video" : "image",
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      Promise.all(newPreviews).then((results) => {
+        setPreviews((prev) => [...prev, ...results]);
+        if (onFileSelect) {
+          onFileSelect(newFiles);
+        }
+      });
     },
-    [maxSize, onFileSelect],
+    [maxSize, maxFiles, accept, onFileSelect, previews.length],
   );
 
   const handleDragOver = React.useCallback((e: React.DragEvent) => {
@@ -53,15 +79,10 @@ export function FileUpload({
     (e: React.DragEvent) => {
       e.preventDefault();
       setIsDragging(false);
-
-      const file = e.dataTransfer.files[0];
-      if (file && accept.split(",").includes(file.type)) {
-        handleFile(file);
-      } else {
-        alert("Please upload a valid file type");
-      }
+      const files = Array.from(e.dataTransfer.files);
+      handleFiles(files);
     },
-    [accept, handleFile],
+    [handleFiles],
   );
 
   const handleClick = () => {
@@ -69,20 +90,20 @@ export function FileUpload({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFile(file);
-    }
+    const files = Array.from(e.target.files || []);
+    handleFiles(files);
   };
 
-  const handleRemove = (e: React.MouseEvent) => {
+  const handleRemove = (index: number) => (e: React.MouseEvent) => {
     e.stopPropagation();
-    setPreview(null);
-    if (onFileSelect) {
-      onFileSelect(null);
-    }
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
+    if (onFileSelect && fileInputRef.current?.files) {
+      const dt = new DataTransfer();
+      const files = Array.from(fileInputRef.current.files);
+      files.splice(index, 1);
+      files.forEach((file) => dt.items.add(file));
+      fileInputRef.current.files = dt.files;
+      onFileSelect(files);
     }
   };
 
@@ -92,7 +113,7 @@ export function FileUpload({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`relative flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-xl bg-gray-50 text-slate-300 transition-colors duration-200 dark:bg-slate-800 ${isDragging ? "border-2 border-slate-600 bg-slate-700" : ""} `}
+      className={`relative flex min-h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-xl bg-gray-50 p-4 text-slate-300 transition-colors duration-200 dark:bg-slate-800 ${isDragging ? "border-2 border-slate-600 bg-slate-700" : ""} `}
     >
       <input
         ref={fileInputRef}
@@ -100,30 +121,46 @@ export function FileUpload({
         accept={accept}
         onChange={handleFileChange}
         className="hidden"
+        multiple
       />
 
-      {preview ? (
-        <div className="relative h-full w-full">
-          <Image
-            src={preview}
-            alt="Uploaded file preview"
-            fill
-            className="rounded-xl object-contain"
-          />
-          <button
-            onClick={handleRemove}
-            className="absolute right-2 top-2 rounded-full bg-slate-800 p-1 text-slate-300 hover:bg-slate-700"
-            aria-label="Remove uploaded file"
-          >
-            <X className="h-4 w-4" />
-          </button>
+      {previews.length > 0 ? (
+        <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {previews.map((preview, index) => (
+            <div key={index} className="relative aspect-square w-full">
+              {preview.type === "image" ? (
+                <Image
+                  src={preview.url}
+                  alt={`Uploaded file preview ${index + 1}`}
+                  fill
+                  className="rounded-xl object-cover"
+                />
+              ) : (
+                <video
+                  src={preview.url}
+                  className="h-full w-full rounded-xl object-cover"
+                  controls
+                />
+              )}
+              <button
+                onClick={handleRemove(index)}
+                className="absolute right-2 top-2 rounded-full bg-slate-800 p-1 text-slate-300 hover:bg-slate-700"
+                aria-label="Remove uploaded file"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
         </div>
       ) : (
         <>
           <Upload className="mb-3 h-8 w-8 text-slate-400" />
           <p className="mb-1 text-sm">Click to upload or drag and drop</p>
           <p className="text-xs text-slate-500">
-            SVG, PNG, JPG or GIF (MAX. 800x400px)
+            SVG, PNG, JPG, GIF, MP4 or WEBM (MAX. {maxSize / (1024 * 1024)}MB)
+          </p>
+          <p className="text-xs text-slate-500">
+            Maximum {maxFiles} files allowed
           </p>
         </>
       )}

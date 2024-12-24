@@ -151,7 +151,23 @@ export type ComplaintsType = {
 export type ComplaintDetailsType = {
   id: number;
   complaint_id: number;
-  complaint_details: string;
+  brand_id: string;
+  branch_id: string;
+  company_complaint_no: string | null;
+  product: string;
+  model: string;
+  serial_number_ind: string | null;
+  serial_number_oud: string | null;
+  mq_nmb: string | null;
+  p_date: string | null;
+  complete_date: string | null;
+  amount: number | null;
+  technician: string | null;
+  status: string;
+  complaint_type: string;
+  provided_services: string;
+  extra: string | null;
+  images: string | null;
   created_at: string;
   updated_at: string;
 };
