@@ -80,7 +80,7 @@ export default function ComplaintsDropdown({
             <CredenzaTitle>Are you sure you want to delete? </CredenzaTitle>
             <CredenzaDescription>
               This action cannot be undone. You are about to delete (
-              {rowCurrent.complain_heading})
+              {rowCurrent.complaint_heading})
             </CredenzaDescription>
           </CredenzaHeader>
           <div className="flex flex-col justify-between gap-2 p-2">

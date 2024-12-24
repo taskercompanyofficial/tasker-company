@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import { TextareaInput } from "@/components/TextareaInput";
 import { useRouter } from "next/navigation";
 import { ComplaintsType } from "@/types";
+import { SelectInput } from "@/components/SelectInput";
+import { ComplaintStatusOptions } from "@/lib/otpions";
 
 export default function BasicForm({
   complaint,
@@ -27,6 +29,7 @@ export default function BasicForm({
     applicant_whatsapp: complaint?.applicant_whatsapp || "",
     applicant_adress: complaint?.applicant_adress || "",
     description: complaint?.description || "",
+    status: complaint?.status || "open",
   });
   const url = endpoint || API_URL + COMPLAINTS;
   const method = endpoint ? put : post;
@@ -127,9 +130,22 @@ export default function BasicForm({
             className="bg-gray-50"
           />
         </div>
+        {endpoint && (
+          <SelectInput
+            options={ComplaintStatusOptions}
+            selected={data.status}
+            onChange={(status) => setData({ ...data, status })}
+            placeholder="Select Status"
+            label="Select Status"
+          />
+        )}
         <SubmitBtn
           processing={processing}
-          label={endpoint ? "Update Basic Details" : "Create New Complaint"}
+          label={
+            endpoint
+              ? `Update ${complaint?.complaint_heading}`
+              : "Create New Complaint"
+          }
           className="w-full"
         />
       </form>
