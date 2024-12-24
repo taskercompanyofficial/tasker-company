@@ -135,15 +135,15 @@ export type SubServicesType = {
   updated_at: string;
 };
 export type ComplaintsType = {
-  id: string;
-  unique_id: string;
+  id: number;
   applicant_name: string;
+  applicant_email: string;
   applicant_phone: string;
   applicant_whatsapp: string;
   applicant_adress: string;
-  complaint_num: string;
-  complain_heading: string;
-  complain_description: string;
+  complain_num: string;
+  complaint_heading: string;
+  description: string;
   status: string;
   created_at: string;
   updated_at: string;

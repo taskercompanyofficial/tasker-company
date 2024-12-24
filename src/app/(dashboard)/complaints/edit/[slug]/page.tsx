@@ -1,7 +1,7 @@
 import React from "react";
-import Step1 from "../forms/step-1";
 import { fetchData } from "@/app/dataFetch/fetchData";
 import { API_URL, COMPLAINTS } from "@/lib/apiEndPoints";
+import Form from "./form";
 export async function generateMetadata({
   params,
 }: {
@@ -25,8 +25,13 @@ export default async function page({ params }: { params: { slug: string } }) {
   const response = await fetchData({ endPoint });
   return (
     <div>
-      <h1>Complaint ID: {params.slug}</h1>
-      <Step1 />
+      <h1 className="text-2xl font-bold">
+        Edit Complaint | {response.data.complain_num} -{" "}
+        {response.data.complaint_heading}
+      </h1>
+      <p className="text-medium">{response.data.description}</p>
+
+      <Form complaint={response.data} />
     </div>
   );
 }

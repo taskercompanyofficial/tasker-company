@@ -7,6 +7,7 @@ import { DataTableColumnHeader } from "@/components/base/tableComponents/data-ta
 import Status from "@/components/base/tableComponents/status";
 import CategoriesDropdown from "@/TableDropdowns/Categories-dropdown";
 import ComplaintsDropdown from "@/TableDropdowns/complaints-dropdown";
+import Link from "next/link";
 
 export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
   {
@@ -42,6 +43,18 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Complaint Number" />
     ),
+    cell: ({ cell }) => {
+      const complaint_num = cell.getValue() as string;
+      return (
+        <Link
+          href={`/complaints/${complaint_num}`}
+          className="underline"
+          target="_blank"
+        >
+          {complaint_num}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "complaint_heading",

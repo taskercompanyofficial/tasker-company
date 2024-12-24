@@ -3,11 +3,11 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
-export default function UpdateCategory({ slug }: { slug: string }) {
+export default function UpdateComplaint({ slug }: { slug: string }) {
   return (
     <>
       <Link
-        href={`/categories/${slug}`}
+        href={`/complaints/${slug}`}
         target="_blank"
         className={`m-0 w-full space-x-4 py-1 ${buttonVariants({
           variant: "ghost",
@@ -18,7 +18,7 @@ export default function UpdateCategory({ slug }: { slug: string }) {
         <Eye />
       </Link>
       <Link
-        href={`/categories/edit/${slug}`}
+        href={`/complaints/edit/${slug}`}
         target="_blank"
         className={`m-0 w-full py-1 ${buttonVariants({
           variant: "ghost",

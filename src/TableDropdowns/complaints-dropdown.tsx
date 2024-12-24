@@ -23,7 +23,7 @@ import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { ComplaintsType } from "@/types";
-import UpdateCategory from "@/app/(dashboard)/categories/edit/update";
+import UpdateComplaint from "@/app/(dashboard)/complaints/edit/update";
 export default function ComplaintsDropdown({
   rowCurrent,
 }: {
@@ -33,7 +33,7 @@ export default function ComplaintsDropdown({
   const token = session.data?.token || "";
   const [deleteOpen, setDeleteOpen] = useState(false);
   const { delete: destroy, processing } = useForm({});
-  const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.id}`;
+  const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.complain_num}`;
 
   const deleteRow = () => {
     destroy(
@@ -62,7 +62,7 @@ export default function ComplaintsDropdown({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="max-w-10">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <UpdateCategory slug={rowCurrent.id} />
+            <UpdateComplaint slug={rowCurrent.complain_num} />
             <Button
               variant="ghost"
               size="sm"

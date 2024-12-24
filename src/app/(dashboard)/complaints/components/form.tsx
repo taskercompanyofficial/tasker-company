@@ -7,26 +7,33 @@ import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { TextareaInput } from "@/components/TextareaInput";
 import { useRouter } from "next/navigation";
+import { ComplaintsType } from "@/types";
 
-export default function Form() {
+export default function BasicForm({
+  complaint,
+  endpoint,
+}: {
+  complaint?: ComplaintsType;
+  endpoint?: string;
+}) {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.token || "";
-  const { data, setData, processing, post, errors } = useForm({
-    complaint_heading: "",
-    applicant_name: "",
-    applicant_email: "",
-    applicant_phone: "",
-    applicant_whatsapp: "",
-    applicant_adress: "",
-    category_id: "",
-    service_id: "",
-    description: "",
+  const { data, setData, processing, post, errors, put } = useForm({
+    complaint_heading: complaint?.complaint_heading || "",
+    applicant_name: complaint?.applicant_name || "",
+    applicant_email: complaint?.applicant_email || "",
+    applicant_phone: complaint?.applicant_phone || "",
+    applicant_whatsapp: complaint?.applicant_whatsapp || "",
+    applicant_adress: complaint?.applicant_adress || "",
+    description: complaint?.description || "",
   });
+  const url = endpoint || API_URL + COMPLAINTS;
+  const method = endpoint ? put : post;
   const createTracker = async (event: React.FormEvent) => {
     event.preventDefault();
-    post(
-      API_URL + COMPLAINTS,
+    method(
+      url,
       {
         onSuccess: (response) => {
           toast.success(
@@ -122,7 +129,7 @@ export default function Form() {
         </div>
         <SubmitBtn
           processing={processing}
-          label={"Create New Complaint"}
+          label={endpoint ? "Update Basic Details" : "Create New Complaint"}
           className="w-full"
         />
       </form>
