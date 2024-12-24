@@ -39,10 +39,14 @@ export default function BasicForm({
       url,
       {
         onSuccess: (response) => {
-          toast.success(
-            `Complaint created successfully! by this ID ${response.data.complain_num} Redirecting to complaint page...`,
-          );
-          router.push(`/complaints/edit/${response.data.complain_num}`);
+          if (endpoint) {
+            toast.success(`Complaint updated successfully!`);
+          } else {
+            toast.success(
+              `Complaint created successfully! by this ID ${response.data.complain_num} Redirecting to complaint page...`,
+            );
+            router.push(`/complaints/edit/${response.data.complain_num}`);
+          }
         },
         onError: (error) => {
           toast.error(error.message);
