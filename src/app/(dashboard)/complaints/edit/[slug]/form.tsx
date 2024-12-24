@@ -1,5 +1,5 @@
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-import { ComplaintsType, User } from "@/types";
+import { ComplaintDetailsType, User } from "@/types";
 import React from "react";
 import BasicForm from "../../components/form";
 import { COMPLAINTS } from "@/lib/apiEndPoints";
@@ -11,10 +11,8 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-import { Button } from "@/components/ui/button";
-interface ComplaintDetails {
-  // Add complaint details fields as needed
-}
+import { ChevronDownIcon } from "lucide-react";
+import ComplaintDetailsForm from "./complaint-details-form";
 
 interface ComplaintData {
   id: number;
@@ -30,7 +28,7 @@ interface ComplaintData {
   status: string;
   created_at: string;
   updated_at: string;
-  complaint_details: ComplaintDetails[];
+  complaint_details: ComplaintDetailsType;
   user: User;
 }
 
@@ -48,9 +46,12 @@ export default function Form({ complaint }: FormProps) {
         </span>
       </h2>
       <Collapsible>
-        <CollapsibleTrigger>
-          <Button>View Details</Button>
-        </CollapsibleTrigger>
+        <div className="flex items-center justify-between rounded-md border bg-gray-100 p-2">
+          <h3 className="font-serif text-lg font-semibold">Basic Details</h3>
+          <CollapsibleTrigger className="">
+            <ChevronDownIcon className="h-4 w-4" />
+          </CollapsibleTrigger>
+        </div>
         <CollapsibleContent>
           <BasicForm
             complaint={complaint}
@@ -60,6 +61,19 @@ export default function Form({ complaint }: FormProps) {
       </Collapsible>
       <Separator />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"></div>
+      <Collapsible defaultOpen={true}>
+        <div className="flex items-center justify-between rounded-md border bg-gray-100 p-2">
+          <h3 className="font-serif text-lg font-semibold">
+            Complaint Details
+          </h3>
+          <CollapsibleTrigger className="">
+            <ChevronDownIcon className="h-4 w-4" />
+          </CollapsibleTrigger>
+        </div>
+        <CollapsibleContent>
+          <ComplaintDetailsForm complaint={complaint.complaint_details} />
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }

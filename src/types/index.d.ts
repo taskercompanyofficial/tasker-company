@@ -148,6 +148,13 @@ export type ComplaintsType = {
   created_at: string;
   updated_at: string;
 };
+export type ComplaintDetailsType = {
+  id: number;
+  complaint_id: number;
+  complaint_details: string;
+  created_at: string;
+  updated_at: string;
+};
 export type DomainsType = {
   id: string;
   unique_id: string;
