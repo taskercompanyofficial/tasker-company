@@ -90,15 +90,15 @@ export const subServicesCreateMeta = {
     "Add specialized sub-services to better categorize your professional offerings on Tasker. Help customers find exactly the service they need.",
 };
 
-export const usersMeta = {
-  title: "Users | Tasker Users",
+export const workersMeta = {
+  title: "Workers | Tasker Workers",
   description:
     "Find Tasker's service branches across Pakistan. Quality maintenance and repair services available in your area through our extensive network.",
 };
-export const usersCreateMeta = {
-  title: "Create User | Tasker Users",
+export const workersCreateMeta = {
+  title: "Create Worker | Tasker Workers",
   description:
-    "Add new users to Tasker. Quality maintenance and repair services available in your area through our extensive network.",
+    "Add new workers to Tasker. Quality maintenance and repair services available in your area through our extensive network.",
 };
 
 export const branchesMeta = {
