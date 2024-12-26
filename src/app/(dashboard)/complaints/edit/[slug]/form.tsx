@@ -72,7 +72,11 @@ export default function Form({ complaint, technicians }: FormProps) {
           </CollapsibleTrigger>
         </div>
         <CollapsibleContent>
-          <ComplaintDetailsForm complaint={complaint.complaint_details} technicians={technicians} />
+          <ComplaintDetailsForm
+            complaintId={complaint.complain_num}
+            complaint={complaint.complaint_details}
+            technicians={technicians}
+          />
         </CollapsibleContent>
       </Collapsible>
     </div>

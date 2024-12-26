@@ -16,9 +16,11 @@ import { Button } from "@/components/ui/button";
 import SubmitBtn from "@/components/ui/submit-button";
 
 export default function ComplaintDetailsForm({
+  complaintId,
   complaint,
   technicians,
 }: {
+  complaintId: string;
   complaint: ComplaintDetailsType;
   technicians: dataTypeIds[];
 }) {
