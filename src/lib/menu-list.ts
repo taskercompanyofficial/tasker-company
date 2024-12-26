@@ -63,9 +63,9 @@ export function getMenuList(
   if (role === "admin" || role === "administrator") {
     menuItems[0].menus.push(
       {
-        href: "/users",
-        label: "Users",
-        active: pathname === "/users",
+        href: "/workers",
+        label: "Workers",
+        active: pathname === "/workers",
         icon: User,
         submenus: [],
       },

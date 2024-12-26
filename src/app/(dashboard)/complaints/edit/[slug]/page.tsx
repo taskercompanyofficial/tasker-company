@@ -23,6 +23,9 @@ export default async function page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   const endPoint = `${API_URL}${COMPLAINTS}/${slug}`;
   const response = await fetchData({ endPoint });
+  const technicians = await fetchData({
+    endPoint: `${API_URL}/fetch-workers?role=technician&status=active`,
+  });
   return (
     <div>
       <h1 className="text-2xl font-bold">
@@ -31,7 +34,7 @@ export default async function page({ params }: { params: { slug: string } }) {
       </h1>
       <p className="text-medium">{response.data.description}</p>
 
-      <Form complaint={response.data} />
+      <Form complaint={response.data} technicians={technicians.data} />
     </div>
   );
 }

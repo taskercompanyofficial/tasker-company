@@ -1,8 +1,7 @@
 "use client";
-import { SelectInput } from "@/components/SelectInput";
 import useForm from "@/hooks/use-fom";
 import useFetch from "@/hooks/usefetch";
-import { API_URL } from "@/lib/apiEndPoints";
+import { API_URL, COMPLAINT_DETAILS } from "@/lib/apiEndPoints";
 import { ComplaintDetailsType, dataTypeIds } from "@/types";
 import SearchSelect from "@/components/ui/search-select";
 
@@ -11,11 +10,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { TextareaInput } from "@/components/TextareaInput";
 import { FileUpload } from "@/components/file-upload";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import SubmitBtn from "@/components/ui/submit-button";
 
 export default function ComplaintDetailsForm({
   complaint,
+  technicians,
 }: {
   complaint: ComplaintDetailsType;
+  technicians: dataTypeIds[];
 }) {
   const { data: branchesData, isLoading: branchesLoading } = useFetch<
     dataTypeIds[]
@@ -23,7 +28,8 @@ export default function ComplaintDetailsForm({
   const { data: brandsData, isLoading: brandsLoading } = useFetch<
     dataTypeIds[]
   >(`${API_URL}/fetch-authorized-brands`);
-  const { data, setData, errors, put } = useForm({
+
+  const { data, setData, errors, put, processing, reset } = useForm({
     branch_id: complaint.branch_id || "",
     brand_id: complaint.brand_id || "",
     product: complaint.product || "",
@@ -46,8 +52,22 @@ export default function ComplaintDetailsForm({
       setData("images", files);
     }
   };
+  const router = useRouter();
+  const handleSubmit = (event: React.FormEvent) => {
+    
+    event.preventDefault();
+    put(API_URL + COMPLAINT_DETAILS + complaint.id, {
+      onSuccess: (response) => {
+        toast.success(response.message);
+        router.refresh();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+  };
   return (
-    <div className="space-y-2 p-2">
+    <form className="space-y-2 p-2" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {!branchesLoading && branchesData ? (
           <SearchSelect
@@ -133,13 +153,22 @@ export default function ComplaintDetailsForm({
           />
         </div>
         <div className="col-span-2">
-          <LabelInputContainer
-            label="Technician"
-            placeholder="Technician"
-            onChange={(e) => setData("technician", e.target.value)}
-            value={data.technician}
-            required
-          />
+          {technicians ? (
+            <SearchSelect
+              options={technicians}
+              label="Technician"
+              value={data.technician}
+              onChange={(e) => setData("technician", e)}
+              description="Choose the Technician who will handle this complaint"
+              width="full"
+              className="mt-2"
+            />
+          ) : (
+            <div className="space-y- mt-2">
+              <Skeleton className="h-3 w-[20%]" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          )}
         </div>
       </div>
       <TextareaInput
@@ -149,6 +178,12 @@ export default function ComplaintDetailsForm({
         value={data.extra}
       />
       <FileUpload onFileSelect={handleFileSelect} />
-    </div>
+      <div className="flex justify-end items-cener gap-2">
+        <Button type="submit" variant="outline">
+            Cancel
+        </Button>
+        <SubmitBtn label="Save" processing={processing} />
+      </div>
+    </form>
   );
 }

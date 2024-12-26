@@ -11,6 +11,7 @@ export const CATEGORIES = "/categories";
 export const SERVICES = "/services";
 export const SUBSERVICES = "/sub-services";
 export const COMPLAINTS = "/complaints";
+export const COMPLAINT_DETAILS = "/complaint-details";
 export const BRANCHES = "/branches";
 export const BRANDS = "/authorized-brands";
 export const WORKERS = "/workers";

@@ -1,5 +1,5 @@
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-import { ComplaintDetailsType, User } from "@/types";
+import { ComplaintDetailsType, dataTypeIds, User } from "@/types";
 import React from "react";
 import BasicForm from "../../components/form";
 import { COMPLAINTS } from "@/lib/apiEndPoints";
@@ -34,9 +34,10 @@ interface ComplaintData {
 
 interface FormProps {
   complaint: ComplaintData;
+  technicians: dataTypeIds[];
 }
 
-export default function Form({ complaint }: FormProps) {
+export default function Form({ complaint, technicians }: FormProps) {
   return (
     <div className="space-y-2 rounded-md border bg-white p-4 shadow dark:bg-gray-900">
       <h2 className="flex justify-between font-serif text-lg font-semibold">
@@ -71,7 +72,7 @@ export default function Form({ complaint }: FormProps) {
           </CollapsibleTrigger>
         </div>
         <CollapsibleContent>
-          <ComplaintDetailsForm complaint={complaint.complaint_details} />
+          <ComplaintDetailsForm complaint={complaint.complaint_details} technicians={technicians} />
         </CollapsibleContent>
       </Collapsible>
     </div>

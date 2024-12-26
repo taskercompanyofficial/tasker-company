@@ -298,7 +298,6 @@ export default function Form({
                 }}
                 label="CNIC Front"
                 accept="image/*"
-                required
               />
               <LabelInputContainer
                 type="file"
@@ -310,7 +309,6 @@ export default function Form({
                 }}
                 label="CNIC Back"
                 accept="image/*"
-                required
               />
             </div>
 
@@ -325,7 +323,6 @@ export default function Form({
                 }}
                 label="Account Maintenance Certificate"
                 accept=".pdf,.doc,.docx"
-                required
               />
               <LabelInputContainer />
               <LabelInputContainer
@@ -338,7 +335,6 @@ export default function Form({
                 }}
                 label="Blank Check"
                 accept="image/*"
-                required
               />
             </div>
           </div>
@@ -358,7 +354,6 @@ export default function Form({
                   setformData("reference_1_name", e.target.value)
                 }
                 errorMessage={errors.reference_1_name}
-                required
               />
               <LabelInputContainer
                 type="tel"
@@ -370,7 +365,6 @@ export default function Form({
                   setformData("reference_1_number", e.target.value)
                 }
                 errorMessage={errors.reference_1_number}
-                required
               />
               <LabelInputContainer
                 type="file"
@@ -382,7 +376,6 @@ export default function Form({
                 }}
                 label="Reference 1 CNIC"
                 accept="image/*"
-                required
               />
               <LabelInputContainer
                 type="text"
@@ -394,7 +387,6 @@ export default function Form({
                   setformData("reference_2_name", e.target.value)
                 }
                 errorMessage={errors.reference_2_name}
-                required
               />
               <LabelInputContainer
                 type="tel"
@@ -406,7 +398,6 @@ export default function Form({
                   setformData("reference_2_number", e.target.value)
                 }
                 errorMessage={errors.reference_2_number}
-                required
               />
               <LabelInputContainer
                 type="file"
@@ -418,7 +409,6 @@ export default function Form({
                 }}
                 label="Reference 2 CNIC"
                 accept="image/*"
-                required
               />
             </div>
 
@@ -428,6 +418,7 @@ export default function Form({
                 options={getRoleOptions}
                 onChange={(e) => setformData("role", e)}
                 selected={formData.role}
+                errorMessage={errors.role}
               />
               <SelectInput
                 label="Status"
@@ -440,6 +431,7 @@ export default function Form({
                 ]}
                 onChange={(e) => setformData("status", e)}
                 selected={formData.status}
+                errorMessage={errors.status}
               />
               <SelectInput
                 label="Is Verified"
@@ -449,6 +441,7 @@ export default function Form({
                 ]}
                 onChange={(e) => setformData("is_verified", e)}
                 selected={formData.is_verified}
+                errorMessage={errors.is_verified}
               />
               <SelectInput
                 label="Notification"
@@ -459,6 +452,7 @@ export default function Form({
                 ]}
                 onChange={(e) => setformData("notification", e)}
                 selected={formData.notification}
+                errorMessage={errors.notification}
               />
             </div>
           </div>
