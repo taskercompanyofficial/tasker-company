@@ -28,6 +28,7 @@ interface SearchSelectProps {
   error?: string;
   className?: string;
   width?: "auto" | "full";
+  required?: boolean;
 }
 export default function SearchSelect({
   options,
@@ -38,6 +39,7 @@ export default function SearchSelect({
   error,
   className,
   width = "auto",
+  required,
 }: SearchSelectProps) {
   const [open, setOpen] = useState(false);
 
@@ -60,6 +62,7 @@ export default function SearchSelect({
           className={cn("flex items-center gap-1", error && "text-red-500")}
         >
           {label}
+          {required && <span className="text-red-500"> *</span>}
         </Label>
       )}
 

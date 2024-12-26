@@ -30,7 +30,8 @@ export function TextareaInput({
 
   return (
     <div className="space-y-2">
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && <Label htmlFor={id}>{label}
+        {props.required && <span className="text-red-500"> *</span>}</Label>}
       <Textarea
         id={id}
         {...props}

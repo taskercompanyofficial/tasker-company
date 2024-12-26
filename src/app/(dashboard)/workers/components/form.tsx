@@ -98,7 +98,7 @@ export default function Form({
       {
         onSuccess: (response) => {
           toast.success(response.message);
-          router.push("/users");
+          router.push("/workers");
           router.refresh();
         },
         onError: (error) => {
@@ -224,6 +224,7 @@ export default function Form({
                   className="mt-2"
                   error={errors.branch_id}
                   width="full"
+                  required
                 />
               ) : (
                 <div className="mt-2 space-y-1">
@@ -244,7 +245,7 @@ export default function Form({
                   }}
                   className="mt-2"
                   error={errors.state}
-                  width="full"
+                  width="full"required
                 />
               ) : (
                 <div className="mt-2 space-y-1">
@@ -261,6 +262,7 @@ export default function Form({
                   className="mt-2"
                   error={errors.city}
                   width="full"
+                  required
                 />
               ) : (
                 <div className="mt-2 space-y-1">
@@ -324,7 +326,6 @@ export default function Form({
                 label="Account Maintenance Certificate"
                 accept=".pdf,.doc,.docx"
               />
-              <LabelInputContainer />
               <LabelInputContainer
                 type="file"
                 id="blank-check"

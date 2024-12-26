@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { API_URL, USERS } from "@/lib/apiEndPoints";
+import { API_URL, WORKERS } from "@/lib/apiEndPoints";
 import { getUserDetails } from "@/lib/getUserDetails";
 import { FaLock } from "react-icons/fa";
 import Link from "next/link";
@@ -45,7 +45,7 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
     );
   }
 
-  const pageEndPoint = `${API_URL}${USERS}`;
+  const pageEndPoint = `${API_URL}${WORKERS}`;
   const queryString = Object.entries(searchParams)
     .filter(([_, value]) => value !== undefined && value !== "")
     .map(
