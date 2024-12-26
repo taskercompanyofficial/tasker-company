@@ -185,6 +185,7 @@ export type DomainsType = {
   updated_at: string;
 };
 export type dataTypeIds = {
+  id: string;
   value: string;
   label: string;
   image: string;

@@ -19,8 +19,6 @@ import { LuChevronsUpDown } from "react-icons/lu";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { dataTypeIds } from "@/types";
 
-
-
 interface SearchSelectProps {
   options: dataTypeIds[];
   value: string;
@@ -31,7 +29,6 @@ interface SearchSelectProps {
   className?: string;
   width?: "auto" | "full";
 }
-
 export default function SearchSelect({
   options,
   value,
@@ -44,8 +41,20 @@ export default function SearchSelect({
 }: SearchSelectProps) {
   const [open, setOpen] = useState(false);
 
+  // Normalize value and options for comparison
+  const normalizedOptions = options.map((option) => ({
+    ...option,
+    value: String(option.value),
+  }));
+  const normalizedValue = String(value);
+
+  const selectedOption = normalizedOptions.find(
+    (option) => option.value === normalizedValue
+  );
+
   return (
     <div className={cn("space-y-1 pt-1", className)}>
+      {/* Label */}
       {label && (
         <Label
           className={cn("flex items-center gap-1", error && "text-red-500")}
@@ -53,6 +62,8 @@ export default function SearchSelect({
           {label}
         </Label>
       )}
+
+      {/* Popover Trigger */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -61,23 +72,23 @@ export default function SearchSelect({
             aria-expanded={open}
             className={cn(
               "justify-between bg-gray-50 dark:bg-slate-950",
-              width === "full" ? "w-full" : "w-[250px]",
+              width === "full" ? "w-full" : "w-[250px]"
             )}
           >
             <span className="line-clamp-1 text-left">
-              {value
-                ? options.find((option) => option.value === value)?.label
-                : `Select ${label.toLowerCase()}...`}
+              {selectedOption ? selectedOption.label : `Select ${label.toLowerCase()}...`}
             </span>
             <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
+
+        {/* Popover Content */}
         <PopoverContent
           className={cn(
             "p-0",
             width === "full"
               ? "w-[--radix-popover-trigger-width]"
-              : "w-[250px]",
+              : "w-[250px]"
           )}
           align="start"
         >
@@ -89,10 +100,9 @@ export default function SearchSelect({
             <CommandList className="max-h-[200px] overflow-y-auto">
               <CommandEmpty>No {label.toLowerCase()} found.</CommandEmpty>
               <CommandGroup>
-                {options.map((option) => (
+                {normalizedOptions.map((option) => (
                   <CommandItem
                     key={option.value}
-                    value={option.value}
                     onSelect={() => {
                       onChange(option.value);
                       setOpen(false);
@@ -101,10 +111,12 @@ export default function SearchSelect({
                     <CheckIcon
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === option.value ? "opacity-100" : "opacity-0",
+                        normalizedValue === option.value
+                          ? "opacity-100"
+                          : "opacity-0"
                       )}
                     />
-                    {option.value} - {option.label}
+                    {option.label}
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -112,6 +124,8 @@ export default function SearchSelect({
           </Command>
         </PopoverContent>
       </Popover>
+
+      {/* Error and Description */}
       {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
       {description && (
         <p className="mt-1 text-sm text-muted-foreground">{description}</p>

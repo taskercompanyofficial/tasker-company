@@ -73,7 +73,7 @@ export default function Form({ complaint, technicians }: FormProps) {
         </div>
         <CollapsibleContent>
           <ComplaintDetailsForm
-            complaintId={complaint.complain_num}
+            complaintId={complaint.id}
             complaint={complaint.complaint_details}
             technicians={technicians}
           />

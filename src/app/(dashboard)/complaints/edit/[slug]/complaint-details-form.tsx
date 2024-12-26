@@ -21,7 +21,7 @@ export default function ComplaintDetailsForm({
   complaint,
   technicians,
 }: {
-  complaintId: string;
+  complaintId: number;
   complaint: ComplaintDetailsType;
   technicians: dataTypeIds[];
 }) {
@@ -33,21 +33,21 @@ export default function ComplaintDetailsForm({
   >(`${API_URL}/fetch-authorized-brands`);
 
   const { data, setData, errors, put, processing, reset } = useForm({
-    branch_id: complaint.branch_id || "",
-    brand_id: complaint.brand_id || "",
-    product: complaint.product || "",
-    model: complaint.model || "",
-    serial_number_ind: complaint.serial_number_ind || "",
-    serial_number_oud: complaint.serial_number_oud || "",
-    mq_nmb: complaint.mq_nmb || "",
-    p_date: complaint.p_date || "",
-    complete_date: complaint.complete_date || "",
-    amount: complaint.amount || "",
-    technician: complaint.technician || "",
-    status: complaint.status || "",
-    complaint_type: complaint.complaint_type || "",
-    provided_services: complaint.provided_services || "",
-    extra: complaint.extra || "",
+    branch_id: complaint?.branch_id || "",
+    brand_id: complaint?.brand_id || "",
+    product: complaint?.product || "",
+    model: complaint?.model || "",
+    serial_number_ind: complaint?.serial_number_ind || "",
+    serial_number_oud: complaint?.serial_number_oud || "",
+    mq_nmb: complaint?.mq_nmb || "",
+    p_date: complaint?.p_date || "",
+    complete_date: complaint?.complete_date || "",
+    amount: complaint?.amount || "",
+    technician: complaint?.technician || "",
+    status: complaint?.status || "",
+    complaint_type: complaint?.complaint_type || "",
+    provided_services: complaint?.provided_services || "",
+    extra: complaint?.extra || "",
     files: [] as File[],
   });
   const handleFileSelect = (files: File[]) => {
@@ -101,7 +101,7 @@ export default function ComplaintDetailsForm({
             className="mt-2"
           />
         ) : (
-          <div className="space-y- mt-2">
+          <div className="space-y-1 mt-2">
             <Skeleton className="h-3 w-[20%]" />
             <Skeleton className="h-10 w-full" />
           </div>
@@ -168,7 +168,7 @@ export default function ComplaintDetailsForm({
               className="mt-2"
             />
           ) : (
-            <div className="space-y- mt-2">
+            <div className="space-y-1 mt-2">
               <Skeleton className="h-3 w-[20%]" />
               <Skeleton className="h-10 w-full" />
             </div>
