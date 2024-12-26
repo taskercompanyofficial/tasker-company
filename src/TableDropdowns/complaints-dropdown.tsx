@@ -33,7 +33,7 @@ export default function ComplaintsDropdown({
   const token = session.data?.token || "";
   const [deleteOpen, setDeleteOpen] = useState(false);
   const { delete: destroy, processing } = useForm({});
-  const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.complain_num}`;
+  const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.id}`;
 
   const deleteRow = () => {
     destroy(
