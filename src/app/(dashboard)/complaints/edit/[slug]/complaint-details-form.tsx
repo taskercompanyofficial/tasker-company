@@ -112,35 +112,30 @@ export default function ComplaintDetailsForm({
           placeholder="Product"
           onChange={(e) => setData("product", e.target.value)}
           value={data.product}
-          required
         />
         <LabelInputContainer
           label="Model"
           placeholder="Model"
           onChange={(e) => setData("model", e.target.value)}
           value={data.model}
-          required
         />
         <LabelInputContainer
           label="Serial Number In"
           placeholder="Serial Number In"
           onChange={(e) => setData("serial_number_ind", e.target.value)}
           value={data.serial_number_ind}
-          required
         />
         <LabelInputContainer
           label="Serial Number Out"
           placeholder="Serial Number Out"
           onChange={(e) => setData("serial_number_oud", e.target.value)}
           value={data.serial_number_oud}
-          required
         />
         <LabelInputContainer
           label="MQ Number"
           placeholder="MQ Number"
           onChange={(e) => setData("mq_nmb", e.target.value)}
           value={data.mq_nmb}
-          required
         />
         <LabelInputContainer
           type="date"
