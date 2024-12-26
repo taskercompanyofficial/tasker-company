@@ -52,7 +52,8 @@ export default function ComplaintDetailsForm({
   });
   const handleFileSelect = (files: File[]) => {
     if (files.length > 0) {
-      setData("files", files);
+      const updatedFiles = [...data.files, ...files];
+      setData("files", updatedFiles);
     }
   };
   const router = useRouter();

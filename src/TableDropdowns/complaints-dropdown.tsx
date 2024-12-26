@@ -24,6 +24,7 @@ import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { ComplaintsType } from "@/types";
 import UpdateComplaint from "@/app/(dashboard)/complaints/edit/update";
+import { useRouter } from "next/navigation";
 export default function ComplaintsDropdown({
   rowCurrent,
 }: {
@@ -34,7 +35,7 @@ export default function ComplaintsDropdown({
   const [deleteOpen, setDeleteOpen] = useState(false);
   const { delete: destroy, processing } = useForm({});
   const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.id}`;
-
+  const router = useRouter();
   const deleteRow = () => {
     destroy(
       endPoint,
