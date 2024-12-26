@@ -112,6 +112,38 @@ export type ServicesType = {
   created_at: string;
   updated_at: string;
 };
+export type WorkersType = {
+   id: string;
+   unique_id: string;
+   full_name: string;
+   father_name: string;
+   contact_email: string;
+   phone_number: string;
+   secondary_phone_number: string;
+   password: string;
+   full_address: string;
+   state: string;
+   city: string;
+   salary: string;
+   branch_id: number;
+   cnic_front: string | null;
+   cnic_back: string | null;
+   account_maintanance_certificate: string | null;
+   blank_check: string | null;
+   reference_1_name: string | null;
+   reference_1_number: string | null;
+   reference_1_cnic: string | null;
+   reference_2_name: string | null;
+   reference_2_number: string | null;
+   reference_2_cnic: string | null;
+   profile_image: string | null;
+   role: string;
+   status: string;
+   is_verified: string;
+   notification: string;
+   created_at: string;
+   updated_at: string;
+};
 export type SubServicesType = {
   id: string;
   unique_id: string;

@@ -3,11 +3,11 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
-export default function UpdateService({ slug }: { slug: string }) {
+export default function UpdateWorker({ id }: { id: string }) {
   return (
     <>
       <Link
-        href={`/services/${slug}`}
+        href={`/workers/${id}`}
         target="_blank"
         className={`m-0 w-full space-x-4 py-1 ${buttonVariants({
           variant: "ghost",
@@ -18,7 +18,7 @@ export default function UpdateService({ slug }: { slug: string }) {
         <Eye />
       </Link>
       <Link
-        href={`/services/edit/${slug}`}
+        href={`/workers/edit/${id}`}
         target="_blank"
         className={`m-0 w-full py-1 ${buttonVariants({
           variant: "ghost",

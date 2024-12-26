@@ -5,7 +5,7 @@ import SelectInput from "@/components/base/tableComponents/filters/select-input"
 import { getRoleOptions, statusOptions } from "@/lib/otpions";
 import SearchInput from "@/components/base/tableComponents/filters/search-input";
 import Create from "../create/Create";
-import { ServicesCoulmns } from "@/TableColumns/Services-columns";
+import { WorkersCoulmns } from "@/TableColumns/worker-column";
 
 export default function Table({
   endPoint,
@@ -18,7 +18,7 @@ export default function Table({
     <DataTable
       data={data.data}
       endPoint={endPoint}
-      columns={ServicesCoulmns()}
+      columns={WorkersCoulmns()}
       pagination={data.pagination}
       FacedFilter={
         <TableFacedFilter>

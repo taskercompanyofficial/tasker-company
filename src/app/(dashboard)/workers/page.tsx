@@ -65,7 +65,7 @@ const page: React.FC<UserProps> = async ({ searchParams }) => {
               <Skeleton className="h-16 w-full" />
             </div>
             <DataTableSkeleton
-              columnCount={7}
+              columnCount={8}
               searchableColumnCount={1}
               filterableColumnCount={2}
               cellWidths={[
