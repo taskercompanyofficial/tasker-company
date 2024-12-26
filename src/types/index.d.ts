@@ -187,6 +187,7 @@ export type DomainsType = {
 export type dataTypeIds = {
   value: string;
   label: string;
+  image: string;
 };
 export type TrackerType = {
   id: string;

@@ -45,11 +45,11 @@ export default function ComplaintDetailsForm({
     complaint_type: complaint.complaint_type || "",
     provided_services: complaint.provided_services || "",
     extra: complaint.extra || "",
-    images: [] as File[],
+    files: [] as File[],
   });
   const handleFileSelect = (files: File[]) => {
     if (files.length > 0) {
-      setData("images", files);
+      setData("files", files);
     }
   };
   const router = useRouter();
@@ -141,7 +141,6 @@ export default function ComplaintDetailsForm({
           placeholder="P Date"
           onChange={(e) => setData("p_date", e.target.value)}
           value={data.p_date}
-          required
         />
         <div className="col-span-2">
           <LabelInputContainer
@@ -149,7 +148,6 @@ export default function ComplaintDetailsForm({
             placeholder="Amount"
             onChange={(e) => setData("amount", e.target.value)}
             value={data.amount}
-            required
           />
         </div>
         <div className="col-span-2">
@@ -177,9 +175,9 @@ export default function ComplaintDetailsForm({
         onChange={(e) => setData("extra", e.target.value)}
         value={data.extra}
       />
-      <FileUpload onFileSelect={handleFileSelect} />
+      <FileUpload onFileSelect={handleFileSelect} isMulti={true} label="Files" description="Upload files related to this complaint" />
       <div className="flex justify-end items-cener gap-2">
-        <Button type="submit" variant="outline">
+        <Button onClick={() => reset()} type="button" variant="outline">
             Cancel
         </Button>
         <SubmitBtn label="Save" processing={processing} />

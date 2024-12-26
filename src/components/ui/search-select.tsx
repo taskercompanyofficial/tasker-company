@@ -17,14 +17,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { dataTypeIds } from "@/types";
 
-interface Option {
-  value: string;
-  label: string;
-}
+
 
 interface SearchSelectProps {
-  options: Option[];
+  options: dataTypeIds[];
   value: string;
   onChange: (value: string) => void;
   label: string;
@@ -62,7 +60,7 @@ export default function SearchSelect({
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "justify-between bg-gray-50",
+              "justify-between bg-gray-50 dark:bg-slate-950",
               width === "full" ? "w-full" : "w-[250px]",
             )}
           >

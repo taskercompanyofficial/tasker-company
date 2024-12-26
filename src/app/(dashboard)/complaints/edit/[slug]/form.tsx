@@ -47,7 +47,7 @@ export default function Form({ complaint, technicians }: FormProps) {
         </span>
       </h2>
       <Collapsible>
-        <div className="flex items-center justify-between rounded-md border bg-gray-100 p-2">
+        <div className="flex items-center justify-between rounded-t-md border bg-gray-100 p-2 dark:bg-gray-700">
           <h3 className="font-serif text-lg font-semibold">Basic Details</h3>
           <CollapsibleTrigger className="">
             <ChevronDownIcon className="h-4 w-4" />
@@ -63,7 +63,7 @@ export default function Form({ complaint, technicians }: FormProps) {
       <Separator />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"></div>
       <Collapsible defaultOpen={true}>
-        <div className="flex items-center justify-between rounded-md border bg-gray-100 p-2">
+        <div className="flex items-center justify-between rounded-t-md border bg-gray-100 p-2 dark:bg-gray-700">
           <h3 className="font-serif text-lg font-semibold">
             Complaint Details
           </h3>
