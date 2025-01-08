@@ -6,13 +6,13 @@ import { auth } from "auth";
 import { signOut } from "next-auth/react";
 
 interface UserDetailsWithToken {
-  userDetails: User | null;
+  userDetails: any | null;
   token: string;
 }
 
 export async function getUserDetails(): Promise<UserDetailsWithToken> {
   const session = await auth();
-  const token = session?.token;
+  const token = session?.user?.token;
   const signout = async () => {
     await signOut();
   };
@@ -22,13 +22,12 @@ export async function getUserDetails(): Promise<UserDetailsWithToken> {
   }
 
   try {
-    const response = await axios.get<User>(`${API_URL}/get/userDetails`, {
+    const response = await axios.get<User>(`${API_URL}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     const userDetails = response.data;
-    const status = userDetails?.status;
     return { userDetails, token };
   } catch (error) {
     console.error("Error fetching user details:", error);

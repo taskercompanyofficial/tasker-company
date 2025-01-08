@@ -25,7 +25,33 @@ export const ComplaintStatusOptions = [
   { value: "installation-pending", label: "Installation Pending" },
   { value: "in-progress", label: "In Process" },
   { value: "deliverd", label: "Deliverd" },
+  { value: "close-pending-by-brand", label: "Closing Pending by Brand" },
+  { value: "feedback-pending", label: "Feedback Pending" },
   { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
   { value: "closed", label: "Closed" },
+  { value: "cancelled", label: "Cancelled" },
+];
+
+export const warrantyTypeOptions = [
+  { value: "warrenty-card", label: "Warrenty Card" },
+  { value: "jobsheet", label: "Jobsheet" },
+  { value: "invoice", label: "Invoice" },
+  { value: "delivery-challan", label: "Delivery Challan" },
+  { value: "service-challan", label: "Service Challan" },
+  { value: "defective-part", label: "Defective Part" },
+  { value: "indoor", label: "Indoor" },
+  { value: "outdoor", label: "Outdoor" },
+  { value: "ind-sr", label: "Ind-SR" },
+  { value: "out-sr", label: "Out-SR" },
+];
+
+export const complaintTypeOptions = [
+  // Free Installation, paid installation, warranty, revenue, serivce, warrenty+revenue, others
+  { value: "free-installation", label: "Free Installation" },
+  { value: "paid-installation", label: "Paid Installation" },
+  { value: "warranty", label: "Warranty" },
+  { value: "revenue", label: "Revenue" },
+  { value: "service", label: "Service" },
+  { value: "warrenty-revenue", label: "Warrenty+Revenue" },
+  { value: "other", label: "Other" },
 ];

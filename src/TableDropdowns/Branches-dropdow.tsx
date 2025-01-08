@@ -22,7 +22,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
-import BranchUpdate from "@/app/(dashboard)/branches/components/update/Update";
+import BranchUpdate from "@/app/authenticated/branches/components/update/Update";
 export default function BranchesDropdown({ rowCurrent }: { rowCurrent: any }) {
   const session = useSession();
   const token = session.data?.token || "";

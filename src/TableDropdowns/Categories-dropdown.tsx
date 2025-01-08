@@ -23,7 +23,7 @@ import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { CategoriesType } from "@/types";
-import UpdateCategory from "@/app/(dashboard)/categories/edit/update";
+import UpdateCategory from "@/app/authenticated/categories/edit/update";
 export default function CategoriesDropdown({
   rowCurrent,
 }: {

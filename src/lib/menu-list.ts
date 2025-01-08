@@ -36,23 +36,23 @@ export function getMenuList(
       groupLabel: "Platform",
       menus: [
         {
-          href: "/",
+          href: "/authenticated",
           label: "Dashboard",
-          active: pathname === "/",
+          active: pathname === "/authenticated",
           icon: MdHome,
           submenus: [],
         },
         {
-          href: "/market-place",
+          href: "/authenticated/market-place",
           label: "Market Place",
-          active: pathname === "/market-place",
+          active: pathname === "/authenticated/market-place",
           icon: AiFillProduct,
           submenus: [],
         },
         {
-          href: "/complaints",
+          href: "/authenticated/complaints",
           label: "Complaints",
-          active: pathname.includes("/complaints"),
+          active: pathname.includes("/authenticated//complaints"),
           icon: ClipboardList,
           submenus: [],
         },
@@ -63,9 +63,9 @@ export function getMenuList(
   if (role === "admin" || role === "administrator") {
     menuItems[0].menus.push(
       {
-        href: "/workers",
+        href: "/authenticated/workers",
         label: "Workers",
-        active: pathname === "/workers",
+        active: pathname === "/authenticated/workers",
         icon: User,
         submenus: [],
       },
@@ -73,46 +73,46 @@ export function getMenuList(
         href: "#",
         label: "All Services",
         active:
-          pathname === "/services" ||
-          pathname === "/categories" ||
-          pathname === "/sub-services",
+          pathname === "/authenticated/services" ||
+          pathname === "/authenticated/categories" ||
+          pathname === "/authenticated/sub-services",
         icon: Layers,
         submenus: [
           {
-            href: "/sub-services",
+            href: "/authenticated/sub-services",
             label: "Sub Services",
-            active: pathname === "/sub-services",
+            active: pathname === "/authenticated/sub-services",
           },
           {
-            href: "/services",
+            href: "/authenticated/services",
             label: "Services",
-            active: pathname === "/services",
+            active: pathname === "/authenticated/services",
           },
           {
-            href: "/categories",
+            href: "/authenticated/categories",
             label: "Categories",
-            active: pathname === "/categories",
+            active: pathname === "/authenticated/categories",
           },
         ],
       },
       {
-        href: "/branches",
+        href: "/authenticated/branches",
         label: "Branches",
-        active: pathname === "/branches",
+        active: pathname === "/authenticated/branches",
         icon: MapPin,
         submenus: [],
       },
       {
-        href: "/authorized-brands",
+        href: "/authenticated/authorized-brands",
         label: "Authorized Brands",
-        active: pathname === "/authorized-brands",
+        active: pathname === "/authenticated/authorized-brands",
         icon: Handshake,
         submenus: [],
       },
       {
-        href: "/our-projects",
+        href: "/authenticated/our-projects",
         label: "Our Projects",
-        active: pathname === "/our-projects",
+        active: pathname === "/authenticated/our-projects",
         icon: Briefcase,
         submenus: [],
       },
@@ -123,9 +123,9 @@ export function getMenuList(
     groupLabel: "Settings",
     menus: [
       {
-        href: "/account",
+        href: "/authenticated/account",
         label: "Account",
-        active: pathname === "/account",
+        active: pathname === "/authenticated/account",
         icon: MdOutlineSettings,
         submenus: [],
       },

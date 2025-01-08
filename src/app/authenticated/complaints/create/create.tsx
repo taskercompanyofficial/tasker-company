@@ -3,10 +3,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa6";
 import Link from "next/link";
 
-export default function Create() {
+export default function CreateComplaint() {
   return (
     <Link
-      href="/complaints/create"
+      href="/authenticated/complaints/create"
       className={`flex w-full items-center gap-1 sm:w-fit ${buttonVariants({
         variant: "outline",
         size: "sm",

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, InputHTMLAttributes } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ interface EnhancedInputProps extends InputHTMLAttributes<HTMLInputElement> {
   description?: string;
   errorMessage?: string;
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export const LabelInputContainer: React.FC<EnhancedInputProps> = ({
@@ -19,6 +20,7 @@ export const LabelInputContainer: React.FC<EnhancedInputProps> = ({
   errorMessage,
   icon,
   type = "text",
+  disabled ,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,11 +42,12 @@ export const LabelInputContainer: React.FC<EnhancedInputProps> = ({
         {icon && (
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             {icon}
+            {disabled && <Lock className="mt-1 h-4 w-4" />}
           </div>
         )}
         <Input
           type={inputType}
-          className={`${icon ? "pl-10" : ""} ${errorMessage ? "border-red-500" : ""}`}
+          className={`${icon ? "pl-10" : ""} ${errorMessage ? "border-red-500" : ""} placeholder:text-xs placeholder:font-mono`}
           placeholder={type === "password" ? "********" : props.placeholder}
           {...props}
         />
@@ -53,7 +56,7 @@ export const LabelInputContainer: React.FC<EnhancedInputProps> = ({
             type="button"
             variant="ghost"
             size="sm"
-            className="absolute inset-y-0 right-0 flex items-center pr-3 hover:bg-transparent"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 hover:bg-transparent "
             onClick={togglePasswordVisibility}
           >
             {showPassword ? (

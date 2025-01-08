@@ -99,15 +99,6 @@ body {
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 ::-webkit-scrollbar {
   width: 5px;
   height: 10px;
@@ -116,11 +107,11 @@ body {
 /* Track */
 ::-webkit-scrollbar-track {
   border-radius: 3px;
-  background: hsl(var(--sidebar-accent));
+  background: hsl(var(--sidebar-accent-foreground));
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--sidebar-accent-foreground));
+  background: hsl(var(--sidebar-accent));
   border-radius: 3px;
 }

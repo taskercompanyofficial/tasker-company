@@ -2,20 +2,25 @@ import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { LOGIN_URL } from "./src/lib/apiEndPoints";
 import myAxios from "./src/lib/axios.config";
+import { AxiosError } from "axios";
 
 export default {
   pages: {
-    signIn: "/login", // Custom login page
+    signIn: "/login",
+    error: "/error",
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.token = user.token; // Add token to JWT
+        return {
+          ...token,
+          ...user,
+        };
       }
       return token;
     },
     async session({ session, token }) {
-      session.token = token.token as string; // Add token to session
+      session.user = token as any;
       return session;
     },
   },
@@ -27,20 +32,37 @@ export default {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        try {
-          const res = await myAxios.post(LOGIN_URL, credentials);
-          const response = res.data;
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email and password are required");
+        }
 
-          if (response.user.token) {
-            const user = {
-              ...response.user,
-              token: response.user.token,
-            };
-            return user;
+        try {
+          const res = await myAxios.post(LOGIN_URL, {
+            email: credentials.email,
+            password: credentials.password,
+          });
+
+          const user = res.data?.user;
+
+          if (!user || !user.token) {
+            throw new Error("Invalid response from server");
           }
-          return null;
+
+          return user;
         } catch (error) {
-          throw new Error("Invalid credentials");
+          if (error instanceof AxiosError) {
+            if (error.response?.status === 404) {
+              throw new Error("Account not found");
+            }
+            if (error.response?.status === 401) {
+              throw new Error("Invalid credentials");
+            }
+            if (error.response?.data?.message) {
+              throw new Error(error.response.data.message);
+            }
+          }
+          console.error("Auth error:", error);
+          throw new Error("An error occurred during authentication");
         }
       },
     }),

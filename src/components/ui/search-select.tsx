@@ -78,7 +78,7 @@ export default function SearchSelect({
               width === "full" ? "w-full" : "w-[250px]"
             )}
           >
-            <span className="line-clamp-1 text-left">
+            <span className="line-clamp-1 text-left text-xs text-muted-foreground">
               {selectedOption ? selectedOption.label : `Select ${label.toLowerCase()}...`}
             </span>
             <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

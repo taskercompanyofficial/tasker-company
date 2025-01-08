@@ -1,7 +1,7 @@
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { ComplaintDetailsType, dataTypeIds, User } from "@/types";
 import React from "react";
-import BasicForm from "../../components/form";
+import BasicForm from "../../components/basic-form";
 import { COMPLAINTS } from "@/lib/apiEndPoints";
 import { API_URL } from "@/lib/apiEndPoints";
 import { Separator } from "@/components/ui/separator";

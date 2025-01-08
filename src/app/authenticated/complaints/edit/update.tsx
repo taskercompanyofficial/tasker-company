@@ -7,7 +7,7 @@ export default function UpdateComplaint({ slug }: { slug: string }) {
   return (
     <>
       <Link
-        href={`/complaints/${slug}`}
+        href={`/authenticated/complaints/${slug}`}
         target="_blank"
         className={`m-0 w-full space-x-4 py-1 ${buttonVariants({
           variant: "ghost",
@@ -18,7 +18,7 @@ export default function UpdateComplaint({ slug }: { slug: string }) {
         <Eye />
       </Link>
       <Link
-        href={`/complaints/edit/${slug}`}
+        href={`/authenticated/complaints/edit/${slug}`}
         target="_blank"
         className={`m-0 w-full py-1 ${buttonVariants({
           variant: "ghost",

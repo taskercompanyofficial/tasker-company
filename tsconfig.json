@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/(dashboard)/domains/components/check.tsx"
+    "src/app/authenticated/domains/components/check.tsx"
   ],
   "exclude": ["node_modules"]
 }

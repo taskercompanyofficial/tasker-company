@@ -22,7 +22,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
-import BrandsUpdate from "@/app/(dashboard)/authorized-brands/components/update/Update";
+import BrandsUpdate from "@/app/authenticated/authorized-brands/components/update/Update";
 export default function BrandsDropdown({ rowCurrent }: { rowCurrent: any }) {
   const session = useSession();
   const token = session.data?.token || "";

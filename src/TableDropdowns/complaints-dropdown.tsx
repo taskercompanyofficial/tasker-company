@@ -23,7 +23,7 @@ import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { ComplaintsType } from "@/types";
-import UpdateComplaint from "@/app/(dashboard)/complaints/edit/update";
+import UpdateComplaint from "@/app/authenticated/complaints/edit/update";
 import { useRouter } from "next/navigation";
 export default function ComplaintsDropdown({
   rowCurrent,

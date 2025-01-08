@@ -4,8 +4,8 @@ import { DataTable } from "@/components/base/table";
 import SelectInput from "@/components/base/tableComponents/filters/select-input";
 import { statusOptions } from "@/lib/otpions";
 import SearchInput from "@/components/base/tableComponents/filters/search-input";
-import Create from "../create/Create";
 import { ComplaintsColumns } from "@/TableColumns/complaints-columns";
+import CreateComplaint from "../create/create";
 
 export default function Table({
   endPoint,
@@ -30,7 +30,7 @@ export default function Table({
           />
         </TableFacedFilter>
       }
-      Create={<Create />}
+      Create={<CreateComplaint />}
     />
   );
 }

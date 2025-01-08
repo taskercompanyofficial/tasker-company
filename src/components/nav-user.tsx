@@ -25,12 +25,19 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { useUserDetails } from "@/lib/getUserInclient";
+import { Skeleton } from "./ui/skeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const session = useSession();
-  const user = session.data?.user;
+  const { userDetails, loading } = useUserDetails();
+  const user = userDetails.userDetails;
+
+  if (loading) {
+    return <Skeleton className="h-12 w-full" />;
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -38,67 +45,82 @@ export function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="transition-colors duration-200 hover:bg-sidebar-accent/80 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user?.image || ""} alt={user?.name || ""} />
-                <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground rounded-lg">
-                  {user?.name?.charAt(0)}
+              <Avatar className="h-8 w-8 rounded-lg ring-2 ring-primary/10">
+                <AvatarImage
+                  src={user?.profile_image || ""}
+                  alt={user?.username || ""}
+                />
+                <AvatarFallback className="animate-in fade-in rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  {user?.username?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.name}</span>
-                <span className="truncate text-xs">{user?.email}</span>
+                <span className="truncate font-semibold">{user?.username}</span>
+                <span className="truncate text-xs text-muted-foreground">
+                  {user?.email}
+                </span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDown className="ml-auto size-4 opacity-50" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="animate-in fade-in-0 zoom-in-95 w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg shadow-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.image || ""} alt={user?.name || ""} />
+              <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
+                <Avatar className="h-8 w-8 rounded-lg ring-2 ring-primary/10">
+                  <AvatarImage
+                    src={user?.profile_image || ""}
+                    alt={user?.username || ""}
+                  />
                   <AvatarFallback className="rounded-lg">
-                    {user?.name?.charAt(0)}
+                    {user?.username?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user?.name}</span>
-                  <span className="truncate text-xs">{user?.email}</span>
+                  <span className="truncate font-semibold">
+                    {user?.username}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {user?.email}
+                  </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem className="cursor-pointer gap-2 p-2 transition-colors hover:bg-accent">
+                <Sparkles className="size-4 text-purple-500" />
+                <span>Upgrade to Pro</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem className="cursor-pointer gap-2 p-2 transition-colors hover:bg-accent">
+                <BadgeCheck className="size-4 text-green-500" />
+                <span>Account</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
+              <DropdownMenuItem className="cursor-pointer gap-2 p-2 transition-colors hover:bg-accent">
+                <CreditCard className="size-4 text-blue-500" />
+                <span>Billing</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem className="cursor-pointer gap-2 p-2 transition-colors hover:bg-accent">
+                <Bell className="size-4 text-yellow-500" />
+                <span>Notifications</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
+            <DropdownMenuItem
+              onClick={() => signOut()}
+              className="cursor-pointer gap-2 p-2 transition-colors hover:bg-destructive hover:text-destructive-foreground"
+            >
+              <LogOut className="size-4" />
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

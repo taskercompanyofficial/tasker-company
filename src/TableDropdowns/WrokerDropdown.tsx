@@ -23,7 +23,7 @@ import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { WorkersType } from "@/types";
-import UpdateWorker from "@/app/(dashboard)/workers/edit/update";
+import UpdateWorker from "@/app/authenticated/workers/edit/update";
 export default function WorkerDropDown({
     rowCurrent,
 }: {

@@ -12,6 +12,7 @@ import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { User } from "@/types";
 import { SidebarTrigger } from "../ui/sidebar";
+import Notification from "./notification";
 export default async function Navbar({ user }: { user: User | null }) {
   return (
     <header className="w-full border-b bg-white dark:bg-gray-800">
@@ -38,6 +39,7 @@ export default async function Navbar({ user }: { user: User | null }) {
           </div>
           <div className="relative ml-auto hidden flex-1 md:block md:grow-0">
             <Search className="absolute left-2.5 top-[15px] h-4 w-4 text-muted-foreground" />
+            {/* <Notification user={user}/> */}
             <Input
               type="search"
               placeholder="Search..."

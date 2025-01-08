@@ -22,7 +22,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import useForm from "@/hooks/use-fom";
 import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
-import UpdateService from "@/app/(dashboard)/services/edit/update";
+import UpdateService from "@/app/authenticated/services/edit/update";
 import { ServicesType } from "@/types";
 export default function ServicesDropDown({
   rowCurrent,

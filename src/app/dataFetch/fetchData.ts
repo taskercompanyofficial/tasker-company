@@ -1,28 +1,45 @@
+import myAxios from "@/lib/axios.config";
 import { auth } from "auth";
 
 export async function fetchData({ endPoint }: { endPoint: string }) {
   try {
+    if (!endPoint) {
+      throw new Error("Endpoint is required");
+    }
+
     const session = await auth();
-    const token = session?.token;
-    const res = await fetch(endPoint, {
+    if (!session || !session?.user?.token) {
+      throw new Error("Unauthorized access");
+    }
+
+    const res = await myAxios.get(endPoint, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${session.user.token}`,
+        "Content-Type": "application/json",
       },
     });
 
-    if (!res.ok) {
+    if (res.status >= 400) {
       return {
         data: null,
-        message: "Failed to fetch data. Please try again later.",
+        message: res.data?.message || `Error ${res.status}: ${res.statusText}`,
+        status: res.status,
       };
     }
 
-    const data = await res.json();
-    return { data };
+    return {
+      data: res.data,
+      status: res.status,
+      message: "Success",
+    };
+
   } catch (error) {
+    const errorMessage = 
+      error instanceof Error ? error.message : "Unknown error occurred";
     return {
       data: null,
-      message: "Unknown error occurred. Please try again later.",
+      status: 500,
+      message: `${errorMessage}. Please try again later.`,
     };
   }
 }

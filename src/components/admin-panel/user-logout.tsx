@@ -57,7 +57,7 @@ export default function UserLogout({ token }: { token: string }) {
           <CredenzaHeader>
             <CredenzaTitle>Are you absolutely sure?</CredenzaTitle>
             <CredenzaDescription>
-              {" "}
+              {token}
               This action expire your session and you have to login back to
               access your dashboard.
             </CredenzaDescription>
