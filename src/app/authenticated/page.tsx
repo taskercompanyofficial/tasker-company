@@ -8,18 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Line, Doughnut, Bar as ChartJSBar } from "react-chartjs-2";
+import { Line, Bar as ChartJSBar } from "react-chartjs-2";
 import {
   AreaChart,
   Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip as ReTooltip,
   ResponsiveContainer,
-  BarChart,
-  Legend as ReLegend,
-  Bar,
 } from "recharts";
 import {
   Chart as ChartJS,
@@ -94,7 +88,6 @@ export default function DashboardPage() {
     ],
   };
 
-  // Today's complaints timeline
   const todayComplaints = {
     labels: ["9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"],
     datasets: [
@@ -276,7 +269,6 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-8">
-        {/* Complaints by Brand and Today's Timeline */}
         <div className="grid gap-8 md:grid-cols-3">
           <Card className="shadow-lg md:col-span-2">
             <CardHeader>
@@ -316,7 +308,9 @@ export default function DashboardPage() {
 
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-gray-800">Today's Timeline</CardTitle>
+              <CardTitle className="text-gray-800">
+                Today&apos;s Timeline
+              </CardTitle>
               <CardDescription className="text-gray-600">
                 Hourly complaint volume
               </CardDescription>

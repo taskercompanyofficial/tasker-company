@@ -56,10 +56,10 @@ export default function NotFound() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mx-auto mb-8 max-w-md text-lg text-gray-200"
+            className="mx-auto mb-8 max-w-md text-lg text-gray-500"
           >
-            The page you're looking for doesn't exist or has been moved.
-            Let's get you back on track.
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved. Let&apos;s get you back on track.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
