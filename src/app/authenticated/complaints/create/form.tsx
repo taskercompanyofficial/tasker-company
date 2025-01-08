@@ -18,7 +18,7 @@ export default function Form() {
   const [history, setHistory] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
-  const { data, setData, processing, post, errors, put, reset } = useForm({
+  const { data, setData, processing, post, errors } = useForm({
     applicant_name: "",
     applicant_email: "",
     applicant_phone: "",
@@ -31,17 +31,21 @@ export default function Form() {
     description: "",
     status: "",
   });
-const router = useRouter();
+  const router = useRouter();
   const handleSubmit = () => {
-    post(COMPLAINTS, {
-      onSuccess: (response) => {
-        toast.success(response.message);
-        router.push("/authenticated/complaints/edit/" + response.data.id);
+    post(
+      COMPLAINTS,
+      {
+        onSuccess: (response) => {
+          toast.success(response.message);
+          router.push("/authenticated/complaints/edit/" + response.data.id);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
       },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    }, token);
+      token,
+    );
   };
 
   // Function to update data with history tracking
