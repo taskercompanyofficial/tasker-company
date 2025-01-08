@@ -2,7 +2,7 @@
 import useForm from "@/hooks/use-fom";
 import useFetch from "@/hooks/usefetch";
 import { API_URL, COMPLAINT_DETAILS } from "@/lib/apiEndPoints";
-import { ComplaintDetailsType, dataTypeIds } from "@/types";
+import {ComplaintsType, dataTypeIds } from "@/types";
 import SearchSelect from "@/components/ui/search-select";
 
 import React from "react";
@@ -22,7 +22,7 @@ export default function ComplaintDetailsForm({
   technicians,
 }: {
   complaintId: number;
-  complaint: ComplaintDetailsType;
+  complaint: ComplaintsType;
   technicians: dataTypeIds[];
 }) {
   const { data: branchesData, isLoading: branchesLoading } = useFetch<
