@@ -2,10 +2,9 @@ import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ComplaintsType } from "@/types";
-import { formatDate, getImageUrl } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/base/tableComponents/data-table-column-header";
 import Status from "@/components/base/tableComponents/status";
-import CategoriesDropdown from "@/TableDropdowns/Categories-dropdown";
 import ComplaintsDropdown from "@/TableDropdowns/complaints-dropdown";
 import Link from "next/link";
 
