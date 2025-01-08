@@ -1,8 +1,8 @@
 "use client";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { TextareaInput } from "@/components/TextareaInput";
-import useFetch from "@/hooks/usefetch";
-import { API_URL } from "@/lib/apiEndPoints";
+import { complaintTypeOptions } from "@/lib/otpions";
+import { SelectInput } from "@/components/SelectInput";
 
 export default function BasicForm({
   data,
@@ -14,9 +14,8 @@ export default function BasicForm({
   errors: any;
 }) {
   return (
-    <div >
+    <div>
       <div className="w-full space-y-2">
-       
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <LabelInputContainer
             type="text"
@@ -25,7 +24,9 @@ export default function BasicForm({
             placeholder="Applicant name"
             label="Name"
             value={data.applicant_name}
-            onChange={(e) => setData({ ...data, applicant_name: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, applicant_name: e.target.value })
+            }
             errorMessage={errors.applicant_name}
             required
           />
@@ -35,7 +36,9 @@ export default function BasicForm({
             placeholder="Applicant email"
             label="Email"
             value={data.applicant_email}
-            onChange={(e) => setData({ ...data, applicant_email: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, applicant_email: e.target.value })
+            }
             errorMessage={errors.applicant_email}
           />
         </div>
@@ -46,7 +49,9 @@ export default function BasicForm({
             placeholder="Applicant phone"
             label="Phone"
             value={data.applicant_phone}
-            onChange={(e) => setData({ ...data, applicant_phone: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, applicant_phone: e.target.value })
+            }
             errorMessage={errors.applicant_phone}
             required
           />
@@ -56,7 +61,9 @@ export default function BasicForm({
             placeholder="Applicant whatsapp"
             label="Whatsapp"
             value={data.applicant_whatsapp}
-            onChange={(e) => setData({ ...data, applicant_whatsapp: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, applicant_whatsapp: e.target.value })
+            }
             errorMessage={errors.applicant_whatsapp}
           />
           <LabelInputContainer
@@ -65,7 +72,9 @@ export default function BasicForm({
             placeholder="Extra phone numbers"
             label="Extra numbers"
             value={data.extra_numbers}
-            onChange={(e) => setData({ ...data, extra_numbers: e.target.value })}
+            onChange={(e) =>
+              setData({ ...data, extra_numbers: e.target.value })
+            }
             errorMessage={errors.extra_numbers}
           />
           <LabelInputContainer
@@ -83,6 +92,13 @@ export default function BasicForm({
             onChange={(e) => setData({ ...data, product: e.target.value })}
             value={data.product}
           />
+          <SelectInput
+            label="Complaint Type"
+            placeholder="Complaint Type"
+            options={complaintTypeOptions}
+            onChange={(value) => setData({ ...data, complaint_type: value })}
+            selected={data.complaint_type}
+          />
         </div>
 
         <TextareaInput
@@ -90,7 +106,9 @@ export default function BasicForm({
           placeholder="Enter applicant address..."
           maxLength={250}
           value={data.applicant_adress}
-          onChange={(e) => setData({ ...data, applicant_adress: e.target.value })}
+          onChange={(e) =>
+            setData({ ...data, applicant_adress: e.target.value })
+          }
           errorMessage={errors.applicant_adress}
           className="bg-gray-50"
         />

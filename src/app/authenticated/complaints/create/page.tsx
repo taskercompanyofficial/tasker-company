@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function page() {
-    const resposne = await fetchData({ endPoint: API_URL + '/fetch-workers?status=active&role=technician' })
+    const resposne = await fetchData({ endPoint: API_URL + '/crm/fetch-workers?status=active&role=technician' })
     return (
         <div>
             <Form technician={resposne?.data} />

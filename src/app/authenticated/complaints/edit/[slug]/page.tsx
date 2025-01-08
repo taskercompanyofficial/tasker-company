@@ -3,6 +3,7 @@ import { fetchData } from "@/app/dataFetch/fetchData";
 import { API_URL, COMPLAINTS } from "@/lib/apiEndPoints";
 import Form from "./form";
 import { notFound } from "next/navigation";
+import { ErrorScreen } from "@/components/error-screen";
 
 export async function generateMetadata({
   params,
@@ -31,13 +32,13 @@ export async function generateMetadata({
 export default async function page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   const endPoint = `${API_URL}${COMPLAINTS}/${slug}`;
-  
+
   try {
     const [response, technicians] = await Promise.all([
       fetchData({ endPoint }),
       fetchData({
         endPoint: `${API_URL}/fetch-workers?role=technician&status=active`,
-      })
+      }),
     ]);
 
     if (!response.data) {
@@ -55,7 +56,14 @@ export default async function page({ params }: { params: { slug: string } }) {
         <Form complaint={response.data} technicians={technicians.data} />
       </div>
     );
-  } catch (error) {
-    notFound();
+  } catch (error: any) {
+    return (
+      <ErrorScreen
+        error={
+          error?.message ||
+          "An unexpected error occurred while loading the complaint"
+        }
+      />
+    );
   }
 }

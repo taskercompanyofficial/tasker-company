@@ -13,7 +13,7 @@ const SubmitBtn: React.FC<SubmitBtnProps> = ({
   ...props
 }) => {
   return (
-    <Button {...props} disabled={processing}>
+    <Button {...props} disabled={processing || props.disabled}>
       {processing ? (
         <>
           <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />

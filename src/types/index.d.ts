@@ -186,6 +186,7 @@ export type ComplaintsType = {
   serial_number_ind: string | null;
   serial_number_oud: string | null;
   mq_nmb: string | null;
+  product_type: string | null;
   p_date: string | null;
   complete_date: string | null;
   amount: number | null;
@@ -196,7 +197,7 @@ export type ComplaintsType = {
   extra: string | null;
   happy_call_remarks: string | null;
   status: string;
-  files: string | null;
+  files: any;
   created_at: string;
   updated_at: string;
 };

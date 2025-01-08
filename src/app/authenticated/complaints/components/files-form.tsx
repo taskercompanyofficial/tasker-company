@@ -1,92 +1,100 @@
-import { Button } from '@/components/ui/button';
-import { SelectInput } from '@/components/SelectInput';
-import { warrantyTypeOptions } from '@/lib/otpions';
-import { Trash2, Upload } from 'lucide-react';
-import React, { useState } from 'react';
-import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import { Trash2, Eye } from "lucide-react";
+import React, { useState } from "react";
+import DocumentUploader from "@/components/document-uploader";
+import Link from "next/link";
+import { getImageUrl } from "@/lib/utils";
 
 export default function FilesForm({
-    data,
-    setData,
-    errors,
+  data,
+  setData,
+  errors,
 }: {
-    data: any;
-    setData: (data: any) => void;
-    errors: any;
+  data: any;
+  setData: (data: any) => void;
+  errors: any;
 }) {
-    const handleRemoveFile = (index: number) => {
-        const updatedFiles = [...data.files];
-        updatedFiles.splice(index, 1);
-        setData({ ...data, files: updatedFiles });
-    };
+  const [selectedFile, setSelectedFile] = useState<any>(null);
 
-    const handleFileChange = (index: number, file: File) => {
-        const updatedFiles = [...data.files];
-        updatedFiles[index].file = file;
-        updatedFiles[index].url = URL.createObjectURL(file); // Create a preview URL
-        setData({ ...data, files: updatedFiles });
-    };
+  const handleDocumentUpload = (files: any) => {
+    if (files.length > 0) {
+      const updatedFiles = [...data.files, ...files];
+      setData({ ...data, files: updatedFiles });
+    }
+  };
 
-    const handleAddFile = (type: string) => {
-        // Find the count of files with the same type
-        const count = data.files.filter((file: any) => file.type === type).length;
+  const handleRemoveFile = (index: number) => {
+    const updatedFiles = data.files.filter((_: any, i: number) => i !== index);
+    setData({ ...data, files: updatedFiles });
+  };
 
-        // Create a new file entry
-        const newFile = {
-            id: Date.now(),
-            file: null,
-            url: '',
-            name: `${type}-${count + 1}`, // Increment the name
-            type,
-        };
-
-        setData({ ...data, files: [...data.files, newFile] });
-    };
-
-    return (
-        <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <SelectInput
-                    options={warrantyTypeOptions}
-                    onChange={(e) => handleAddFile(e)}
-                    label="Select File Type"
-                    selected={data.warranty_type}
-                />
-            </div>
-            <div className="bg-muted w-full shadow-inset p-4 rounded-md h-[300px] overflow-y-auto flex flex-wrap gap-2">
-                {data.files.map((file: any, index: number) => (
-                    <div
-                        key={file.id}
-                        className="w-[120px] h-[150px] relative bg-white rounded-md p-2 group"
+  return (
+    <div className="space-y-4">
+      <DocumentUploader
+        onDone={handleDocumentUpload}
+        errorMessage={errors.files}
+      />
+      {data.files.length > 0 && (
+        <div className="rounded-md border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="p-1.5 text-left font-medium">ID</th>
+                <th className="p-1.5 text-left font-medium">Document Type</th>
+                <th className="p-1.5 text-left font-medium">File Name</th>
+                <th className="p-1.5 text-left font-medium">Size</th>
+                <th className="p-1.5 text-right font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {data.files.map((file: any, index: number) => (
+                <tr key={index} className="border-b last:border-0">
+                  <td className="p-1.5">{index + 1}</td>
+                  <td className="p-1.5">{file.document_type || "N/A"}</td>
+                  <td className="p-1.5 text-gray-600">{file.file_name}</td>
+                  <td className="p-1.5 text-gray-600">
+                    <Link
+                      href={getImageUrl(file.document_path)}
+                      target="_blank"
+                      className="flex items-center gap-1"
                     >
-                        <Image
-                            className="w-full h-[100px] object-cover rounded-md"
-                            src={file.url || '/placeholder.png'}
-                            alt={file.name}
-                            width={100}
-                            height={100}
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center space-x-2 rounded-md transition-opacity">
-                            <Trash2
-                                className="text-red-500 cursor-pointer"
-                                onClick={() => handleRemoveFile(index)}
-                            />
-                            <label htmlFor={`file-input-${file.id}`} className="cursor-pointer">
-                                <Upload className="text-white" />
-                            </label>
-                            <input
-                                id={`file-input-${file.id}`}
-                                type="file"
-                                className="hidden"
-                                onChange={(e) =>
-                                    e.target.files && handleFileChange(index, e.target.files[0])
-                                }
-                            />
-                        </div>
-                        <p className="text-center text-sm mt-2 truncate">{file.name}</p>
-                    </div>
-                ))}
-            </div>
+                      Preview <Eye className="h-4 w-4" />
+                    </Link>
+                  </td>
+                  <td className="p-1.5">
+                    {(file.file_size / 1024).toFixed(1)} KB
+                  </td>
+                  <td className="space-x-1 p-1.5 text-right">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6"
+                      onClick={() => handleRemoveFile(index)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      )}
+
+      <div className="flex gap-2">
+        {data.files.length > 0 && (
+          <Button
+            variant="destructive"
+            size="sm"
+            className="text-xs"
+            onClick={() => {
+              setData({ ...data, files: [] });
+            }}
+          >
+            Clear All Files
+          </Button>
+        )}
+      </div>
+    </div>
+  );
 }
