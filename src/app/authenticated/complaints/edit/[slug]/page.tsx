@@ -1,7 +1,6 @@
 import React from "react";
 import { fetchData } from "@/app/dataFetch/fetchData";
 import { API_URL, COMPLAINTS } from "@/lib/apiEndPoints";
-import Form from "./form";
 import { notFound } from "next/navigation";
 import { ErrorScreen } from "@/components/error-screen";
 
@@ -53,7 +52,6 @@ export default async function page({ params }: { params: { slug: string } }) {
         </h1>
         <p className="text-medium">{response.data.description}</p>
 
-        <Form complaint={response.data} technicians={technicians.data} />
       </div>
     );
   } catch (error: any) {
