@@ -18,20 +18,32 @@ export default function FilesForm({
 
   const handleDocumentUpload = (files: any) => {
     if (files && files.length > 0) {
-      const updatedFiles = [...(data.files || []), ...files];
+      // Parse files if they are JSON strings
+      const existingFiles = Array.isArray(data.files) 
+        ? data.files 
+        : typeof data.files === 'string'
+          ? JSON.parse(data.files)
+          : [];
+          
+      const updatedFiles = [...existingFiles, ...files];
       setData({ ...data, files: updatedFiles });
     }
   };
 
   const handleRemoveFile = (index: number) => {
-    if (!data.files || !Array.isArray(data.files)) return;
+    let currentFiles = data.files;
+    if (typeof currentFiles === 'string') {
+      currentFiles = JSON.parse(currentFiles);
+    }
     
-    const updatedFiles = data.files.filter((_: any, i: number) => i !== index);
+    if (!Array.isArray(currentFiles)) return;
+    
+    const updatedFiles = currentFiles.filter((_: any, i: number) => i !== index);
     setData({ ...data, files: updatedFiles });
   };
 
-  // Ensure files is always an array
-  const files = data.files || [];
+  // Parse files if they are a JSON string
+  const files = typeof data.files === 'string' ? JSON.parse(data.files) : data.files || [];
 
   return (
     <div className="space-y-4">
@@ -47,6 +59,7 @@ export default function FilesForm({
                 <th className="p-1.5 text-left font-medium">ID</th>
                 <th className="p-1.5 text-left font-medium">Document Type</th>
                 <th className="p-1.5 text-left font-medium">File Name</th>
+                <th className="p-1.5 text-left font-medium">Preview</th>
                 <th className="p-1.5 text-left font-medium">Size</th>
                 <th className="p-1.5 text-right font-medium">Actions</th>
               </tr>

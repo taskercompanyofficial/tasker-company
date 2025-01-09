@@ -2,7 +2,7 @@
 import TableFacedFilter from "@/components/base/tableComponents/table-faced-filter";
 import { DataTable } from "@/components/base/table";
 import SelectInput from "@/components/base/tableComponents/filters/select-input";
-import { statusOptions } from "@/lib/otpions";
+import { ComplaintStatusOptions } from "@/lib/otpions";
 import SearchInput from "@/components/base/tableComponents/filters/search-input";
 import { ComplaintsColumns } from "@/TableColumns/complaints-columns";
 import CreateComplaint from "../create/create";
@@ -26,7 +26,7 @@ export default function Table({
           <SelectInput
             param="status"
             label="Select Status"
-            options={statusOptions}
+            options={ComplaintStatusOptions}
           />
         </TableFacedFilter>
       }
