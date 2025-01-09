@@ -9,8 +9,7 @@ export default async function OverviewTab() {
   });
   return (
     <div className="space-y-8 antialiased">
-      <pre>{JSON.stringify(complaintStatusData, null, 2)}</pre>
-      <ChartsByStatus />
+      <ChartsByStatus complaintStatusData={complaintStatusData.data} />
     </div>
   );
 }
