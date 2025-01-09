@@ -25,7 +25,7 @@ import { useSession } from "next-auth/react";
 import BrandsUpdate from "@/app/authenticated/authorized-brands/components/update/Update";
 export default function BrandsDropdown({ rowCurrent }: { rowCurrent: any }) {
   const session = useSession();
-  const token = session.data?.token || "";
+  const token = session.data?.user?.token || "";
   const [deleteOpen, setDeleteOpen] = useState(false);
   const { delete: destroy, processing } = useForm({});
   const endPoint = `${API_URL}${BRANDS}/${rowCurrent.id}`;

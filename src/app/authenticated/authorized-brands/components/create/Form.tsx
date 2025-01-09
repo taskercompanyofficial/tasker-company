@@ -19,7 +19,7 @@ import { FileUpload } from "@/components/file-upload";
 
 export default function Form() {
   const session = useSession();
-  const token = session.data?.token || "";
+  const token = session.data?.user?.token || "";
   const { data, setData, post, processing, errors, reset } = useForm({
     name: "",
     status: "",
