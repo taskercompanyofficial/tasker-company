@@ -31,7 +31,7 @@ export function ComplaintsDropdown({
   rowCurrent: ComplaintsType;
 }) {
   const session = useSession();
-  const token = session.data?.token || "";
+  const token = session.data?.user?.token || "";
   const [deleteOpen, setDeleteOpen] = useState(false);
   const { delete: destroy, processing } = useForm({});
   const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.id}`;
@@ -81,7 +81,7 @@ export function ComplaintsDropdown({
             <CredenzaTitle>Are you sure you want to delete? </CredenzaTitle>
             <CredenzaDescription>
               This action cannot be undone. You are about to delete (
-              {rowCurrent.complaint_heading})
+              {rowCurrent.description})
             </CredenzaDescription>
           </CredenzaHeader>
           <div className="flex flex-col justify-between gap-2 p-2">
