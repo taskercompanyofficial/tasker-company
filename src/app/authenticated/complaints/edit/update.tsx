@@ -3,7 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
-export default function UpdateComplaint({ slug }: { slug: string }) {
+export default function UpdateComplaint({ slug }: { slug: number   }) {
   return (
     <>
       <Link

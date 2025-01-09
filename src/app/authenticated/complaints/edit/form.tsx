@@ -12,6 +12,8 @@ import FilesForm from "../components/files-form";
 import { SelectInput } from "@/components/SelectInput";
 import { ComplaintStatusOptions } from "@/lib/otpions";
 import { Undo2, Redo2, Info } from "lucide-react";
+import { COMPLAINTS } from "@/lib/apiEndPoints";
+import { toast } from "sonner";
 
 export default function Form({
   complaint,
@@ -24,18 +26,22 @@ export default function Form({
   const [history, setHistory] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
-  const { data, setData, processing, post, errors, put, reset } = useForm({
+  const { data, setData, processing, put, errors } = useForm({
     brand_complaint_no: complaint?.brand_complaint_no || "",
     applicant_name: complaint?.applicant_name || "",
     applicant_email: complaint?.applicant_email || "",
     applicant_phone: complaint?.applicant_phone || "",
     applicant_whatsapp: complaint?.applicant_whatsapp || "",
     applicant_adress: complaint?.applicant_adress || "",
+    extra_numbers: complaint?.extra_numbers || "",
+    reference_by: complaint?.reference_by || "",
+    extra: complaint?.extra || "",
     description: complaint?.description || "",
     branch_id: complaint?.branch_id || "",
     brand_id: complaint?.brand_id || "",
     product: complaint?.product || "",
     model: complaint?.model || "",
+    extra_note: complaint?.extra_note || "",
     serial_number_ind: complaint?.serial_number_ind || "",
     serial_number_oud: complaint?.serial_number_oud || "",
     mq_nmb: complaint?.mq_nmb || "",
@@ -52,6 +58,16 @@ export default function Form({
     files: complaint?.files || [],
   });
 
+  const onSubmit = () => {
+    put(`${COMPLAINTS}/${complaint?.id}`, {
+      onSuccess: (response) => {
+        toast.success(response.message);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+  };
   // Function to update data with history tracking
   const updateData = (newData: any) => {
     // Add current state to history
@@ -80,6 +96,7 @@ export default function Form({
 
   return (
     <div className="rounded-lg bg-white p-2 shadow-md dark:bg-slate-950 md:p-4">
+      <pre>{JSON.stringify(data, null, 2)}</pre>
       <Tabs defaultValue="basic" value={tab} onValueChange={setTab}>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <TabsList className="">
@@ -120,6 +137,7 @@ export default function Form({
               processing={processing}
               size={"sm"}
               label={complaint ? "Save Changes" : "Create Complaint"}
+              onClick={onSubmit}
             />
           </div>
         </div>
@@ -155,7 +173,8 @@ export default function Form({
             </div>
             <div className="h-4 w-px bg-gray-300 dark:bg-gray-700" />
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              Form completion: {Object.values(data).filter(Boolean).length}/{Object.keys(data).length}
+              Form completion: {Object.values(data).filter(Boolean).length}/
+              {Object.keys(data).length}
             </div>
           </div>
         </div>

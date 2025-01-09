@@ -180,6 +180,9 @@ export type ComplaintsType = {
   description: string;
   brand_id: string;
   branch_id: string;
+  extra_numbers: string | null;
+  reference_by: string | null;
+  extra: string | null;
   company_complaint_no: string | null;
   product: string;
   model: string;
@@ -194,7 +197,7 @@ export type ComplaintsType = {
   complaint_type: string;
   provided_services: string;
   warranty_type: string;
-  extra: string | null;
+  extra_note: string | null;
   happy_call_remarks: string | null;
   status: string;
   files: any;

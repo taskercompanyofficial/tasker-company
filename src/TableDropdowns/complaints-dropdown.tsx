@@ -63,7 +63,7 @@ export function ComplaintsDropdown({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="max-w-10">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <UpdateComplaint slug={rowCurrent.complain_num} />
+            <UpdateComplaint slug={rowCurrent.id} />
             <Button
               variant="ghost"
               size="sm"
