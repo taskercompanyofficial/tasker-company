@@ -25,7 +25,7 @@ import { useSession } from "next-auth/react";
 import { ComplaintsType } from "@/types";
 import UpdateComplaint from "@/app/authenticated/complaints/edit/update";
 import { useRouter } from "next/navigation";
-export default function ComplaintsDropdown({
+export function ComplaintsDropdown({
   rowCurrent,
 }: {
   rowCurrent: ComplaintsType;

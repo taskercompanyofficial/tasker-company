@@ -5,7 +5,7 @@ import { ComplaintsType } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/base/tableComponents/data-table-column-header";
 import Status from "@/components/base/tableComponents/status";
-import ComplaintsDropdown from "@/TableDropdowns/complaints-dropdown";
+import { ComplaintsDropdown } from "@/TableDropdowns/complaints-dropdown"; // Changed to named import
 import Link from "next/link";
 
 export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
@@ -46,7 +46,7 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
       const complaint_num = cell.getValue() as string;
       return (
         <Link
-          href={`/complaints/${complaint_num}`}
+          href={`/authenticated/complaints/${complaint_num}`}
           className="underline"
           target="_blank"
         >
