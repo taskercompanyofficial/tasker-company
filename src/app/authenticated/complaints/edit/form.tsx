@@ -14,6 +14,8 @@ import { ComplaintStatusOptions } from "@/lib/otpions";
 import { Undo2, Redo2, Info } from "lucide-react";
 import { COMPLAINTS } from "@/lib/apiEndPoints";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Form({
   complaint,
@@ -23,6 +25,8 @@ export default function Form({
   technician?: dataTypeIds[];
 }) {
   const [tab, setTab] = useState("basic");
+  const session = useSession();
+  const token = session.data?.user?.token || "";
   const [history, setHistory] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
@@ -57,16 +61,21 @@ export default function Form({
     happy_call_remarks: complaint?.happy_call_remarks || "",
     files: complaint?.files || [],
   });
-
+  const router = useRouter();
   const onSubmit = () => {
-    put(`${COMPLAINTS}/${complaint?.id}`, {
-      onSuccess: (response) => {
-        toast.success(response.message);
+    put(
+      `${COMPLAINTS}/${complaint?.id}`,
+      {
+        onSuccess: (response) => {
+          toast.success(response.message);
+          router.refresh(); 
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
       },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    });
+      token,
+    );
   };
   // Function to update data with history tracking
   const updateData = (newData: any) => {
