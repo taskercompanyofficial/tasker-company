@@ -42,11 +42,12 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Complaint Number" />
     ),
-    cell: ({ cell }) => {
-      const complaint_num = cell.getValue() as string;
+    cell: ({ row }) => {
+      const complaint_num = row.getValue("complain_num") as string;
+      const id = row.getValue("id") as number;
       return (
         <Link
-          href={`/authenticated/complaints/${complaint_num}`}
+          href={`/authenticated/complaints/${id}`}
           className="underline"
           target="_blank"
         >
@@ -54,12 +55,6 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
         </Link>
       );
     },
-  },
-  {
-    accessorKey: "complaint_heading",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Complaint Heading" />
-    ),
   },
   {
     accessorKey: "applicant_name",

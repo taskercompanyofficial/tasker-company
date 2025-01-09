@@ -35,6 +35,7 @@ export function useUserDetails() {
       }
 
       try {
+        console.log("requesting user details on client");
         const response = await axios.get<User>(`${API_URL}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,

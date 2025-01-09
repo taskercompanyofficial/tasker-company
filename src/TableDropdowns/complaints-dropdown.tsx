@@ -35,7 +35,6 @@ export function ComplaintsDropdown({
   const [deleteOpen, setDeleteOpen] = useState(false);
   const { delete: destroy, processing } = useForm({});
   const endPoint = `${API_URL}${COMPLAINTS}/${rowCurrent.id}`;
-  const router = useRouter();
   const deleteRow = () => {
     destroy(
       endPoint,

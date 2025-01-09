@@ -4,7 +4,7 @@ import { fetchData } from "@/app/dataFetch/fetchData";
 import { getImageUrl } from "@/lib/utils";
 import { description, keywords, title } from "@/lib/Meta";
 import { notFound } from "next/navigation";
-import Form from "../edit/form";
+import ViewComplaint from "./view";
 
 // Function to dynamically generate metadata
 export async function generateMetadata({
@@ -32,11 +32,11 @@ export async function generateMetadata({
     const keywordsArray = response.data.keywords?.split(",") || [];
 
     return {
-      title: `${response.data.name} | Complaints ${title}`, // Dynamic title
+      title: `${response.data.description} | Complaints ${title}`, // Dynamic title
       description: response.data.description || description,
       keywords: [keywords, keywordsArray],
       openGraph: {
-        title: `${response.data.name} | Complaints ${title}`, // Dynamic title
+        title: `${response.data.description} | Complaints ${title}`, // Dynamic title
         description: response.data.description || description,
         url: `https://taskercompany.com/complaints/${slug}`, // Adjust URL to your app structure
         siteName: "Tasker Company",
@@ -52,7 +52,7 @@ export async function generateMetadata({
       twitter: {
         card: "summary_large_image",
         site: "@taskercompany", // Replace with your Twitter handle
-        title: `${response.data.name} | Complaints ${title}`, // Dynamic title
+        title: `${response.data.description} | Complaints ${title}`, // Dynamic title
         description: response.data.description || description,
         images: [imagePath],
       },
@@ -87,7 +87,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
             {response.data.description}
           </p>
         </div>
-        <Form complaint={response.data} />
       </>
     );
   } catch (error) {

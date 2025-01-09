@@ -22,6 +22,7 @@ export async function getUserDetails(): Promise<UserDetailsWithToken> {
   }
 
   try {
+    console.log("requesting user details on server");
     const response = await axios.get<User>(`${API_URL}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
