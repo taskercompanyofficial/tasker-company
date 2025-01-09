@@ -60,6 +60,11 @@ export default function DocumentUploader({
       if (response.data && response.data.data && response.data.data[0]) {
         onDone(response.data.data);
         toast.success("File uploaded successfully");
+        // Reset form after successful upload
+        setFormData({
+          files: [],
+          document_type: "",
+        });
       } else {
         throw new Error("Invalid response format from server");
       }
@@ -80,7 +85,7 @@ export default function DocumentUploader({
     const files = event.target.files;
     if (files) {
       // Validate file size
-      const maxSize = 10 * 1024 * 1024; // 10MB
+      const maxSize = 100 * 1024 * 1024; // 100MB
       const invalidFiles = Array.from(files).filter(
         (file) => file.size > maxSize,
       );
@@ -98,6 +103,14 @@ export default function DocumentUploader({
       }));
       setError(null);
     }
+  };
+
+  const handleCancelUpload = () => {
+    setFormData({
+      files: [],
+      document_type: "",
+    });
+    setError(null);
   };
 
   return (
@@ -138,6 +151,16 @@ export default function DocumentUploader({
           label="Upload"
           onClick={handleFileUpload}
         />
+
+        {formData.files.length > 0 && (
+          <Button
+            variant="outline"
+            onClick={handleCancelUpload}
+            disabled={isUploading}
+          >
+            Cancel
+          </Button>
+        )}
       </div>
 
       {errorMessage && <p className="text-sm text-red-500">{errorMessage}</p>}
