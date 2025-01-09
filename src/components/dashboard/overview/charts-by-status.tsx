@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import {
   AreaChart,
   Area,
@@ -9,6 +9,7 @@ import {
 import { CheckCircle, XCircle, AlertCircle, BarChart2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 interface ChartData {
   date: string;
@@ -32,12 +33,38 @@ interface ChartsByStatusProps {
   complaintStatusData?: ComplaintStatusData;
 }
 
-export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusProps) {
+function LoadingSkeleton() {
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {[...Array(4)].map((_, index) => (
+        <Card key={index} className="rounded-xl shadow-lg">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-4 w-[140px]" />
+              <Skeleton className="h-5 w-5 rounded-full" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="mb-4 h-8 w-20" />
+            <Skeleton className="h-[50px] w-full" />
+            <Skeleton className="mt-2 h-4 w-32" />
+            <Skeleton className="mt-3 h-1 w-full" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function ChartContent({ complaintStatusData }: ChartsByStatusProps) {
+  const router = useRouter();
+
   const items = [
     {
       title: "Opened Complaints",
       icon: <CheckCircle className="h-5 w-5 text-indigo-600" />,
       data: complaintStatusData?.opened,
+      status: "open",
       color: {
         text: "text-indigo-600",
         border: "rgb(99, 102, 241)",
@@ -46,12 +73,13 @@ export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusPr
       tooltip: "Active complaints awaiting resolution",
     },
     {
-      title: "Closed Complaints", 
+      title: "Closed Complaints",
       icon: <XCircle className="h-5 w-5 text-emerald-600" />,
       data: complaintStatusData?.closed,
+      status: "closed",
       color: {
         text: "text-emerald-600",
-        border: "rgb(34, 197, 94)", 
+        border: "rgb(34, 197, 94)",
         background: "rgba(34, 197, 94, 0.1)",
       },
       tooltip: "Successfully resolved complaints",
@@ -60,6 +88,7 @@ export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusPr
       title: "Rejected Complaints",
       icon: <AlertCircle className="h-5 w-5 text-red-600" />,
       data: complaintStatusData?.rejected,
+      status: "cancelled",
       color: {
         text: "text-red-600",
         border: "rgb(244, 63, 94)",
@@ -71,6 +100,7 @@ export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusPr
       title: "Total Complaints",
       icon: <BarChart2 className="h-5 w-5 text-violet-600" />,
       data: complaintStatusData?.total,
+      status: "all",
       color: {
         text: "text-violet-600",
         border: "rgb(139, 92, 246)",
@@ -80,35 +110,13 @@ export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusPr
     },
   ];
 
-  if (!complaintStatusData) {
-    return (
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {[...Array(4)].map((_, index) => (
-          <Card key={index} className="rounded-xl shadow-lg">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <Skeleton className="h-4 w-[140px]" />
-                <Skeleton className="h-5 w-5 rounded-full" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="mb-4 h-8 w-20" />
-              <Skeleton className="h-[50px] w-full" />
-              <Skeleton className="mt-2 h-4 w-32" />
-              <Skeleton className="mt-3 h-1 w-full" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    );
-  }
-
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item, index) => (
         <Card
           key={index}
-          className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          className="group relative cursor-pointer overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          onClick={() => router.push(`/authenticated/complaints?status=${item.status}`)}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -199,7 +207,7 @@ export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusPr
               <div
                 className="h-1 rounded-full transition-all duration-500 ease-out"
                 style={{
-                  width: `${((item.data?.count ?? 0) / (complaintStatusData.total.count || 1)) * 100}%`,
+                  width: `${((item.data?.count ?? 0) / (complaintStatusData?.total.count || 1)) * 100}%`,
                   backgroundColor: item.color.border,
                 }}
               />
@@ -208,5 +216,15 @@ export default function ChartsByStatus({ complaintStatusData }: ChartsByStatusPr
         </Card>
       ))}
     </div>
+  );
+}
+
+export default function ChartsByStatus({
+  complaintStatusData,
+}: ChartsByStatusProps) {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <ChartContent complaintStatusData={complaintStatusData} />
+    </Suspense>
   );
 }
