@@ -39,12 +39,12 @@ export const BrandsColumns = (): ColumnDef<BrandsType>[] => [
     ),
   },
   {
-    accessorKey: "logo",
+    accessorKey: "image",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Brand Logo" />
+      <DataTableColumnHeader column={column} title="Brand Image" />
     ),
     cell: ({ row }) => {
-      const path = String(row.getValue("logo"));
+      const path = String(row.getValue("image"));
 
       return (
         <>
@@ -66,7 +66,7 @@ export const BrandsColumns = (): ColumnDef<BrandsType>[] => [
     ),
   },
   {
-    accessorKey: "closed",
+    accessorKey: "closed_today",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Closed In Today" />
     ),
