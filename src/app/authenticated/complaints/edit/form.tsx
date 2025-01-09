@@ -68,7 +68,7 @@ export default function Form({
       {
         onSuccess: (response) => {
           toast.success(response.message);
-          router.refresh(); 
+          router.refresh();
         },
         onError: (error) => {
           toast.error(error.message);

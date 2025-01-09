@@ -21,6 +21,7 @@ export default function Form() {
   const { data, setData, processing, post, errors } = useForm({
     applicant_name: "",
     applicant_email: "",
+    brand_complaint_no: "",
     applicant_phone: "",
     applicant_whatsapp: "",
     extra_numbers: "",

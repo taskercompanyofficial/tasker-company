@@ -16,7 +16,18 @@ export default function BasicForm({
   return (
     <div>
       <div className="w-full space-y-2">
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+          <LabelInputContainer
+            type="text"
+            id="brand_complaint_no"
+            placeholder="eg: 123123sas"
+            label="Brand Complaint No"
+            value={data.brand_complaint_no}
+            onChange={(e) =>
+              setData({ ...data, brand_complaint_no: e.target.value })
+            }
+            errorMessage={errors.brand_complaint_no}
+          />
           <LabelInputContainer
             type="text"
             autoFocus
