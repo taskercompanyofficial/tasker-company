@@ -96,7 +96,6 @@ export default function Form({
 
   return (
     <div className="rounded-lg bg-white p-2 shadow-md dark:bg-slate-950 md:p-4">
-      <pre>{JSON.stringify(data, null, 2)}</pre>
       <Tabs defaultValue="basic" value={tab} onValueChange={setTab}>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <TabsList className="">
