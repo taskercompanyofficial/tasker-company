@@ -32,7 +32,7 @@ export default function BrandsUpdate({
   rowCurrent: BrandsType;
 }) {
   const session = useSession();
-  const token = session.data?.token || "";
+  const token = session.data?.user?.token || "";
   const [updateOpen, setUpdateOpen] = useState(false);
   const { data, setData, put, processing, errors } = useForm({
     name: rowCurrent.name,
