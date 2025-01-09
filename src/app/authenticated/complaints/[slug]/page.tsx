@@ -87,6 +87,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             {response.data.description}
           </p>
         </div>
+        <ViewComplaint complaint={response.data} />
       </>
     );
   } catch (error) {

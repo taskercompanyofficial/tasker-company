@@ -24,7 +24,6 @@ export function useUserDetails() {
 
       // Only sign out if session status is "unauthenticated"
       if (!token && session.status === "unauthenticated") {
-        await signOut();
         return;
       }
 

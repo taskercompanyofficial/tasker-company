@@ -17,7 +17,6 @@ export async function getUserDetails(): Promise<UserDetailsWithToken> {
     await signOut();
   };
   if (!token) {
-    signout;
     return { userDetails: null, token: "" };
   }
 
