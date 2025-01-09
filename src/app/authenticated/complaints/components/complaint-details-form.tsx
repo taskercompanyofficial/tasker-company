@@ -22,9 +22,6 @@ export default function ComplaintDetailsForm({
   const { data: branchesData, isLoading: branchesLoading } = useFetch<
     dataTypeIds[]
   >(`${API_URL}/crm/fetch-branches`);
-  const { data: techniciansData, isLoading: techniciansLoading } = useFetch<
-    dataTypeIds[]
-  >(`${API_URL}/crm/fetch-workers`);
   const { data: brandsData, isLoading: brandsLoading } = useFetch<
     dataTypeIds[]
   >(`${API_URL}/crm/fetch-authorized-brands`);
@@ -134,9 +131,9 @@ export default function ComplaintDetailsForm({
           </div>
         )}
 
-        {!techniciansLoading && techniciansData ? (
+        {technician ? (
           <SearchSelect
-            options={techniciansData}
+            options={technician}
             label="Technician"
             value={data.technician_id}
             onChange={(e) => setData({ ...data, technician_id: e })}

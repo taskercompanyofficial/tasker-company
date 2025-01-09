@@ -74,6 +74,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
   try {
     const endPoint = `${API_URL}${COMPLAINTS}/${slug}`;
     const response = await fetchData({ endPoint });
+    const technicians = await fetchData({
+      endPoint: `${API_URL}/crm/fetch-workers`,
+    });
 
     if (!response || !response.data) {
       notFound();
@@ -87,7 +90,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
             {response.data.description}
           </p>
         </div>
-        <Form complaint={response.data} />
+        <Form
+          complaint={response.data}
+          technician={technicians.data}
+        />
       </>
     );
   } catch (error) {
