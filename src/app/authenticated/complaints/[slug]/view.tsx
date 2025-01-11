@@ -318,39 +318,39 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
                       key={index}
                       className="group overflow-hidden rounded-lg transition-shadow hover:shadow-xl"
                     >
-                      <Link
-                        href={getImageUrl(file.document_path)}
-                        target="_blank"
-                      >
-                        {isImage ? (
-                          <div className="relative h-48 w-full overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
-                            <Image
-                              src={getImageUrl(file.document_path)}
-                              alt={file.document_type}
-                              layout="fill"
-                              objectFit="cover"
-                              className="transition-opacity group-hover:opacity-80"
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                              <p className="text-sm font-medium text-white">
+                      {isImage ? (
+                        <div className="relative h-48 w-full overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
+                          <Image
+                            src={getImageUrl(file.document_path)}
+                            alt={file.document_type}
+                            layout="fill"
+                            objectFit="cover"
+                            className="transition-opacity group-hover:opacity-80"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <p className="text-sm font-medium text-white">
+                              <Link
+                                href={getImageUrl(file.document_path)}
+                                target="_blank"
+                              >
                                 {file.document_type}
-                              </p>
-                            </div>
+                              </Link>
+                            </p>
                           </div>
-                        ) : (
-                          <div className="flex items-center gap-4 p-4 transition-colors group-hover:bg-muted/50">
-                            <FileText className="h-8 w-8 text-primary" />
-                            <div>
-                              <p className="text-sm font-medium text-muted-foreground">
-                                {file.document_type}
-                              </p>
-                              <p className="max-w-[200px] truncate font-medium">
-                                {file.file_name}
-                              </p>
-                            </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-4 p-4 transition-colors group-hover:bg-muted/50">
+                          <FileText className="h-8 w-8 text-primary" />
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">
+                              {file.document_type}
+                            </p>
+                            <p className="max-w-[200px] truncate font-medium">
+                              {file.file_name}
+                            </p>
                           </div>
-                        )}
-                      </Link>
+                        </div>
+                      )}
                     </Card>
                   );
                 })}
