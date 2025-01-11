@@ -14,5 +14,5 @@ export const COMPLAINTS = "/crm/complaints";
 export const COMPLAINT_DETAILS = "/crm/complaint-details";
 export const BRANCHES = "/crm/branches";
 export const BRANDS = "/crm/authorized-brands";
-export const WORKERS = "/crm/workers";
+export const WORKERS = "/crm/staff";
 export const USERS = "/crm/users";
