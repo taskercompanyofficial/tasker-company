@@ -63,6 +63,12 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     ),
   },
   {
+    accessorKey: "brand_complaint_no",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Brand Complaint No" />
+    ),
+  },
+  {
     accessorKey: "applicant_email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Applicant Email" />

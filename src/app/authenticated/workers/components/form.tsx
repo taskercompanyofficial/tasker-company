@@ -80,7 +80,7 @@ export default function Form({
       {
         onSuccess: (response) => {
           toast.success(response.message);
-          router.push("/workers");
+          router.push("/authenticated/workers/edit/" + response.data.id);
           router.refresh();
         },
         onError: (error) => {
