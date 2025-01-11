@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -11,39 +11,53 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { dataTypeIds } from "@/types";
+import { Plus } from "lucide-react";
+import { Input } from "./input";
+
+// Define dataTypeIds type
+export interface dataTypeIds {
+  value: string | number;
+  label: string;
+}
 
 interface SearchSelectProps {
   options: dataTypeIds[];
   value: string;
   onChange: (value: string) => void;
-  label: string;
+  label?: string;
   description?: string;
   error?: string;
   className?: string;
   width?: "auto" | "full";
   required?: boolean;
+  customizable?: boolean;
 }
+
 export default function SearchSelect({
-  options,
+  options: items,
   value,
   onChange,
-  label,
-  description,
-  error,
-  className,
+  label = "",
+  description = "",
+  error = "",
+  className = "",
   width = "auto",
-  required,
+  required = false,
+  customizable,
 }: SearchSelectProps) {
   const [open, setOpen] = useState(false);
+  const [customValue, setCustomValue] = useState({ value: "", label: "" });
+  const [isAddingCustom, setIsAddingCustom] = useState(false);
+  const [options, setOptions] = useState<dataTypeIds[]>(items || []);
 
-  // Normalize value and options for comparison
+  // Normalize options for consistent types
   const normalizedOptions = options.map((option) => ({
     ...option,
     value: String(option.value),
@@ -53,6 +67,20 @@ export default function SearchSelect({
   const selectedOption = normalizedOptions.find(
     (option) => option.value === normalizedValue
   );
+
+  const handleAddCustom = () => {
+    if (customValue.value.trim() && customValue.label.trim()) {
+      const newOption = { ...customValue };
+      setOptions([...options, newOption]);
+      onChange(newOption.value);
+      setCustomValue({ value: "", label: "" });
+      setIsAddingCustom(false);
+    }
+  };
+
+  const onChangeCustomAddInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomValue({ ...customValue, value: e.target.value, label: e.target.value });
+  };
 
   return (
     <div className={cn("space-y-1 pt-1", className)}>
@@ -79,7 +107,9 @@ export default function SearchSelect({
             )}
           >
             <span className="line-clamp-1 text-left text-xs text-muted-foreground">
-              {selectedOption ? selectedOption.label : `Select ${label.toLowerCase()}...`}
+              {selectedOption
+                ? selectedOption.label
+                : `Select ${label.toLowerCase()}...`}
             </span>
             <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -123,6 +153,35 @@ export default function SearchSelect({
                   </CommandItem>
                 ))}
               </CommandGroup>
+              {customizable && (
+                <>
+                  <CommandSeparator />
+                  <CommandGroup>
+                    {!isAddingCustom ? (
+                      <CommandItem onSelect={() => setIsAddingCustom(true)}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add custom option
+                      </CommandItem>
+                    ) : (
+                      <div className="flex items-center gap-2 p-2">
+                        <Input
+                          value={customValue.value}
+                          onChange={onChangeCustomAddInput}
+                          placeholder="Enter custom value..."
+                          className="h-8"
+                        />
+                        <Button
+                          size="sm"
+                          onClick={handleAddCustom}
+                          disabled={!customValue.value.trim()}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    )}
+                  </CommandGroup>
+                </>
+              )}
             </CommandList>
           </Command>
         </PopoverContent>

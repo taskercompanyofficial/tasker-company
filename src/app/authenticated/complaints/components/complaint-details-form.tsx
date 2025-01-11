@@ -22,9 +22,7 @@ export default function ComplaintDetailsForm({
   const { data: branchesData, isLoading: branchesLoading } = useFetch<
     dataTypeIds[]
   >(`${API_URL}/crm/fetch-branches`);
-  const { data: brandsData, isLoading: brandsLoading } = useFetch<
-    dataTypeIds[]
-  >(`${API_URL}/crm/fetch-authorized-brands`);
+
 
   return (
     <div className="space-y-6 rounded-lg bg-white p-4 shadow-sm dark:bg-slate-900">
@@ -61,6 +59,13 @@ export default function ComplaintDetailsForm({
           className="transition-all duration-200 hover:shadow-md"
         />
         <LabelInputContainer
+          label="Model Number"
+          placeholder="Model Number"
+          onChange={(e) => setData({ ...data, model: e.target.value })}
+          value={data.model}
+          className="transition-all duration-200 hover:shadow-md"
+        />
+        <LabelInputContainer
           label="Extra Number"
           placeholder="Extra Number"
           onChange={(e) => setData({ ...data, extra_numbers: e.target.value })}
@@ -89,13 +94,6 @@ export default function ComplaintDetailsForm({
           value={data.mq_nmb}
           className="transition-all duration-200 hover:shadow-md"
         />
-        <LabelInputContainer
-          label="Amount"
-          placeholder="Amount"
-          onChange={(e) => setData({ ...data, amount: e.target.value })}
-          value={data.amount}
-          className="transition-all duration-200 hover:shadow-md"
-        />
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -105,22 +103,6 @@ export default function ComplaintDetailsForm({
             label="Branch"
             value={data.branch_id}
             onChange={(e) => setData({ ...data, branch_id: e })}
-            width="full"
-            className="transition-all duration-200 hover:shadow-md"
-          />
-        ) : (
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-12 w-full" />
-          </div>
-        )}
-
-        {!brandsLoading && brandsData ? (
-          <SearchSelect
-            options={brandsData}
-            label="Brand"
-            value={data.brand_id}
-            onChange={(e) => setData({ ...data, brand_id: e })}
             width="full"
             className="transition-all duration-200 hover:shadow-md"
           />
@@ -146,6 +128,13 @@ export default function ComplaintDetailsForm({
             <Skeleton className="h-12 w-full" />
           </div>
         )}
+        <LabelInputContainer
+          label="Amount"
+          placeholder="Amount"
+          onChange={(e) => setData({ ...data, amount: e.target.value })}
+          value={data.amount}
+          className="transition-all duration-200 hover:shadow-md"
+        />
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

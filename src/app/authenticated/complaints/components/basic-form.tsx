@@ -3,6 +3,11 @@ import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { TextareaInput } from "@/components/TextareaInput";
 import { complaintTypeOptions } from "@/lib/otpions";
 import { SelectInput } from "@/components/SelectInput";
+import { Skeleton } from "@/components/ui/skeleton";
+import { dataTypeIds } from "@/types";
+import { API_URL } from "@/lib/apiEndPoints";
+import useFetch from "@/hooks/usefetch";
+import SearchSelect from "@/components/ui/search-select";
 
 export default function BasicForm({
   data,
@@ -13,6 +18,9 @@ export default function BasicForm({
   setData: (data: any) => void;
   errors: any;
 }) {
+  const { data: brandsData, isLoading: brandsLoading } = useFetch<
+    dataTypeIds[]
+  >(`${API_URL}/crm/fetch-authorized-brands`);
   return (
     <div>
       <div className="w-full space-y-2">
@@ -103,15 +111,32 @@ export default function BasicForm({
             onChange={(e) => setData({ ...data, product: e.target.value })}
             value={data.product}
           />
-          <SelectInput
-            label="Complaint Type"
-            placeholder="Complaint Type"
-            options={complaintTypeOptions}
-            onChange={(value) => setData({ ...data, complaint_type: value })}
-            selected={data.complaint_type}
-          />
-        </div>
+          {!brandsLoading && brandsData ? (
+            <SearchSelect
+              options={brandsData}
+              label="Brand"
+              value={data.brand_id}
+              onChange={(e) => setData({ ...data, brand_id: e })}
+              width="full"
+              className="transition-all duration-200 hover:shadow-md"
+              customizable
+            />
+          ) : (
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          )}
 
+
+        </div>
+        <SelectInput
+          label="Complaint Type"
+          placeholder="Complaint Type"
+          options={complaintTypeOptions}
+          onChange={(value) => setData({ ...data, complaint_type: value })}
+          selected={data.complaint_type}
+        />
         <TextareaInput
           label="Address"
           placeholder="Enter applicant address..."

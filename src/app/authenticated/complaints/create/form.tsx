@@ -7,7 +7,7 @@ import SubmitBtn from "@/components/ui/submit-button";
 import { SelectInput } from "@/components/SelectInput";
 import { ComplaintStatusOptions } from "@/lib/otpions";
 import { Undo2, Redo2, Info } from "lucide-react";
-import { API_URL, COMPLAINTS } from "@/lib/apiEndPoints";
+import { COMPLAINTS } from "@/lib/apiEndPoints";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,7 @@ export default function Form() {
     brand_complaint_no: "",
     applicant_phone: "",
     applicant_whatsapp: "",
+    brand_id: "",
     extra_numbers: "",
     reference_by: "",
     product: "",

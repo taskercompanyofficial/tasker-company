@@ -1,9 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown } from 'lucide-react'
-
-import { cn } from "@/lib/utils"
+import { Check, ChevronsUpDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -11,13 +9,16 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandSeparator,
 } from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
+import { Label } from "./ui/label"
 
 interface Item {
   value: string
@@ -30,6 +31,7 @@ interface SearchSelectProps {
   placeholder?: string
   description?: string
   onChange: (value: string) => void
+  customizable?: boolean// Add new prop for custom item handling
 }
 
 export function SearchSelect({
@@ -38,9 +40,12 @@ export function SearchSelect({
   placeholder = "Select an item",
   description,
   onChange,
+  customizable = true,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+  const [isAddingCustom, setIsAddingCustom] = React.useState(false)
+  const [customValue, setCustomValue] = React.useState("")
 
   const handleSelect = React.useCallback((currentValue: string) => {
     setValue(currentValue)
@@ -48,9 +53,16 @@ export function SearchSelect({
     setOpen(false)
   }, [onChange])
 
+  const handleAddCustom = () => {
+    if (customValue.trim()) {
+      setCustomValue("")
+      setIsAddingCustom(false)
+    }
+  }
+
   return (
     <div className="space-y-2">
-      <Label htmlFor={label}>{label}</Label>
+      <Label htmlFor={label}>{label}hjkkh</Label>
       {description && <p className="text-sm text-muted-foreground">{description}</p>}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -91,10 +103,38 @@ export function SearchSelect({
                 <CommandItem disabled>No items available</CommandItem>
               )}
             </CommandGroup>
+            {customizable && (
+              <>
+                <CommandSeparator />
+                <CommandGroup>
+                  {!isAddingCustom ? (
+                    <CommandItem onSelect={() => setIsAddingCustom(true)}>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add custom option
+                    </CommandItem>
+                  ) : (
+                    <div className="flex items-center gap-2 p-2">
+                      <Input
+                        value={customValue}
+                        onChange={(e) => setCustomValue(e.target.value)}
+                        placeholder="Enter custom value..."
+                        className="h-8"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={handleAddCustom}
+                        disabled={!customValue.trim()}
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  )}
+                </CommandGroup>
+              </>
+            )}
           </Command>
         </PopoverContent>
       </Popover>
     </div>
   )
 }
-
