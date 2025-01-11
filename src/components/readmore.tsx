@@ -1,13 +1,22 @@
 import { useState } from "react";
 
-const ReadMore: React.FC<{ text: string }> = ({ text }) => {
+interface ReadMoreProps {
+    text: string | undefined | null;
+    maxLength?: number;
+}
+
+const ReadMore: React.FC<ReadMoreProps> = ({ text, maxLength = 50 }) => {
     const [isReadMore, setIsReadMore] = useState(true);
     const toggleReadMore = () => setIsReadMore(!isReadMore);
 
+    if (!text) {
+        return null;
+    }
+
     return (
         <p className="text">
-            {isReadMore ? text.slice(0, 50) : text}
-            {text.length > 50 && (
+            {isReadMore ? text.slice(0, maxLength) : text}
+            {text.length > maxLength && (
                 <span
                     onClick={toggleReadMore}
                     className="cursor-pointer text-blue-600 hover:text-blue-800"
