@@ -38,6 +38,7 @@ export default function Form({
     setData: setformData,
     processing,
     post,
+    reset,
     errors,
   } = useForm({
     full_name: rowCurrent?.full_name || "",
@@ -80,6 +81,7 @@ export default function Form({
         onSuccess: (response) => {
           toast.success(response.message);
           router.refresh();
+          reset();
         },
         onError: (error) => {
           toast.error(error.message || "Something went wrong");
