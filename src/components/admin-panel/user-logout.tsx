@@ -41,6 +41,10 @@ export default function UserLogout({ token }: { token: string }) {
       .catch((err) => {
         toast.error("Something went wrong.Please try again!");
       });
+    signOut({
+      callbackUrl: "/login",
+      redirect: true,
+    });
   };
   return (
     <>
