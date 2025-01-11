@@ -39,6 +39,7 @@ export const warrantyTypeOptions = [
   { value: "delivery-challan", label: "Delivery Challan" },
   { value: "service-challan", label: "Service Challan" },
   { value: "defective-part", label: "Defective Part" },
+  { value: "defective-picture", label: "Defective Picture" },
   { value: "indoor", label: "Indoor" },
   { value: "outdoor", label: "Outdoor" },
   { value: "ind-sr", label: "Ind-SR" },
