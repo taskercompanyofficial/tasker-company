@@ -25,19 +25,17 @@ export default function UpdateComplaint({
         View
         <Eye />
       </Link>
-      {role !== "administrator" && status !== "closed" && (
-        <Link
-          href={`/authenticated/complaints/edit/${slug}`}
-          target="_blank"
-          className={`m-0 w-full py-1 ${buttonVariants({
-            variant: "ghost",
-            size: "sm",
-          })}`}
-        >
-          <Edit />
-          Update
-        </Link>
-      )}
+      <Link
+        href={`/authenticated/complaints/edit/${slug}`}
+        target="_blank"
+        className={`m-0 w-full py-1 ${buttonVariants({
+          variant: "ghost",
+          size: "sm",
+        })}`}
+      >
+        <Edit />
+        Update
+      </Link>
     </>
   );
 }
