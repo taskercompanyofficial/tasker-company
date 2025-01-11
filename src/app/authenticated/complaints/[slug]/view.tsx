@@ -217,7 +217,7 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
               <h3 className="text-xl font-semibold mb-6 text-primary">Attached Files</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {files.map((file: any, index: number) => {
-                  const isImage = file.document_path.match(/\.(jpg|jpeg|png|gif)$/i);
+                  const isImage = file.document_path.match(/\.(jpg|jpeg|png|gif|webp|svg|pdf)$/i);
                   return (
                     <Card 
                       key={index} 
