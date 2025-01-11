@@ -32,19 +32,7 @@ export default function Form({
     error: branchesError,
     isLoading: branchesLoading,
   } = useFetch<dataTypeIds[]>(`${API_URL}/crm/fetch-branches`);
-  const [citiesUrl, setCitiesUrl] = useState<string>(
-    `${API_URL}/crm/fetch-cities?country_id=167`,
-  );
-  const {
-    data: statesData,
-    error: statesError,
-    isLoading: statesLoading,
-  } = useFetch<dataTypeIds[]>(`${API_URL}/crm/fetch-states?country_id=167`);
-  const {
-    data: citiesData,
-    error: citiesError,
-    isLoading: citiesLoading,
-  } = useFetch<dataTypeIds[]>(citiesUrl);
+
   const token = session.data?.token || "";
   const {
     data: formData,
@@ -232,44 +220,26 @@ export default function Form({
                   <Skeleton className="h-10 w-full" />
                 </div>
               )}
-              {!statesLoading && statesData ? (
-                <SearchSelect
-                  options={statesData}
-                  label="State"
-                  value={formData.state}
-                  onChange={(e) => {
-                    setformData("state", e);
-                    setCitiesUrl(
-                      `${API_URL}/fetch-cities?country_id=167&state_id=${e}`,
-                    );
-                  }}
-                  className="mt-2"
-                  error={errors.state}
-                  width="full"required
-                />
-              ) : (
-                <div className="mt-2 space-y-1">
-                  <Skeleton className="h-3 w-[20%]" />
-                  <Skeleton className="h-10 w-full" />
-                </div>
-              )}
-              {!citiesLoading && citiesData ? (
-                <SearchSelect
-                  options={citiesData}
-                  label="City"
-                  value={formData.city}
-                  onChange={(e) => setformData("city", e)}
-                  className="mt-2"
-                  error={errors.city}
-                  width="full"
-                  required
-                />
-              ) : (
-                <div className="mt-2 space-y-1">
-                  <Skeleton className="h-3 w-[20%]" />
-                  <Skeleton className="h-10 w-full" />
-                </div>
-              )}
+              <LabelInputContainer
+                type="text"
+                id="state"
+                placeholder="Enter state"
+                label="State"
+                value={formData.state}
+                onChange={(e) => setformData("state", e.target.value)}
+                errorMessage={errors.state}
+                required
+              />
+              <LabelInputContainer
+                type="text"
+                id="city"
+                placeholder="Enter city"
+                label="City"
+                value={formData.city}
+                onChange={(e) => setformData("city", e.target.value)}
+                errorMessage={errors.city}
+                required
+              />
             </div>
 
             <div className="mt-4">
