@@ -28,6 +28,7 @@ import {
 
 import { exportTableToCSV } from "@/lib/export";
 import { Kbd } from "@/components/ui/kbd";
+import { ClipboardCopyIcon } from "lucide-react";
 
 interface TasksTableFloatingBarProps {
   table: any;
@@ -181,6 +182,26 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                 </TooltipTrigger>
                 <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
                   <p>Delete tasks</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip delayDuration={250}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="size-7 border"
+                    onClick={() => {
+                      const selectedData = rows.map((row: any) => row.original);
+                      navigator.clipboard.writeText(JSON.stringify(selectedData, null, 2));
+                      toast.success('Copied to clipboard');
+                    }}
+                    disabled={isPending}
+                  >
+                    <ClipboardCopyIcon className="size-3.5" aria-hidden="true" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
+                  <p>Copy to clipboard</p>
                 </TooltipContent>
               </Tooltip>
             </div>
