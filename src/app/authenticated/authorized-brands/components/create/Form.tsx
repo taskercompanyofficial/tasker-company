@@ -17,19 +17,26 @@ import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { FileUpload } from "@/components/file-upload";
 
-export default function Form() {
+export default function Form({
+  rowCurrent,
+  endPoint,
+}: {
+  rowCurrent: any;
+  endPoint?: string;
+}) {
   const session = useSession();
   const token = session.data?.user?.token || "";
-  const { data, setData, post, processing, errors, reset } = useForm({
-    name: "",
-    status: "",
+  const { data, setData, post, put, processing, errors, reset } = useForm({
+    name: rowCurrent.name || "",
+    status: rowCurrent.status || "",
     image: null as File | null,
   });
 
+  const method = endPoint ? put : post;
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
-    post(
-      API_URL + BRANDS,
+    method(
+      endPoint || API_URL + BRANDS,
       {
         onSuccess: (response) => {
           toast.success(response.message);
@@ -85,7 +92,7 @@ export default function Form() {
       </div>
       <SubmitBtn
         processing={processing}
-        label="Create new domain"
+        label={`${rowCurrent ? `Update ${rowCurrent.name}` : "Create new domain"}`}
         className="w-full"
       />
     </form>
