@@ -30,7 +30,7 @@ export default function WorkerDropDown({
     rowCurrent: WorkersType;
 }) {
     const session = useSession();
-    const token = session.data?.token || "";
+    const token = session.data?.user?.token || "";
     const [deleteOpen, setDeleteOpen] = useState(false);
     const { delete: destroy, processing } = useForm({});
     const endPoint = `${API_URL}${WORKERS}/${rowCurrent.id}`;

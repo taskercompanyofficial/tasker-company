@@ -16,7 +16,6 @@ import { getRoleOptions } from "@/lib/otpions";
 import useFetch from "@/hooks/usefetch";
 import SearchSelect from "@/components/ui/search-select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
 
 export default function Form({
   rowCurrent,
@@ -52,21 +51,21 @@ export default function Form({
     city: rowCurrent?.city || "",
     salary: rowCurrent?.salary || "",
     branch_id: rowCurrent?.branch_id || "",
-    cnic_front: null as File | null,
-    cnic_back: null as File | null,
-    account_maintanance_certificate: null as File | null,
-    blank_check: null as File | null,
+    cnic_front: rowCurrent?.cnic_front || null as File | null,
+    cnic_back: rowCurrent?.cnic_back || null as File | null,
+    account_maintenance_certificate:
+      rowCurrent?.account_maintenance_certificate || null as File | null,
+    blank_check: rowCurrent?.blank_check || null as File | null,
     reference_1_name: rowCurrent?.reference_1_name || "",
     reference_1_number: rowCurrent?.reference_1_number || "",
-    reference_1_cnic: null as File | null,
+    reference_1_cnic: rowCurrent?.reference_1_cnic || null as File | null,
     reference_2_name: rowCurrent?.reference_2_name || "",
     reference_2_number: rowCurrent?.reference_2_number || "",
-    reference_2_cnic: null as File | null,
-    profile_image: null as File | null,
+    reference_2_cnic: rowCurrent?.reference_2_cnic || null as File | null,
+    profile_image: rowCurrent?.profile_image || null as File | null,
     role: rowCurrent?.role || "",
-    status: rowCurrent?.status || "",
-    is_verified: rowCurrent?.is_verified || "",
-    notification: rowCurrent?.notification || "",
+    status: rowCurrent?.status || "active",
+    notification: rowCurrent?.notification || "both",
     has_crm_access: rowCurrent?.has_crm_access || "no",
   });
 

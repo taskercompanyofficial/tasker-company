@@ -7,7 +7,7 @@ export default function UpdateWorker({ id }: { id: string }) {
   return (
     <>
       <Link
-        href={`/workers/${id}`}
+        href={`/authenticated/workers/${id}`}
         target="_blank"
         className={`m-0 w-full space-x-4 py-1 ${buttonVariants({
           variant: "ghost",
@@ -18,7 +18,7 @@ export default function UpdateWorker({ id }: { id: string }) {
         <Eye />
       </Link>
       <Link
-        href={`/workers/edit/${id}`}
+        href={`/authenticated/workers/edit/${id}`}
         target="_blank"
         className={`m-0 w-full py-1 ${buttonVariants({
           variant: "ghost",
