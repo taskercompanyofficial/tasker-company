@@ -20,8 +20,8 @@ import {
   FileCheck,
   Download,
   Printer,
-  Link,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function ViewComplaint({ complaint }: { complaint: any }) {
   const files = complaint.files ? JSON.parse(complaint.files) : [];
