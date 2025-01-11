@@ -54,6 +54,44 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [table]);
 
+  const copyToClipboard = (rows: any) => {
+    const formattedText = rows.map((row: any) => {
+      const data = row.original;
+      return `
+**Complaint Details**
+------------------------
+Complaint Number: ${data.complain_num}
+Brand Complaint No: ${data.brand_complaint_no}
+
+**Applicant Information**
+------------------------
+Name: ${data.applicant_name}
+Phone: ${data.applicant_phone}
+Email: ${data.applicant_email || 'N/A'}
+WhatsApp: ${data.applicant_whatsapp || 'N/A'}
+Address: ${data.applicant_adress}
+
+**Service Details**
+------------------------
+Status: ${data.status}
+Complaint Type: ${data.complaint_type}
+Description: ${data.description}
+
+**Product Information**
+------------------------
+Product: ${data.product || 'N/A'}
+Model: ${data.model || 'N/A'}
+Serial Number: ${data.serial_number_ind || 'N/A'}
+
+------------------------
+Created: ${new Date(data.created_at).toLocaleDateString()}
+    `;
+    }).join('\n\n');
+
+    navigator.clipboard.writeText(formattedText);
+    toast.success('Formatted data copied to clipboard');
+  };
+
   return (
     <TooltipProvider>
       <div className="fixed inset-x-0 bottom-4 z-50 mx-auto w-fit px-4">
@@ -190,11 +228,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                     variant="secondary"
                     size="icon"
                     className="size-7 border"
-                    onClick={() => {
-                      const selectedData = rows.map((row: any) => row.original);
-                      navigator.clipboard.writeText(JSON.stringify(selectedData, null, 2));
-                      toast.success('Copied to clipboard');
-                    }}
+                    onClick={() => copyToClipboard(rows)}
                     disabled={isPending}
                   >
                     <ClipboardCopyIcon className="size-3.5" aria-hidden="true" />
