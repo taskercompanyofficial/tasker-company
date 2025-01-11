@@ -24,6 +24,7 @@ import {
   Printer,
 } from "lucide-react";
 import Link from "next/link";
+import myAxios from "@/lib/axios.config";
 
 export default function ViewComplaint({ complaint }: { complaint: any }) {
   const files = complaint.files ? JSON.parse(complaint.files) : [];
@@ -69,9 +70,10 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
     await Promise.all(
       files.map(async (file: any) => {
         try {
-          const response = await fetch(getImageUrl(file.document_path));
-          if (!response.ok) throw new Error("File fetch failed");
-          const blob = await response.blob();
+          const response = await myAxios.get(getImageUrl(file.document_path));
+
+          if (response.status !== 200) throw new Error("File fetch failed");
+          const blob = await response.data;
           folder.file(file.file_name || "file", blob);
         } catch (error) {
           console.error(`Error downloading file: ${file.document_path}`, error);
