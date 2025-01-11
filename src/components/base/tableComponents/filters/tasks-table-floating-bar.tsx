@@ -58,32 +58,32 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
     const formattedText = rows.map((row: any) => {
       const data = row.original;
       return `
-**Complaint Details**
+*Complaint Details*
 ------------------------
-Complaint Number: ${data.complain_num}
-Brand Complaint No: ${data.brand_complaint_no}
+*Complaint Number*: ${data.complain_num}
+*Brand Complaint No*: ${data.brand_complaint_no}
 
-**Applicant Information**
-------------------------
-Name: ${data.applicant_name}
-Phone: ${data.applicant_phone}
-Email: ${data.applicant_email || 'N/A'}
-WhatsApp: ${data.applicant_whatsapp || 'N/A'}
-Address: ${data.applicant_adress}
+*Applicant Information*
+          ------------------------
+*Name*: ${data.applicant_name}
+*Phone*: ${data.applicant_phone}
+*Email*: ${data.applicant_email || 'N/A'}
+*WhatsApp*: ${data.applicant_whatsapp || 'N/A'}
+*Address*: ${data.applicant_adress}
 
-**Service Details**
-------------------------
-Status: ${data.status}
-Complaint Type: ${data.complaint_type}
-Description: ${data.description}
+*Service Details*
+          ------------------------
+*Status*: ${data.status}
+*Complaint Type*: ${data.complaint_type}
+*Description:* ${data.description}
 
-**Product Information**
-------------------------
-Product: ${data.product || 'N/A'}
-Model: ${data.model || 'N/A'}
-Serial Number: ${data.serial_number_ind || 'N/A'}
+*Product Information*
+          ------------------------
+*Product*: ${data.product || 'N/A'}
+*Model*: ${data.model || 'N/A'}
+*Serial Number*: ${data.serial_number_ind || 'N/A'}
 
-------------------------
+          ------------------------
 Created: ${new Date(data.created_at).toLocaleDateString()}
     `;
     }).join('\n\n');
