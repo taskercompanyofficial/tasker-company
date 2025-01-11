@@ -31,15 +31,15 @@ export default function Form({
     data: branchesData,
     error: branchesError,
     isLoading: branchesLoading,
-  } = useFetch<dataTypeIds[]>(`${API_URL}/fetch-branches`);
+  } = useFetch<dataTypeIds[]>(`${API_URL}/crm/fetch-branches`);
   const [citiesUrl, setCitiesUrl] = useState<string>(
-    `${API_URL}/fetch-cities?country_id=167`,
+    `${API_URL}/crm/fetch-cities?country_id=167`,
   );
   const {
     data: statesData,
     error: statesError,
     isLoading: statesLoading,
-  } = useFetch<dataTypeIds[]>(`${API_URL}/fetch-states?country_id=167`);
+  } = useFetch<dataTypeIds[]>(`${API_URL}/crm/fetch-states?country_id=167`);
   const {
     data: citiesData,
     error: citiesError,
