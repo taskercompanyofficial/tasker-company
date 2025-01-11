@@ -25,7 +25,6 @@ export default function UpdateComplaint({
         View
         <Eye />
       </Link>
-      {role === "administrator" && status !== "closed" && (
         <Link
           href={`/authenticated/complaints/edit/${slug}`}
           target="_blank"
@@ -37,7 +36,6 @@ export default function UpdateComplaint({
           <Edit />
           Update
         </Link>
-      )}
     </>
   );
 }
