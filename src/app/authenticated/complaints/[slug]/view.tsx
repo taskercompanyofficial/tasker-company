@@ -20,36 +20,12 @@ import {
   FileCheck,
   Download,
   Printer,
+  Link,
 } from "lucide-react";
-import Link from "next/link";
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
+
 export default function ViewComplaint({ complaint }: { complaint: any }) {
   const files = complaint.files ? JSON.parse(complaint.files) : [];
 
-  const downloadAllFiles = async () => {
-    if (files.length === 0) return;
-
-    const zip = new JSZip();
-    const folder = zip.folder(`Complaint-${complaint.complain_num}`);
-    if (!folder) return;
-
-    await Promise.all(
-      files.map(async (file: any) => {
-        try {
-          const response = await fetch(getImageUrl(file.document_path));
-          if (!response.ok) throw new Error("File fetch failed");
-          const blob = await response.blob();
-          folder.file(file.file_name || "file", blob);
-        } catch (error) {
-          console.error(`Error downloading file: ${file.document_path}`, error);
-        }
-      }),
-    );
-
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-    saveAs(zipBlob, `Complaint-${complaint.complain_num}.zip`);
-  };
   const exportToExcel = () => {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet([
@@ -96,14 +72,6 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
               </Badge>
             </div>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={downloadAllFiles}
-                className="flex items-center gap-2"
-              >
-                <Download className="h-4 w-4" />
-                Download All Files
-              </Button>
               <Button
                 variant="outline"
                 onClick={exportToExcel}
@@ -297,46 +265,63 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
           </Card>
         </div>
 
+        {/* Files Section with Improved Gallery */}
         {files.length > 0 && (
-          <div>
-            <h3 className="mb-6 text-xl font-semibold text-primary">
-              Attached Files
-            </h3>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {files.map((file: any, index: number) => {
-                const isImage = file.document_path.match(
-                  /\.(jpg|jpeg|png|gif)$/i,
-                );
-                return (
-                  <Card key={index} className="group overflow-hidden">
-                    <Link
-                      href={getImageUrl(file.document_path)}
-                      target="_blank"
+          <>
+            <Separator className="my-8" />
+            <div>
+              <h3 className="mb-6 text-xl font-semibold text-primary">
+                Attached Files
+              </h3>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {files.map((file: any, index: number) => {
+                  const isImage = file.document_path.match(
+                    /\.(jpg|jpeg|png|gif)$/i,
+                  );
+                  return (
+                    <Card
+                      key={index}
+                      className="group overflow-hidden rounded-lg transition-shadow hover:shadow-xl"
                     >
-                      {isImage ? (
-                        <Image
-                          src={getImageUrl(file.document_path)}
-                          alt={file.document_type}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="flex items-center gap-4 p-4">
-                          <FileText className="h-8 w-8 text-primary" />
-                          <div>
-                            <p className="text-sm font-medium">
-                              {file.document_type}
-                            </p>
-                            <p className="truncate">{file.file_name}</p>
+                      <Link
+                        href={getImageUrl(file.document_path)}
+                        target="_blank"
+                      >
+                        {isImage ? (
+                          <div className="relative h-48 w-full overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
+                            <Image
+                              src={getImageUrl(file.document_path)}
+                              alt={file.document_type}
+                              layout="fill"
+                              objectFit="cover"
+                              className="transition-opacity group-hover:opacity-80"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                              <p className="text-sm font-medium text-white">
+                                {file.document_type}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Link>
-                  </Card>
-                );
-              })}
+                        ) : (
+                          <div className="flex items-center gap-4 p-4 transition-colors group-hover:bg-muted/50">
+                            <FileText className="h-8 w-8 text-primary" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">
+                                {file.document_type}
+                              </p>
+                              <p className="max-w-[200px] truncate font-medium">
+                                {file.file_name}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </Link>
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </Card>
     </div>
