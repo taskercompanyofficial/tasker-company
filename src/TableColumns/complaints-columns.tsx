@@ -7,6 +7,7 @@ import { DataTableColumnHeader } from "@/components/base/tableComponents/data-ta
 import Status from "@/components/base/tableComponents/status";
 import { ComplaintsDropdown } from "@/TableDropdowns/complaints-dropdown"; // Changed to named import
 import Link from "next/link";
+import { Textarea } from "@/components/ui/textarea";
 
 export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
   {
@@ -115,6 +116,129 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
       const status = String(row.getValue("status"));
       return <Status status={status} />;
     },
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Description" />
+    ),
+  },
+  {
+    accessorKey: "brand_id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Brand ID" />
+    ),
+  },
+  {
+    accessorKey: "branch_id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Branch ID" />
+    ),
+  },
+  {
+    accessorKey: "extra_numbers",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Extra Numbers" />
+    ),
+  },
+  {
+    accessorKey: "reference_by",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Reference By" />
+    ),
+  },
+  {
+    accessorKey: "company_complaint_no",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Company Complaint No" />
+    ),
+  },
+  {
+    accessorKey: "product",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Product" />
+    ),
+  },
+  {
+    accessorKey: "model",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Model" />
+    ),
+  },
+  {
+    accessorKey: "serial_number_ind",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Serial Number (IND)" />
+    ),
+  },
+  {
+    accessorKey: "serial_number_oud",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Serial Number (OUD)" />
+    ),
+  },
+  {
+    accessorKey: "mq_nmb",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="MQ Number" />
+    ),
+  },
+  {
+    accessorKey: "product_type",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Product Type" />
+    ),
+  },
+  {
+    accessorKey: "p_date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Purchase Date" />
+    ),
+    cell: ({ cell }) => formatDate(cell.getValue() as Date),
+  },
+  {
+    accessorKey: "amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Amount" />
+    ),
+  },
+  {
+    accessorKey: "complaint_type",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Complaint Type" />
+    ),
+  },
+  {
+    accessorKey: "provided_services",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Provided Services" />
+    ),
+  },
+  {
+    accessorKey: "warranty_type",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Warranty Type" />
+    ),
+  },
+  {
+    accessorKey: "extra_note",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Extra Note" />
+    ),
+    cell: ({ row }) => {
+      const extra_note = row.getValue("extra_note") as string;
+      return <Textarea rows={2} disabled>{extra_note}</Textarea>;
+    }
+  },
+  {
+    accessorKey: "happy_call_remarks",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Happy Call Remarks" />
+    ),
+    cell: ({ row }) => {
+      const happy_call_remarks = row.getValue("happy_call_remarks") as string;
+      return <Textarea rows={2} disabled>{happy_call_remarks}</Textarea>;
+    }
   },
   {
     id: "actions",

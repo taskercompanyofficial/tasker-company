@@ -118,11 +118,11 @@ export default function BasicForm({
               value={data.brand_id}
               onChange={(e) => setData({ ...data, brand_id: e })}
               width="full"
-              className="transition-all duration-200 hover:shadow-md"
+              className="transition-all duration-200 hover:shadow-md mt-1"
               customizable
             />
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-2 mt-1">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-12 w-full" />
             </div>

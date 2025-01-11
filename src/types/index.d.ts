@@ -179,7 +179,6 @@ export type ComplaintsType = {
   applicant_whatsapp: string;
   applicant_adress: string;
   complain_num: string;
-  complaint_heading: string;
   description: string;
   brand_id: string;
   branch_id: string;
