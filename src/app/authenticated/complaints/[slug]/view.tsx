@@ -217,7 +217,7 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
               <h3 className="text-xl font-semibold mb-6 text-primary">Attached Files</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {files.map((file: any, index: number) => {
-                  const isImage = file.file_name.match(/\.(jpg|jpeg|png|gif)$/i);
+                  const isImage = file.document_path.match(/\.(jpg|jpeg|png|gif)$/i);
                   return (
                     <Card 
                       key={index} 
@@ -226,7 +226,7 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
                       {isImage ? (
                         <div className="relative aspect-video group-hover:scale-105 transition-transform duration-300">
                           <Image
-                            src={getImageUrl(file.file_name)}
+                            src={getImageUrl(file.document_path)}
                             alt={file.document_type}
                             fill
                             className="object-cover"
