@@ -33,7 +33,7 @@ export default function Form({
     isLoading: branchesLoading,
   } = useFetch<dataTypeIds[]>(`${API_URL}/crm/fetch-branches`);
 
-  const token = session.data?.token || "";
+  const token = session.data?.user?.token || "";
   const {
     data: formData,
     setData: setformData,
@@ -67,19 +67,13 @@ export default function Form({
     status: rowCurrent?.status || "",
     is_verified: rowCurrent?.is_verified || "",
     notification: rowCurrent?.notification || "",
+    has_crm_access: rowCurrent?.has_crm_access || "no",
   });
 
   const path = endPoint || API_URL + WORKERS;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null) {
-        formDataToSend.append(key, value);
-      }
-    });
 
     post(
       path,
@@ -405,14 +399,14 @@ export default function Form({
                 errorMessage={errors.status}
               />
               <SelectInput
-                label="Is Verified"
+                label="Has CRM Access"
                 options={[
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
                 ]}
-                onChange={(e) => setformData("is_verified", e)}
-                selected={formData.is_verified}
-                errorMessage={errors.is_verified}
+                onChange={(e) => setformData("has_crm_access", e)}
+                selected={formData.has_crm_access}
+                errorMessage={errors.has_crm_access}
               />
               <SelectInput
                 label="Notification"

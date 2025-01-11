@@ -27,6 +27,8 @@ export interface User {
   token: string;
 }
 export type workersType = {
+  id: string;
+  username: string;
   full_name: string;
   father_name: string;
   contact_email: string;
@@ -53,6 +55,7 @@ export type workersType = {
   status: string;
   is_verified: string;
   notification: string;
+  has_crm_access: string;
 };
 export type BranchesType = {
   id: string;
