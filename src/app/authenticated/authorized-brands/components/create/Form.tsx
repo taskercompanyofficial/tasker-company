@@ -21,14 +21,14 @@ export default function Form({
   rowCurrent,
   endPoint,
 }: {
-  rowCurrent: any;
+  rowCurrent?: any;
   endPoint?: string;
 }) {
   const session = useSession();
   const token = session.data?.user?.token || "";
   const { data, setData, post, put, processing, errors, reset } = useForm({
-    name: rowCurrent.name || "",
-    status: rowCurrent.status || "",
+    name: rowCurrent?.name || "",
+    status: rowCurrent?.status || "",
     image: null as File | null,
   });
 
