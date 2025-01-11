@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import {
   MapPin,
   Phone,
@@ -57,6 +59,29 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
     window.print();
   };
 
+  const downloadAllFiles = async () => {
+    if (files.length === 0) return;
+
+    const zip = new JSZip();
+    const folder = zip.folder(`Complaint-${complaint.complain_num}`);
+    if (!folder) return;
+
+    await Promise.all(
+      files.map(async (file: any) => {
+        try {
+          const response = await fetch(getImageUrl(file.document_path));
+          if (!response.ok) throw new Error("File fetch failed");
+          const blob = await response.blob();
+          folder.file(file.file_name || "file", blob);
+        } catch (error) {
+          console.error(`Error downloading file: ${file.document_path}`, error);
+        }
+      }),
+    );
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    saveAs(zipBlob, `Complaint-${complaint.complain_num}.zip`);
+  };
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4">
       <Card className="p-6 shadow-lg">
@@ -72,6 +97,14 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
               </Badge>
             </div>
             <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={downloadAllFiles}
+                className="flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download All Files
+              </Button>
               <Button
                 variant="outline"
                 onClick={exportToExcel}
