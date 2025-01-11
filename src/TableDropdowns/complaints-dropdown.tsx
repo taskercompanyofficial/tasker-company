@@ -24,7 +24,6 @@ import SubmitBtn from "@/components/ui/submit-button";
 import { useSession } from "next-auth/react";
 import { ComplaintsType } from "@/types";
 import UpdateComplaint from "@/app/authenticated/complaints/edit/update";
-import { useRouter } from "next/navigation";
 export function ComplaintsDropdown({
   rowCurrent,
 }: {
@@ -62,7 +61,11 @@ export function ComplaintsDropdown({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="max-w-10">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <UpdateComplaint slug={rowCurrent.id} />
+            <UpdateComplaint
+              slug={rowCurrent.id}
+              role={session.data?.user?.role || ""}
+              status={rowCurrent.status}
+            />
             <Button
               variant="ghost"
               size="sm"

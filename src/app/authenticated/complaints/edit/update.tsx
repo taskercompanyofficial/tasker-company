@@ -3,7 +3,15 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
-export default function UpdateComplaint({ slug }: { slug: number   }) {
+export default function UpdateComplaint({
+  slug,
+  role,
+  status,
+}: {
+  slug: number;
+  role: string;
+  status: string;
+}) {
   return (
     <>
       <Link
@@ -17,17 +25,19 @@ export default function UpdateComplaint({ slug }: { slug: number   }) {
         View
         <Eye />
       </Link>
-      <Link
-        href={`/authenticated/complaints/edit/${slug}`}
-        target="_blank"
-        className={`m-0 w-full py-1 ${buttonVariants({
-          variant: "ghost",
-          size: "sm",
-        })}`}
-      >
-        <Edit />
-        Update
-      </Link>
+      {role !== "administrator" && status !== "closed" && (
+        <Link
+          href={`/authenticated/complaints/edit/${slug}`}
+          target="_blank"
+          className={`m-0 w-full py-1 ${buttonVariants({
+            variant: "ghost",
+            size: "sm",
+          })}`}
+        >
+          <Edit />
+          Update
+        </Link>
+      )}
     </>
   );
 }
