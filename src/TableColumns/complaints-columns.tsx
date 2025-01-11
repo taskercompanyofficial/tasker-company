@@ -8,6 +8,7 @@ import Status from "@/components/base/tableComponents/status";
 import { ComplaintsDropdown } from "@/TableDropdowns/complaints-dropdown"; // Changed to named import
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
+import ReadMore from "@/components/readmore";
 
 export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
   {
@@ -92,47 +93,31 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Applicant Address" />
     ),
-  },
-  {
-    accessorKey: "created_at",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created At" />
-    ),
-    cell: ({ cell }) => formatDate(cell.getValue() as Date),
-  },
-  {
-    accessorKey: "updated_at",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Updated At" />
-    ),
-    cell: ({ cell }) => formatDate(cell.getValue() as Date),
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
     cell: ({ row }) => {
-      const status = String(row.getValue("status"));
-      return <Status status={status} />;
-    },
+      const applicant_adress = row.getValue("applicant_adress") as string;
+      return <ReadMore text={applicant_adress} />;
+    }
   },
   {
     accessorKey: "description",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Description" />
     ),
+    cell: ({ row }) => {
+      const description = row.getValue("description") as string;
+      return <ReadMore text={description} />;
+    }
   },
   {
     accessorKey: "brand_id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Brand ID" />
+      <DataTableColumnHeader column={column} title="Brand" />
     ),
   },
   {
     accessorKey: "branch_id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch ID" />
+      <DataTableColumnHeader column={column} title="Branch" />
     ),
   },
   {
@@ -145,12 +130,6 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     accessorKey: "reference_by",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Reference By" />
-    ),
-  },
-  {
-    accessorKey: "company_complaint_no",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Company Complaint No" />
     ),
   },
   {
@@ -227,7 +206,7 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     ),
     cell: ({ row }) => {
       const extra_note = row.getValue("extra_note") as string;
-      return <Textarea rows={2} disabled>{extra_note}</Textarea>;
+      return <ReadMore text={extra_note} />;
     }
   },
   {
@@ -237,8 +216,31 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     ),
     cell: ({ row }) => {
       const happy_call_remarks = row.getValue("happy_call_remarks") as string;
-      return <Textarea rows={2} disabled>{happy_call_remarks}</Textarea>;
+      return <ReadMore text={happy_call_remarks} />;
     }
+  }, {
+    accessorKey: "created_at",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    cell: ({ cell }) => formatDate(cell.getValue() as Date),
+  },
+  {
+    accessorKey: "updated_at",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Updated At" />
+    ),
+    cell: ({ cell }) => formatDate(cell.getValue() as Date),
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = String(row.getValue("status"));
+      return <Status status={status} />;
+    },
   },
   {
     id: "actions",
