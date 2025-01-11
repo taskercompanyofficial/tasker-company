@@ -12,8 +12,13 @@ import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { User } from "@/types";
 import { SidebarTrigger } from "../ui/sidebar";
-import Notification from "./notification";
+import { useRef } from "react";
+
 export default async function Navbar({ user }: { user: User | null }) {
+  const spin = useRef(false);
+  const handleSpin = () => {
+    spin.current = !spin.current;
+  };
   return (
     <header className="w-full border-b bg-white dark:bg-gray-800">
       <div className="mx-4 flex h-14 items-center justify-between sm:mx-4">
@@ -26,8 +31,10 @@ export default async function Navbar({ user }: { user: User | null }) {
               <TooltipProvider disableHoverableContent>
                 <Tooltip delayDuration={100}>
                   <TooltipTrigger asChild>
-                    <button type="submit">
-                      <MdChangeCircle className="h-6 w-6" />
+                    <button type="submit" onClick={handleSpin}>
+                      <MdChangeCircle
+                        className={`h-6 w-6 ${spin.current ? "animate-spin" : ""}`}
+                      />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom">
