@@ -63,8 +63,8 @@ export default function ComplaintDetailsForm({
         <LabelInputContainer
           label="Extra Number"
           placeholder="Extra Number"
-          onChange={(e) => setData({ ...data, extra: e.target.value })}
-          value={data.extra}
+          onChange={(e) => setData({ ...data, extra_numbers: e.target.value })}
+          value={data.extra_numbers}
           className="transition-all duration-200 hover:shadow-md"
         />
         <LabelInputContainer
@@ -152,8 +152,8 @@ export default function ComplaintDetailsForm({
         <TextareaInput
           label="Extra Details"
           placeholder="Enter any additional details..."
-          onChange={(e) => setData({ ...data, extra: e.target.value })}
-          value={data.extra}
+          onChange={(e) => setData({ ...data, extra_note: e.target.value })}
+          value={data.extra_note}
           className="min-h-[120px] transition-all duration-200 hover:shadow-md"
         />
         <TextareaInput
