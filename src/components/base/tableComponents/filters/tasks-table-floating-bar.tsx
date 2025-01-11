@@ -71,17 +71,19 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 *WhatsApp*: ${data.applicant_whatsapp || 'N/A'}
 *Address*: ${data.applicant_adress}
 
+*Product Information*
+          ------------------------
+*Product*: ${data.product || 'N/A'}
+*Model*: ${data.model || 'N/A'}
+*Serial Number*: ${data.serial_number_ind || 'N/A'}
+
 *Service Details*
           ------------------------
 *Status*: ${data.status}
 *Complaint Type*: ${data.complaint_type}
 *Description:* ${data.description}
 
-*Product Information*
-          ------------------------
-*Product*: ${data.product || 'N/A'}
-*Model*: ${data.model || 'N/A'}
-*Serial Number*: ${data.serial_number_ind || 'N/A'}
+
 
           ------------------------
 Created: ${new Date(data.created_at).toLocaleDateString()}
