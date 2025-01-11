@@ -9,7 +9,7 @@ interface ReadMoreProps {
 const ReadMore: React.FC<ReadMoreProps> = ({ 
     text, 
     maxLength = 50,
-    charsPerLine = 60 
+    charsPerLine = 100 
 }) => {
     const [isReadMore, setIsReadMore] = useState(true);
     const toggleReadMore = () => setIsReadMore(!isReadMore);
