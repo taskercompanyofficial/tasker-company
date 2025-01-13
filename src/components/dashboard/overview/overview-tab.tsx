@@ -26,32 +26,35 @@ export default async function OverviewTab() {
           <OtherStatusComplaints data={complaintStatusForBar.data} />
         </div>
       </div>
-      <Suspense fallback={<DataTableSkeleton
-        columnCount={7}
-        searchableColumnCount={1}
-        filterableColumnCount={2}
-        cellWidths={[
-          "4rem",
-          "10rem",
-          "40rem",
-          "12rem",
-          "12rem",
-          "8rem",
-          "3rem",
-        ]}
-        shrinkZero
-      />}>
-        {response.data.data ? (
-          <Table data={response.data} endPoint={EndPoint} />
-        ) : (
-          <div className="flex min-h-72 w-full flex-col items-center justify-center rounded border border-gray-200 bg-white px-2 py-4 text-gray-100 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600">
-            <div className="text-[70px]">
-              <LuServerCrash />
+      <div className="shadow-lg p-2 bg-white">
+
+        <Suspense fallback={<DataTableSkeleton
+          columnCount={7}
+          searchableColumnCount={1}
+          filterableColumnCount={2}
+          cellWidths={[
+            "4rem",
+            "10rem",
+            "40rem",
+            "12rem",
+            "12rem",
+            "8rem",
+            "3rem",
+          ]}
+          shrinkZero
+        />}>
+          {response.data.data ? (
+            <Table data={response.data} endPoint={EndPoint} />
+          ) : (
+            <div className="flex min-h-72 w-full flex-col items-center justify-center rounded border border-gray-200 bg-white px-2 py-4 text-gray-100 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600">
+              <div className="text-[70px]">
+                <LuServerCrash />
+              </div>
+              <div>Something went wrong please try to refresh the page.</div>
             </div>
-            <div>Something went wrong please try to refresh the page.</div>
-          </div>
-        )}
-      </Suspense>
+          )}
+        </Suspense>
+      </div>
     </div>
   );
 }
