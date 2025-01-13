@@ -56,7 +56,7 @@ const SelectInput: React.FC<SelectInputProps> = ({ options, label, param }) => {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full overflow-hidden border-dashed md:max-w-[150px]"
+          className="w-full overflow-hidden border-dashed md:max-w-[150px] h-8"
         >
           {filterValue ? (
             <>

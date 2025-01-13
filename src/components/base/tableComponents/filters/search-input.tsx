@@ -53,7 +53,7 @@ export default function SearchInput() {
         placeholder="Search..."
         onChange={handleSearch}
         value={searchValue}
-        className="w-full rounded bg-background"
+        className="w-full rounded bg-background "
       />
     </div>
   );

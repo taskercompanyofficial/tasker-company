@@ -45,7 +45,7 @@ export const LabelInputContainer: React.FC<EnhancedInputProps> = ({
             {disabled && <Lock className="mt-1 h-4 w-4" />}
           </div>
         )}
-        <Input
+        <Input 
           type={inputType}
           className={`${icon ? "pl-10" : ""} ${errorMessage ? "border-red-500" : ""} placeholder:text-xs placeholder:font-mono`}
           placeholder={type === "password" ? "********" : props.placeholder}
