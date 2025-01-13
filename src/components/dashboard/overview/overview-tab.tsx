@@ -26,7 +26,7 @@ export default async function OverviewTab() {
           <OtherStatusComplaints data={complaintStatusForBar.data} />
         </div>
       </div>
-      <div className="shadow-lg p-2 bg-white">
+      <div className="shadow-lg p-2 bg-white rounded dark:bg-gray-900 dark:text-gray-100">
 
         <Suspense fallback={<DataTableSkeleton
           columnCount={7}
