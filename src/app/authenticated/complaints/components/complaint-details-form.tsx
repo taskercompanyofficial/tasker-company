@@ -139,10 +139,10 @@ export default function ComplaintDetailsForm({
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <TextareaInput
-          label="Extra Details"
+          label="Working Details"
           placeholder="Enter any additional details..."
-          onChange={(e) => setData({ ...data, extra_note: e.target.value })}
-          value={data.extra_note}
+          onChange={(e) => setData({ ...data, working_details: e.target.value })}
+          value={data.working_details}
           className="min-h-[120px] transition-all duration-200 hover:shadow-md"
         />
         <TextareaInput

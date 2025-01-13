@@ -45,7 +45,7 @@ export default function Form({
     brand_id: complaint?.brand_id || "",
     product: complaint?.product || "",
     model: complaint?.model || "",
-    extra_note: complaint?.extra_note || "",
+    working_details: complaint?.working_details || "",
     serial_number_ind: complaint?.serial_number_ind || "",
     serial_number_oud: complaint?.serial_number_oud || "",
     mq_nmb: complaint?.mq_nmb || "",

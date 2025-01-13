@@ -199,7 +199,7 @@ export type ComplaintsType = {
   complaint_type: string;
   provided_services: string;
   warranty_type: string;
-  extra_note: string | null;
+  working_details: string | null;
   happy_call_remarks: string | null;
   status: string;
   files: any;
