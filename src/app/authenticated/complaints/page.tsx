@@ -66,7 +66,7 @@ const ComplaintsPage: React.FC<UserProps> = async ({ searchParams }) => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg">{complaintsMeta.title}</h2>
-            <p className="hidden text-sm text-gray-500 sm:block">
+            <p className="hidden text-xs text-gray-500 sm:block">
               {complaintsMeta.description}
             </p>
           </div>
