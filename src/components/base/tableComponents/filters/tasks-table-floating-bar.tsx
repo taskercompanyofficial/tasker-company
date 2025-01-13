@@ -29,6 +29,7 @@ import {
 import { exportTableToCSV } from "@/lib/export";
 import { Kbd } from "@/components/ui/kbd";
 import { ClipboardCopyIcon } from "lucide-react";
+import { ComplaintsType } from "@/types";
 
 interface TasksTableFloatingBarProps {
   table: any;
@@ -54,9 +55,9 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [table]);
 
-  const copyToClipboard = (rows: any) => {
-    const formattedText = rows.map((row: any) => {
-      const data = row.original;
+  const copyToClipboard = (rows: ComplaintsType[]) => {
+    const formattedText = rows.map((row) => {
+      const data = row;
       return `
 *Complaint Details*
 ------------------------
@@ -75,13 +76,17 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
           ------------------------
 *Product*: ${data.product || 'N/A'}
 *Model*: ${data.model || 'N/A'}
-*Serial Number*: ${data.serial_number_ind || 'N/A'}
+*Serial Number IND*: ${data.serial_number_ind || 'N/A'}
+*Serial Number OTD*: ${data.serial_number_oud || 'N/A'}
+*MQ Number*: ${data.mq_nmb || 'N/A'}
+*Extra*: ${data.extra || 'N/A'}
 
 *Service Details*
-          ------------------------
+------------------------
 *Status*: ${data.status}
 *Complaint Type*: ${data.complaint_type}
 *Description:* ${data.description}
+*Working Details*: ${data.working_details || 'N/A'}
 
 
 
