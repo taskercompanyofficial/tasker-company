@@ -7,7 +7,7 @@ export default function CreateComplaint() {
   return (
     <Link
       href="/authenticated/complaints/create"
-      className={`flex w-full items-center gap-1 sm:w-fit ${buttonVariants({
+      className={`flex w-full items-center gap-1 h-8 sm:w-fit ${buttonVariants({
         variant: "outline",
         size: "sm",
       })}`}

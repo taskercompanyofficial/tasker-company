@@ -43,14 +43,17 @@ export function DataTableViewOptions<TData>({
         />
       ) : null}
       <Button
+        ref={triggerRef}
+        aria-label="Toggle columns"
         variant="outline"
-        size="sm"
-        onClick={() =>
+        role="combobox"
+        size="sm" onClick={() =>
           exportTableToCSV(table, {
             filename: "Records",
             excludeColumns: ["select", "actions"],
           })
         }
+        className="ml-auto hidden h-8 gap-2 focus:outline-none focus:ring-1 focus:ring-ring focus-visible:ring-0 lg:flex"
       >
         <DownloadIcon className="mr-2 h-4 w-4" aria-hidden="true" />
         Export
@@ -58,8 +61,6 @@ export function DataTableViewOptions<TData>({
       <Popover modal>
         <PopoverTrigger asChild>
           <Button
-            ref={triggerRef}
-            aria-label="Toggle columns"
             variant="outline"
             role="combobox"
             size="sm"
