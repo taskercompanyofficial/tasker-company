@@ -117,8 +117,8 @@ export default function ComplaintDetailsForm({
           <SearchSelect
             options={technician}
             label="Technician"
-            value={data.technician_id}
-            onChange={(e) => setData({ ...data, technician_id: e })}
+            value={data.technician}
+            onChange={(e) => setData({ ...data, technician: e })}
             width="full"
             className="transition-all duration-200 hover:shadow-md"
           />
