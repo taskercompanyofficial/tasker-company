@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
       <div className="my-2 w-full max-w-full overflow-x-auto rounded-md border bg-white shadow dark:bg-gray-900">
-        <Table className="w-full">
+        <Table className="w-full text-xs">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="whitespace-nowrap">
