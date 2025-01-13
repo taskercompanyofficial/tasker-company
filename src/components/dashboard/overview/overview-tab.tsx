@@ -6,6 +6,7 @@ import OtherStatusComplaints from "./other-status-complaints";
 import { DataTableSkeleton } from "@/components/base/tableComponents/tableSkeleton";
 import { LuServerCrash } from "react-icons/lu";
 import Table from "@/app/authenticated/complaints/components/Table";
+import { Card } from "@/components/ui/card";
 
 export default async function OverviewTab() {
   const complaintStatusData = await fetchData({
@@ -26,7 +27,7 @@ export default async function OverviewTab() {
           <OtherStatusComplaints data={complaintStatusForBar.data} />
         </div>
       </div>
-      <div className="shadow-lg p-2 bg-white rounded dark:bg-gray-900 dark:text-gray-100">
+      <Card className="shadow-lg p-2">
 
         <Suspense fallback={<DataTableSkeleton
           columnCount={7}
@@ -54,7 +55,7 @@ export default async function OverviewTab() {
             </div>
           )}
         </Suspense>
-      </div>
+      </Card>
     </div>
   );
 }
