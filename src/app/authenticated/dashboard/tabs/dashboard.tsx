@@ -14,27 +14,13 @@ export default async function Dashboard({
   const complaintsByStatus = await fetchData({
     endPoint: `${API_URL}/get/complaintByStatus`,
   });
-  const EndPoint = `${API_URL}${COMPLAINTS}`;
-  const response = await fetchData({
-    endPoint: EndPoint,
-  });
+  
 
   return (
     <div className="space-y-4">
       <FirstChart data={complaintsByStatus?.data} />
       <SecondChart data={complaintsByStatus?.data} />
-      <Suspense fallback={<Skeleton className="h-48 w-full" />}>
-        {response.data.data ? (
-          <Table data={response.data} endPoint={EndPoint} />
-        ) : (
-          <div className="flex min-h-72 w-full flex-col items-center justify-center rounded border border-gray-200 bg-white px-2 py-4 text-gray-100 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600">
-            <div className="text-[70px]">
-              <LuServerCrash />
-            </div>
-            <div>Something went wrong please try to refresh the page.</div>
-          </div>
-        )}
-      </Suspense>
+  
     </div>
   );
 }
