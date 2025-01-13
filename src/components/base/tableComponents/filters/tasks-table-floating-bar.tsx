@@ -55,10 +55,11 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [table]);
 
-  const copyToClipboard = (rows: ComplaintsType[]) => {
-    const formattedText = rows.map((row) => {
-      const data = row;
-      return `
+  const copyToClipboard = (rows: any) => {
+    const formattedText = rows
+      .map((row: any) => {
+        const data = row.original;
+        return `
 *Complaint Details*
 ------------------------
 *Complaint Number*: ${data.complain_num}
@@ -68,35 +69,36 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
           ------------------------
 *Name*: ${data.applicant_name}
 *Phone*: ${data.applicant_phone}
-*Email*: ${data.applicant_email || 'N/A'}
-*WhatsApp*: ${data.applicant_whatsapp || 'N/A'}
+*Email*: ${data.applicant_email || "N/A"}
+*WhatsApp*: ${data.applicant_whatsapp || "N/A"}
 *Address*: ${data.applicant_adress}
 
 *Product Information*
           ------------------------
-*Product*: ${data.product || 'N/A'}
-*Model*: ${data.model || 'N/A'}
-*Serial Number IND*: ${data.serial_number_ind || 'N/A'}
-*Serial Number OTD*: ${data.serial_number_oud || 'N/A'}
-*MQ Number*: ${data.mq_nmb || 'N/A'}
-*Extra*: ${data.extra || 'N/A'}
+*Product*: ${data.product || "N/A"}
+*Model*: ${data.model || "N/A"}
+*Serial Number IND*: ${data.serial_number_ind || "N/A"}
+*Serial Number OTD*: ${data.serial_number_oud || "N/A"}
+*MQ Number*: ${data.mq_nmb || "N/A"}
+*Extra*: ${data.extra || "N/A"}
 
 *Service Details*
 ------------------------
 *Status*: ${data.status}
 *Complaint Type*: ${data.complaint_type}
 *Description:* ${data.description}
-*Working Details*: ${data.working_details || 'N/A'}
+*Working Details*: ${data.working_details || "N/A"}
 
 
 
           ------------------------
 Created: ${new Date(data.created_at).toLocaleDateString()}
     `;
-    }).join('\n\n');
+      })
+      .join("\n\n");
 
     navigator.clipboard.writeText(formattedText);
-    toast.success('Formatted data copied to clipboard');
+    toast.success("Formatted data copied to clipboard");
   };
 
   return (
@@ -238,7 +240,10 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                     onClick={() => copyToClipboard(rows)}
                     disabled={isPending}
                   >
-                    <ClipboardCopyIcon className="size-3.5" aria-hidden="true" />
+                    <ClipboardCopyIcon
+                      className="size-3.5"
+                      aria-hidden="true"
+                    />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
