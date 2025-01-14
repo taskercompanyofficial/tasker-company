@@ -1,25 +1,14 @@
 import * as React from "react";
 import {
-  ArrowUpIcon,
-  CheckCircledIcon,
   Cross2Icon,
   DownloadIcon,
   ReloadIcon,
-  TrashIcon,
 } from "@radix-ui/react-icons";
-import { SelectTrigger } from "@radix-ui/react-select";
 import { type Table } from "@tanstack/react-table";
 import { toast } from "sonner";
 import html2canvas from 'html2canvas';
 
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
@@ -30,7 +19,6 @@ import {
 import { exportTableToCSV } from "@/lib/export";
 import { Kbd } from "@/components/ui/kbd";
 import { ClipboardCopyIcon, FileImage } from "lucide-react";
-import { ComplaintsType } from "@/types";
 
 interface TasksTableFloatingBarProps {
   table: Table<any>;
@@ -40,7 +28,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
   const selectedRows = table.getFilteredSelectedRowModel().rows;
   const [isPending, startTransition] = React.useTransition();
   const [activeMethod, setActiveMethod] = React.useState<
-    "update-status" | "update-priority" | "export" | "delete" | "generate-image"
+    "export" | "generate-image"
   >();
 
   // Clear selection with Escape key
@@ -59,31 +47,31 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
     const formattedText = rows.map(row => {
       const data = row.original;
       return `
-📋 Complaint #${data.complain_num}
-Brand Ref: ${data.brand_complaint_no}
+📋 *Complaint #${data.complain_num}*
+*Brand Ref:* ${data.brand_complaint_no}
 
-👤 Applicant Details
-Name: ${data.applicant_name}
-Phone: ${data.applicant_phone}
-Email: ${data.applicant_email || "N/A"}
-WhatsApp: ${data.applicant_whatsapp || "N/A"}
-Address: ${data.applicant_adress}
+👤 *Applicant Details*
+*Name:* ${data.applicant_name}
+*Phone:* ${data.applicant_phone}
+*Email:* ${data.applicant_email || "N/A"}
+*WhatsApp:* ${data.applicant_whatsapp || "N/A"}
+*Address:* ${data.applicant_adress}
 
-📦 Product Details
-Product: ${data.product || "N/A"}
-Brand: ${data.brand_name || "N/A"}
-Model: ${data.model || "N/A"}
-Serial (IND): ${data.serial_number_ind || "N/A"}
-Serial (OTD): ${data.serial_number_oud || "N/A"}
+📦 *Product Details*
+*Product:* ${data.product || "N/A"}
+*Brand:* ${data.brand_name || "N/A"}
+*Model:* ${data.model || "N/A"}
+*Serial (IND):* ${data.serial_number_ind || "N/A"}
+*Serial (OTD):* ${data.serial_number_oud || "N/A"}
 
-🔧 Service Information
-Technician: ${data.technition || "N/A"}
-Status: ${data.status}
-Type: ${data.complaint_type}
-Description: ${data.description}
-Work Details: ${data.working_details || "N/A"}
+🔧 *Service Information*
+*Technician:* ${data.technition || "N/A"}
+*Status:* ${data.status}
+*Type:* ${data.complaint_type}
+*Description:* ${data.description}
+*Work Details:* ${data.working_details || "N/A"}
 
-Created: ${new Date(data.created_at).toLocaleDateString()}
+*Created:* ${new Date(data.created_at).toLocaleDateString()}
 -------------------`;
     }).join("\n\n");
 
@@ -122,6 +110,9 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                 font-size: 1.25rem;
               ">
                 Complaint #${data.complain_num}
+                <div style="font-size: 0.875rem; margin-top: 0.25rem;">
+                  Brand Ref: ${data.brand_complaint_no}
+                </div>
               </header>
 
               <div style="padding: 1.5rem;">
@@ -138,6 +129,8 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                     <p><strong>Name:</strong> ${data.applicant_name}</p>
                     <p><strong>Phone:</strong> ${data.applicant_phone}</p>
                     <p><strong>Email:</strong> ${data.applicant_email || "N/A"}</p>
+                    <p><strong>WhatsApp:</strong> ${data.applicant_whatsapp || "N/A"}</p>
+                    <p><strong>Address:</strong> ${data.applicant_adress}</p>
                   </div>
                   
                   <div>
@@ -145,8 +138,10 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                       Product Details
                     </h3>
                     <p><strong>Product:</strong> ${data.product || "N/A"}</p>
+                    <p><strong>Brand:</strong> ${data.brand_name || "N/A"}</p>
                     <p><strong>Model:</strong> ${data.model || "N/A"}</p>
-                    <p><strong>Serial:</strong> ${data.serial_number_ind || "N/A"}</p>
+                    <p><strong>Serial (IND):</strong> ${data.serial_number_ind || "N/A"}</p>
+                    <p><strong>Serial (OTD):</strong> ${data.serial_number_oud || "N/A"}</p>
                   </div>
                 </div>
 
@@ -156,6 +151,7 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                   border-radius: 6px;
                 ">
                   <h3 style="color: #1e40af; margin-bottom: 0.75rem;">Service Details</h3>
+                  <p><strong>Technician:</strong> ${data.technition || "N/A"}</p>
                   <p><strong>Status:</strong> 
                     <span style="
                       background: #dbeafe;
@@ -165,7 +161,10 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                       font-size: 0.875rem;
                     ">${data.status}</span>
                   </p>
-                  <p style="margin-top: 0.5rem;"><strong>Description:</strong> ${data.description}</p>
+                  <p><strong>Type:</strong> ${data.complaint_type}</p>
+                  <p><strong>Description:</strong> ${data.description}</p>
+                  <p><strong>Work Details:</strong> ${data.working_details || "N/A"}</p>
+                  <p><strong>Created:</strong> ${new Date(data.created_at).toLocaleDateString()}</p>
                 </div>
               </div>
             </div>
