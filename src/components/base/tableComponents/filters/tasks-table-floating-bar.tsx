@@ -53,20 +53,18 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 👤 *Applicant Details*
 *Name:* ${data.applicant_name}
 *Phone:* ${data.applicant_phone}
-*Email:* ${data.applicant_email || "N/A"}
 *WhatsApp:* ${data.applicant_whatsapp || "N/A"}
 *Address:* ${data.applicant_adress}
 
 📦 *Product Details*
 *Product:* ${data.product || "N/A"}
 *Brand:* ${data.brand_name || "N/A"}
-*Branch:* ${data.branch_name || "N/A"}
 *Model:* ${data.model || "N/A"}
 *Serial (IND):* ${data.serial_number_ind || "N/A"}
 *Serial (OUD):* ${data.serial_number_oud || "N/A"}
 
 🔧 *Service Information*
-*Technician:* ${data.technition || "N/A"}
+*Branch:* ${data.branch_name || "N/A"}
 *Type:* ${data.complaint_type}
 *Fault:* ${data.description}
 
