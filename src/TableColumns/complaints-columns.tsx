@@ -108,6 +108,13 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
       return <ReadMore text={description} />;
     }
   },
+
+  {
+    accessorKey: "technition",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="AssignedTechnition" />
+    ),
+  },
   {
     accessorKey: "brand_name",
     header: ({ column }) => (
@@ -200,13 +207,13 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     ),
   },
   {
-    accessorKey: "extra_note",
+    accessorKey: "working_details",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Extra Note" />
+      <DataTableColumnHeader column={column} title="Working Details" />
     ),
     cell: ({ row }) => {
-      const extra_note = row.getValue("extra_note") as string;
-      return <ReadMore text={extra_note} />;
+      const working_details = row.getValue("working_details") as string;
+      return <ReadMore text={working_details} />;
     }
   },
   {

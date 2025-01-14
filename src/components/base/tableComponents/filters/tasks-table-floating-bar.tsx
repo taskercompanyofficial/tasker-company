@@ -86,6 +86,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 
 *Service Details*
 ------------------------
+*Assigned Technition*: ${data.technition || "N/A"}
 *Status*: ${data.status}
 *Complaint Type*: ${data.complaint_type}
 *Description:* ${data.description}
