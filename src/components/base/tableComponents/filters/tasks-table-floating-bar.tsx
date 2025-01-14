@@ -63,11 +63,10 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 *Branch:* ${data.branch_name || "N/A"}
 *Model:* ${data.model || "N/A"}
 *Serial (IND):* ${data.serial_number_ind || "N/A"}
-*Serial (OTD):* ${data.serial_number_oud || "N/A"}
+*Serial (OUD):* ${data.serial_number_oud || "N/A"}
 
 🔧 *Service Information*
 *Technician:* ${data.technition || "N/A"}
-*Status:* ${data.status}
 *Type:* ${data.complaint_type}
 *Fault:* ${data.description}
 
@@ -128,7 +127,6 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                     </h3>
                     <p><strong>Name:</strong> ${data.applicant_name}</p>
                     <p><strong>Phone:</strong> ${data.applicant_phone}</p>
-                    <p><strong>Email:</strong> ${data.applicant_email || "N/A"}</p>
                     <p><strong>WhatsApp:</strong> ${data.applicant_whatsapp || "N/A"}</p>
                     <p><strong>Address:</strong> ${data.applicant_adress}</p>
                   </div>
@@ -142,7 +140,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                     <p><strong>Branch:</strong> ${data.branch_name || "N/A"}</p>
                     <p><strong>Model:</strong> ${data.model || "N/A"}</p>
                     <p><strong>Serial (IND):</strong> ${data.serial_number_ind || "N/A"}</p>
-                    <p><strong>Serial (OTD):</strong> ${data.serial_number_oud || "N/A"}</p>
+                    <p><strong>Serial (OUD):</strong> ${data.serial_number_oud || "N/A"}</p>
                   </div>
                 </div>
 
@@ -153,15 +151,6 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                 ">
                   <h3 style="color: #1e40af; margin-bottom: 0.75rem;">Service Details</h3>
                   <p><strong>Technician:</strong> ${data.technition || "N/A"}</p>
-                  <p><strong>Status:</strong> 
-                    <span style="
-                      background: #dbeafe;
-                      color: #1e40af;
-                      padding: 0.25rem 0.75rem 0.25rem 0.75rem;
-                      border-radius: 4px;
-                      font-size: 0.875rem;
-                    ">${data.status}</span>
-                  </p>
                   <p><strong>Type:</strong> ${data.complaint_type}</p>
                   <p><strong>Fault:</strong> ${data.description}</p>
                   <p><strong>Created:</strong> ${new Date(data.created_at).toLocaleDateString()}</p>
