@@ -1,6 +1,7 @@
 "use client";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { debounce } from "lodash";
+import { SearchIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -53,7 +54,9 @@ export default function SearchInput() {
         placeholder="Search..."
         onChange={handleSearch}
         value={searchValue}
-        className="w-full rounded bg-background "
+        autoFocus={true}
+        icon={<SearchIcon className="h-4 w-4" />}
+        className="w-full rounded bg-background"
       />
     </div>
   );
