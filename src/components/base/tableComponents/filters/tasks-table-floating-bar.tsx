@@ -33,150 +33,159 @@ import { ClipboardCopyIcon, FileImage } from "lucide-react";
 import { ComplaintsType } from "@/types";
 
 interface TasksTableFloatingBarProps {
-  table: any;
+  table: Table<any>;
 }
 
 export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
-  const rows = table.getFilteredSelectedRowModel().rows;
-
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
   const [isPending, startTransition] = React.useTransition();
-  const [method, setMethod] = React.useState<
+  const [activeMethod, setActiveMethod] = React.useState<
     "update-status" | "update-priority" | "export" | "delete" | "generate-image"
   >();
 
-  // Clear selection on Escape key press
+  // Clear selection with Escape key
   React.useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
+    const clearSelection = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         table.toggleAllRowsSelected(false);
       }
-    }
+    };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", clearSelection);
+    return () => window.removeEventListener("keydown", clearSelection);
   }, [table]);
 
-  const copyToClipboard = (rows: any) => {
-    const formattedText = rows
-      .map((row: any) => {
-        const data = row.original;
-        return `
-*Complaint Details*
-------------------------
-*Complaint Number*: ${data.complain_num}
-*Brand Complaint No*: ${data.brand_complaint_no}
+  const copyToClipboard = (rows: any[]) => {
+    const formattedText = rows.map(row => {
+      const data = row.original;
+      return `
+📋 Complaint #${data.complain_num}
+Brand Ref: ${data.brand_complaint_no}
 
-*Applicant Information*
-          ------------------------
-*Name*: ${data.applicant_name}
-*Phone*: ${data.applicant_phone}
-*Email*: ${data.applicant_email || "N/A"}
-*WhatsApp*: ${data.applicant_whatsapp || "N/A"}
-*Address*: ${data.applicant_adress}
+👤 Applicant Details
+Name: ${data.applicant_name}
+Phone: ${data.applicant_phone}
+Email: ${data.applicant_email || "N/A"}
+WhatsApp: ${data.applicant_whatsapp || "N/A"}
+Address: ${data.applicant_adress}
 
-*Product Information*
-          ------------------------
-*Product*: ${data.product || "N/A"}
-*Brand Name*: ${data.brand_name || "N/A"}
-*Branch Name*: ${data.branch_name || "N/A"}
-*Model*: ${data.model || "N/A"}
-*Serial Number IND*: ${data.serial_number_ind || "N/A"}
-*Serial Number OTD*: ${data.serial_number_oud || "N/A"}
-*MQ Number*: ${data.mq_nmb || "N/A"}
-*Extra*: ${data.extra || "N/A"}
+📦 Product Details
+Product: ${data.product || "N/A"}
+Brand: ${data.brand_name || "N/A"}
+Model: ${data.model || "N/A"}
+Serial (IND): ${data.serial_number_ind || "N/A"}
+Serial (OTD): ${data.serial_number_oud || "N/A"}
 
-*Service Details*
-------------------------
-*Assigned Technition*: ${data.technition || "N/A"}
-*Status*: ${data.status}
-*Complaint Type*: ${data.complaint_type}
-*Description:* ${data.description}
-*Working Details*: ${data.working_details || "N/A"}
+🔧 Service Information
+Technician: ${data.technition || "N/A"}
+Status: ${data.status}
+Type: ${data.complaint_type}
+Description: ${data.description}
+Work Details: ${data.working_details || "N/A"}
 
-          ------------------------
 Created: ${new Date(data.created_at).toLocaleDateString()}
-    `;
-      })
-      .join("\n\n");
+-------------------`;
+    }).join("\n\n");
 
     navigator.clipboard.writeText(formattedText);
-    toast.success("Formatted data copied to clipboard");
+    toast.success("Details copied to clipboard");
   };
 
-  const generateImage = async (rows: any) => {
-    setMethod("generate-image");
+  const generateImage = async (rows: any[]) => {
+    setActiveMethod("generate-image");
     startTransition(async () => {
       try {
-        const tempDiv = document.createElement('div');
-        tempDiv.style.padding = '40px';
-        tempDiv.style.background = 'linear-gradient(to bottom right, #ffffff, #f8f9fa)';
-        tempDiv.style.width = '800px';
-        tempDiv.style.position = 'fixed';
-        tempDiv.style.left = '-9999px';
-        tempDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        const container = document.createElement('div');
+        container.style.cssText = `
+          padding: 2rem;
+          background: #f8fafc;
+          width: 800px;
+          position: fixed;
+          left: -9999px;
+          font-family: system-ui, -apple-system, sans-serif;
+        `;
         
-        rows.forEach((row: any) => {
+        rows.forEach(row => {
           const data = row.original;
-          tempDiv.innerHTML += `
-            <div style="margin-bottom: 40px; font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748;">
-              <div style="background: linear-gradient(to right, #2563eb, #3b82f6); padding: 20px; border-radius: 10px; margin-bottom: 25px;">
-                <h2 style="color: white; font-size: 24px; margin: 0;">Complaint Details</h2>
-                <p style="color: #e2e8f0; margin: 5px 0 0 0;">Ref: ${data.complain_num}</p>
-              </div>
-              
-              <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-                <h3 style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">Applicant Information</h3>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Name:</strong> ${data.applicant_name}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Phone:</strong> ${data.applicant_phone}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Email:</strong> ${data.applicant_email || "N/A"}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">WhatsApp:</strong> ${data.applicant_whatsapp || "N/A"}</p>
+          container.innerHTML += `
+            <div class="complaint-card" style="
+              background: white;
+              border-radius: 8px;
+              box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+              margin-bottom: 2rem;
+              overflow: hidden;
+            ">
+              <header style="
+                background: #1e40af;
+                color: white;
+                padding: 1rem;
+                font-size: 1.25rem;
+              ">
+                Complaint #${data.complain_num}
+              </header>
+
+              <div style="padding: 1.5rem;">
+                <div style="
+                  display: grid;
+                  grid-template-columns: repeat(2, 1fr);
+                  gap: 1rem;
+                  margin-bottom: 1.5rem;
+                ">
+                  <div>
+                    <h3 style="color: #1e40af; font-size: 1.1rem; margin-bottom: 0.75rem;">
+                      Applicant Details
+                    </h3>
+                    <p><strong>Name:</strong> ${data.applicant_name}</p>
+                    <p><strong>Phone:</strong> ${data.applicant_phone}</p>
+                    <p><strong>Email:</strong> ${data.applicant_email || "N/A"}</p>
+                  </div>
+                  
+                  <div>
+                    <h3 style="color: #1e40af; font-size: 1.1rem; margin-bottom: 0.75rem;">
+                      Product Details
+                    </h3>
+                    <p><strong>Product:</strong> ${data.product || "N/A"}</p>
+                    <p><strong>Model:</strong> ${data.model || "N/A"}</p>
+                    <p><strong>Serial:</strong> ${data.serial_number_ind || "N/A"}</p>
+                  </div>
                 </div>
-                <p style="margin: 10px 0;"><strong style="color: #4b5563;">Address:</strong> ${data.applicant_adress}</p>
-              </div>
-              
-              <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
-                <h3 style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">Product Information</h3>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Product:</strong> ${data.product || "N/A"}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Brand:</strong> ${data.brand_name || "N/A"}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Model:</strong> ${data.model || "N/A"}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Serial (IND):</strong> ${data.serial_number_ind || "N/A"}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Serial (OTD):</strong> ${data.serial_number_oud || "N/A"}</p>
+
+                <div style="
+                  background: #f8fafc;
+                  padding: 1rem;
+                  border-radius: 6px;
+                ">
+                  <h3 style="color: #1e40af; margin-bottom: 0.75rem;">Service Details</h3>
+                  <p><strong>Status:</strong> 
+                    <span style="
+                      background: #dbeafe;
+                      color: #1e40af;
+                      padding: 0.25rem 0.75rem;
+                      border-radius: 4px;
+                      font-size: 0.875rem;
+                    ">${data.status}</span>
+                  </p>
+                  <p style="margin-top: 0.5rem;"><strong>Description:</strong> ${data.description}</p>
                 </div>
-              </div>
-              
-              <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <h3 style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">Service Details</h3>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Technician:</strong> ${data.technition || "N/A"}</p>
-                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Status:</strong> <span style="background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 4px;">${data.status}</span></p>
-                </div>
-                <p style="margin: 15px 0;"><strong style="color: #4b5563;">Description:</strong> ${data.description}</p>
-                <p style="margin: 5px 0;"><strong style="color: #4b5563;">Working Details:</strong> ${data.working_details || "N/A"}</p>
-              </div>
-              
-              <div style="text-align: right; margin-top: 15px; color: #6b7280; font-size: 12px;">
-                Generated on: ${new Date(data.created_at).toLocaleDateString()}
               </div>
             </div>
           `;
         });
 
-        document.body.appendChild(tempDiv);
-
-        const canvas = await html2canvas(tempDiv);
+        document.body.appendChild(container);
+        const canvas = await html2canvas(container);
         const image = canvas.toDataURL("image/png", 1.0);
-        const link = document.createElement('a');
-        link.download = `complaint-details-${new Date().getTime()}.png`;
-        link.href = image;
-        link.click();
+        
+        const downloadLink = document.createElement('a');
+        downloadLink.download = `complaint-details-${Date.now()}.png`;
+        downloadLink.href = image;
+        downloadLink.click();
 
-        document.body.removeChild(tempDiv);
+        document.body.removeChild(container);
         toast.success("Job sheet generated successfully");
       } catch (error) {
-        toast.error("Failed to generate job sheet");
         console.error(error);
+        toast.error("Failed to generate job sheet");
       }
     });
   };
@@ -184,88 +193,72 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
   return (
     <TooltipProvider>
       <div className="fixed inset-x-0 bottom-4 z-50 mx-auto w-fit px-4">
-        <div className="w-full overflow-x-auto">
-          <div className="mx-auto flex w-fit items-center gap-2 rounded-md border bg-card p-2 shadow-2xl">
-            <div className="flex h-7 items-center rounded-md border border-dashed pl-2.5 pr-1">
-              <span className="whitespace-nowrap text-xs">
-                {rows.length} selected
+        <div className="rounded-lg border bg-card shadow-lg">
+          <div className="flex items-center gap-2 p-2">
+            <div className="flex items-center gap-1 rounded-md border border-dashed px-2">
+              <span className="text-sm font-medium">
+                {selectedRows.length} selected
               </span>
-              <Separator orientation="vertical" className="ml-2 mr-1" />
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     variant="ghost"
-                    size="icon"
-                    className="size-5 hover:border"
+                    size="sm"
+                    className="h-6 w-6"
                     onClick={() => table.toggleAllRowsSelected(false)}
                   >
-                    <Cross2Icon
-                      className="size-3.5 shrink-0"
-                      aria-hidden="true"
-                    />
+                    <Cross2Icon className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="flex items-center border bg-accent px-2 py-1 font-semibold text-foreground dark:bg-zinc-900">
-                  <p className="mr-2">Clear selection</p>
-                  <Kbd abbrTitle="Escape" variant="outline">
-                    Esc
-                  </Kbd>
+                <TooltipContent>
+                  Clear selection <Kbd>Esc</Kbd>
                 </TooltipContent>
               </Tooltip>
             </div>
-            <Separator orientation="vertical" className="hidden h-5 sm:block" />
-            <div className="flex items-center gap-1.5">
-              <Select>
-                <Tooltip delayDuration={250}>
-                  <SelectTrigger asChild>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="secondary"
-                        size="icon"
-                        className="size-7 border data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
-                        disabled={isPending}
-                      >
-                        {isPending && method === "update-status" ? (
-                          <ReloadIcon
-                            className="size-3.5 animate-spin"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <CheckCircledIcon
-                            className="size-3.5"
-                            aria-hidden="true"
-                          />
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                  </SelectTrigger>
-                  <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
-                    <p>Update status</p>
-                  </TooltipContent>
-                </Tooltip>
-                <SelectContent align="center">
-                  <SelectGroup>
-                    {["active, inactive, pause, pending"].map((status) => (
-                      <SelectItem
-                        key={status}
-                        value={status}
-                        className="capitalize"
-                      >
-                        {status}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Tooltip delayDuration={250}>
+
+            <div className="flex items-center gap-1">
+              <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="secondary"
-                    size="icon"
-                    className="size-7 border"
-                    onClick={() => {
-                      setMethod("export");
+                    variant="outline"
+                    size="sm"
+                    className="h-8 w-8"
+                    onClick={() => copyToClipboard(selectedRows)}
+                    disabled={isPending}
+                  >
+                    <ClipboardCopyIcon className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy details</TooltipContent>
+              </Tooltip>
 
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 w-8"
+                    onClick={() => generateImage(selectedRows)}
+                    disabled={isPending}
+                  >
+                    {isPending && activeMethod === "generate-image" ? (
+                      <ReloadIcon className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <FileImage className="h-4 w-4" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Generate Job Sheet</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 w-8"
+                    onClick={() => {
+                      setActiveMethod("export");
                       startTransition(() => {
                         exportTableToCSV(table, {
                           excludeColumns: ["select", "actions"],
@@ -275,83 +268,10 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                     }}
                     disabled={isPending}
                   >
-                    {isPending && method === "export" ? (
-                      <ReloadIcon
-                        className="size-3.5 animate-spin"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <DownloadIcon className="size-3.5" aria-hidden="true" />
-                    )}
+                    <DownloadIcon className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
-                  <p>Export tasks</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip delayDuration={250}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="size-7 border"
-                    disabled={isPending}
-                  >
-                    {isPending && method === "delete" ? (
-                      <ReloadIcon
-                        className="size-3.5 animate-spin"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <TrashIcon className="size-3.5" aria-hidden="true" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
-                  <p>Delete tasks</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip delayDuration={250}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="size-7 border"
-                    onClick={() => copyToClipboard(rows)}
-                    disabled={isPending}
-                  >
-                    <ClipboardCopyIcon
-                      className="size-3.5"
-                      aria-hidden="true"
-                    />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
-                  <p>Copy to clipboard</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip delayDuration={250}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="size-7 border"
-                    disabled={isPending}
-                    onClick={() => generateImage(rows)}
-                  >
-                    {isPending && method === "generate-image" ? (
-                      <ReloadIcon
-                        className="size-3.5 animate-spin"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <FileImage className="size-3.5" aria-hidden="true" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
-                  <p>Generate Job Sheet</p>
-                </TooltipContent>
+                <TooltipContent>Export CSV</TooltipContent>
               </Tooltip>
             </div>
           </div>
