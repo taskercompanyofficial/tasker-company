@@ -76,6 +76,8 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 *Product Information*
           ------------------------
 *Product*: ${data.product || "N/A"}
+*Brand Name*: ${data.brand_name || "N/A"}
+*Branch Name*: ${data.branch_name || "N/A"}
 *Model*: ${data.model || "N/A"}
 *Serial Number IND*: ${data.serial_number_ind || "N/A"}
 *Serial Number OTD*: ${data.serial_number_oud || "N/A"}
