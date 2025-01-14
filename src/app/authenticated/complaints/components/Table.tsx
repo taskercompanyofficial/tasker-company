@@ -6,6 +6,10 @@ import { ComplaintStatusOptions } from "@/lib/otpions";
 import SearchInput from "@/components/base/tableComponents/filters/search-input";
 import { ComplaintsColumns } from "@/TableColumns/complaints-columns";
 import CreateComplaint from "../create/create";
+import useFetch from "@/hooks/usefetch";
+import { API_URL } from "@/lib/apiEndPoints";
+import { dataTypeIds } from "@/types";
+import Skeleton from "react-loading-skeleton";
 
 export default function Table({
   endPoint,
@@ -14,6 +18,9 @@ export default function Table({
   endPoint: string;
   data: any;
 }) {
+  const { data: brandsData, isLoading } = useFetch<dataTypeIds[]>(
+    API_URL + "/crm/fetch-authorized-brands",
+  );
   return (
     <DataTable
       data={data.data}
@@ -23,6 +30,15 @@ export default function Table({
       FacedFilter={
         <TableFacedFilter>
           <SearchInput />
+          {isLoading ? (
+            <Skeleton className="h-10 w-full" />
+          ) : (
+            <SelectInput
+              param="brand_id"
+              label="Select Brand"
+              options={brandsData}
+            />
+          )}
           <SelectInput
             param="status"
             label="Select Status"
