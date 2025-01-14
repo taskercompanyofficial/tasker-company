@@ -93,8 +93,6 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 *Description:* ${data.description}
 *Working Details*: ${data.working_details || "N/A"}
 
-
-
           ------------------------
 Created: ${new Date(data.created_at).toLocaleDateString()}
     `;
@@ -109,66 +107,75 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
     setMethod("generate-image");
     startTransition(async () => {
       try {
-        // Create a temporary div to render the content
         const tempDiv = document.createElement('div');
-        tempDiv.style.padding = '20px';
-        tempDiv.style.background = 'white';
+        tempDiv.style.padding = '40px';
+        tempDiv.style.background = 'linear-gradient(to bottom right, #ffffff, #f8f9fa)';
         tempDiv.style.width = '800px';
         tempDiv.style.position = 'fixed';
         tempDiv.style.left = '-9999px';
+        tempDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
         
-        // Add content for each row
         rows.forEach((row: any) => {
           const data = row.original;
           tempDiv.innerHTML += `
-            <div style="margin-bottom: 30px; font-family: Arial, sans-serif;">
-              <h2 style="color: #333;">Complaint Details</h2>
-              <hr/>
-              <p><strong>Complaint Number:</strong> ${data.complain_num}</p>
-              <p><strong>Brand Complaint No:</strong> ${data.brand_complaint_no}</p>
+            <div style="margin-bottom: 40px; font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748;">
+              <div style="background: linear-gradient(to right, #2563eb, #3b82f6); padding: 20px; border-radius: 10px; margin-bottom: 25px;">
+                <h2 style="color: white; font-size: 24px; margin: 0;">Complaint Details</h2>
+                <p style="color: #e2e8f0; margin: 5px 0 0 0;">Ref: ${data.complain_num}</p>
+              </div>
               
-              <h3>Applicant Information</h3>
-              <p><strong>Name:</strong> ${data.applicant_name}</p>
-              <p><strong>Phone:</strong> ${data.applicant_phone}</p>
-              <p><strong>Email:</strong> ${data.applicant_email || "N/A"}</p>
-              <p><strong>WhatsApp:</strong> ${data.applicant_whatsapp || "N/A"}</p>
-              <p><strong>Address:</strong> ${data.applicant_adress}</p>
+              <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                <h3 style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">Applicant Information</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Name:</strong> ${data.applicant_name}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Phone:</strong> ${data.applicant_phone}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Email:</strong> ${data.applicant_email || "N/A"}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">WhatsApp:</strong> ${data.applicant_whatsapp || "N/A"}</p>
+                </div>
+                <p style="margin: 10px 0;"><strong style="color: #4b5563;">Address:</strong> ${data.applicant_adress}</p>
+              </div>
               
-              <h3>Product Information</h3>
-              <p><strong>Product:</strong> ${data.product || "N/A"}</p>
-              <p><strong>Brand Name:</strong> ${data.brand_name || "N/A"}</p>
-              <p><strong>Model:</strong> ${data.model || "N/A"}</p>
-              <p><strong>Serial Number IND:</strong> ${data.serial_number_ind || "N/A"}</p>
-              <p><strong>Serial Number OTD:</strong> ${data.serial_number_oud || "N/A"}</p>
+              <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                <h3 style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">Product Information</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Product:</strong> ${data.product || "N/A"}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Brand:</strong> ${data.brand_name || "N/A"}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Model:</strong> ${data.model || "N/A"}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Serial (IND):</strong> ${data.serial_number_ind || "N/A"}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Serial (OTD):</strong> ${data.serial_number_oud || "N/A"}</p>
+                </div>
+              </div>
               
-              <h3>Service Details</h3>
-              <p><strong>Technician:</strong> ${data.technition || "N/A"}</p>
-              <p><strong>Status:</strong> ${data.status}</p>
-              <p><strong>Description:</strong> ${data.description}</p>
-              <p><strong>Working Details:</strong> ${data.working_details || "N/A"}</p>
+              <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">Service Details</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Technician:</strong> ${data.technition || "N/A"}</p>
+                  <p style="margin: 5px 0;"><strong style="color: #4b5563;">Status:</strong> <span style="background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 4px;">${data.status}</span></p>
+                </div>
+                <p style="margin: 15px 0;"><strong style="color: #4b5563;">Description:</strong> ${data.description}</p>
+                <p style="margin: 5px 0;"><strong style="color: #4b5563;">Working Details:</strong> ${data.working_details || "N/A"}</p>
+              </div>
               
-              <p style="color: #666;"><small>Created: ${new Date(data.created_at).toLocaleDateString()}</small></p>
+              <div style="text-align: right; margin-top: 15px; color: #6b7280; font-size: 12px;">
+                Generated on: ${new Date(data.created_at).toLocaleDateString()}
+              </div>
             </div>
           `;
         });
 
         document.body.appendChild(tempDiv);
 
-        // Generate image using html2canvas
         const canvas = await html2canvas(tempDiv);
-        
-        // Convert to image and download
-        const image = canvas.toDataURL("image/png");
+        const image = canvas.toDataURL("image/png", 1.0);
         const link = document.createElement('a');
-        link.download = 'complaint-details.png';
+        link.download = `complaint-details-${new Date().getTime()}.png`;
         link.href = image;
         link.click();
 
-        // Cleanup
         document.body.removeChild(tempDiv);
-        toast.success("Image generated successfully");
+        toast.success("Job sheet generated successfully");
       } catch (error) {
-        toast.error("Failed to generate image");
+        toast.error("Failed to generate job sheet");
         console.error(error);
       }
     });
