@@ -10,6 +10,7 @@ import {
 import { SelectTrigger } from "@radix-ui/react-select";
 import { type Table } from "@tanstack/react-table";
 import { toast } from "sonner";
+import html2canvas from 'html2canvas';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +29,7 @@ import {
 
 import { exportTableToCSV } from "@/lib/export";
 import { Kbd } from "@/components/ui/kbd";
-import { ClipboardCopyIcon } from "lucide-react";
+import { ClipboardCopyIcon, FileImage } from "lucide-react";
 import { ComplaintsType } from "@/types";
 
 interface TasksTableFloatingBarProps {
@@ -40,7 +41,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 
   const [isPending, startTransition] = React.useTransition();
   const [method, setMethod] = React.useState<
-    "update-status" | "update-priority" | "export" | "delete"
+    "update-status" | "update-priority" | "export" | "delete" | "generate-image"
   >();
 
   // Clear selection on Escape key press
@@ -102,6 +103,75 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
 
     navigator.clipboard.writeText(formattedText);
     toast.success("Formatted data copied to clipboard");
+  };
+
+  const generateImage = async (rows: any) => {
+    setMethod("generate-image");
+    startTransition(async () => {
+      try {
+        // Create a temporary div to render the content
+        const tempDiv = document.createElement('div');
+        tempDiv.style.padding = '20px';
+        tempDiv.style.background = 'white';
+        tempDiv.style.width = '800px';
+        tempDiv.style.position = 'fixed';
+        tempDiv.style.left = '-9999px';
+        
+        // Add content for each row
+        rows.forEach((row: any) => {
+          const data = row.original;
+          tempDiv.innerHTML += `
+            <div style="margin-bottom: 30px; font-family: Arial, sans-serif;">
+              <h2 style="color: #333;">Complaint Details</h2>
+              <hr/>
+              <p><strong>Complaint Number:</strong> ${data.complain_num}</p>
+              <p><strong>Brand Complaint No:</strong> ${data.brand_complaint_no}</p>
+              
+              <h3>Applicant Information</h3>
+              <p><strong>Name:</strong> ${data.applicant_name}</p>
+              <p><strong>Phone:</strong> ${data.applicant_phone}</p>
+              <p><strong>Email:</strong> ${data.applicant_email || "N/A"}</p>
+              <p><strong>WhatsApp:</strong> ${data.applicant_whatsapp || "N/A"}</p>
+              <p><strong>Address:</strong> ${data.applicant_adress}</p>
+              
+              <h3>Product Information</h3>
+              <p><strong>Product:</strong> ${data.product || "N/A"}</p>
+              <p><strong>Brand Name:</strong> ${data.brand_name || "N/A"}</p>
+              <p><strong>Model:</strong> ${data.model || "N/A"}</p>
+              <p><strong>Serial Number IND:</strong> ${data.serial_number_ind || "N/A"}</p>
+              <p><strong>Serial Number OTD:</strong> ${data.serial_number_oud || "N/A"}</p>
+              
+              <h3>Service Details</h3>
+              <p><strong>Technician:</strong> ${data.technition || "N/A"}</p>
+              <p><strong>Status:</strong> ${data.status}</p>
+              <p><strong>Description:</strong> ${data.description}</p>
+              <p><strong>Working Details:</strong> ${data.working_details || "N/A"}</p>
+              
+              <p style="color: #666;"><small>Created: ${new Date(data.created_at).toLocaleDateString()}</small></p>
+            </div>
+          `;
+        });
+
+        document.body.appendChild(tempDiv);
+
+        // Generate image using html2canvas
+        const canvas = await html2canvas(tempDiv);
+        
+        // Convert to image and download
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement('a');
+        link.download = 'complaint-details.png';
+        link.href = image;
+        link.click();
+
+        // Cleanup
+        document.body.removeChild(tempDiv);
+        toast.success("Image generated successfully");
+      } catch (error) {
+        toast.error("Failed to generate image");
+        console.error(error);
+      }
+    });
   };
 
   return (
@@ -251,6 +321,29 @@ Created: ${new Date(data.created_at).toLocaleDateString()}
                 </TooltipTrigger>
                 <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
                   <p>Copy to clipboard</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip delayDuration={250}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="size-7 border"
+                    disabled={isPending}
+                    onClick={() => generateImage(rows)}
+                  >
+                    {isPending && method === "generate-image" ? (
+                      <ReloadIcon
+                        className="size-3.5 animate-spin"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <FileImage className="size-3.5" aria-hidden="true" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="border bg-accent font-semibold text-foreground dark:bg-zinc-900">
+                  <p>Generate Job Sheet</p>
                 </TooltipContent>
               </Tooltip>
             </div>
