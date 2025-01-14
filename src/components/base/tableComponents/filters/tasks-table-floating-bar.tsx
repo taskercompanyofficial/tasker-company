@@ -60,6 +60,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 📦 *Product Details*
 *Product:* ${data.product || "N/A"}
 *Brand:* ${data.brand_name || "N/A"}
+*Branch:* ${data.branch_name || "N/A"}
 *Model:* ${data.model || "N/A"}
 *Serial (IND):* ${data.serial_number_ind || "N/A"}
 *Serial (OTD):* ${data.serial_number_oud || "N/A"}
@@ -68,8 +69,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 *Technician:* ${data.technition || "N/A"}
 *Status:* ${data.status}
 *Type:* ${data.complaint_type}
-*Description:* ${data.description}
-*Work Details:* ${data.working_details || "N/A"}
+*Fault:* ${data.description}
 
 *Created:* ${new Date(data.created_at).toLocaleDateString()}
 -------------------`;
@@ -139,6 +139,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                     </h3>
                     <p><strong>Product:</strong> ${data.product || "N/A"}</p>
                     <p><strong>Brand:</strong> ${data.brand_name || "N/A"}</p>
+                    <p><strong>Branch:</strong> ${data.branch_name || "N/A"}</p>
                     <p><strong>Model:</strong> ${data.model || "N/A"}</p>
                     <p><strong>Serial (IND):</strong> ${data.serial_number_ind || "N/A"}</p>
                     <p><strong>Serial (OTD):</strong> ${data.serial_number_oud || "N/A"}</p>
@@ -156,14 +157,13 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
                     <span style="
                       background: #dbeafe;
                       color: #1e40af;
-                      padding: 0.25rem 0.75rem;
+                      padding: 0.25rem 0.75rem 0.25rem 0.75rem;
                       border-radius: 4px;
                       font-size: 0.875rem;
                     ">${data.status}</span>
                   </p>
                   <p><strong>Type:</strong> ${data.complaint_type}</p>
-                  <p><strong>Description:</strong> ${data.description}</p>
-                  <p><strong>Work Details:</strong> ${data.working_details || "N/A"}</p>
+                  <p><strong>Fault:</strong> ${data.description}</p>
                   <p><strong>Created:</strong> ${new Date(data.created_at).toLocaleDateString()}</p>
                 </div>
               </div>
