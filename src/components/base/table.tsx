@@ -22,6 +22,10 @@ import {
 import { useState } from "react";
 import { DataTablePagination } from "../common/Pagination";
 import { DataTableViewOptions } from "../common/columnToggle";
+import { Button } from "../ui/button";
+import { Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import Status from "./tableComponents/status";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -31,14 +35,16 @@ interface DataTableProps<TData, TValue> {
   Create?: any;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<
+  TData extends { status?: string; actions?: React.ReactNode },
+>({
   columns,
   data,
   pagination,
   endPoint,
   FacedFilter,
   Create,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData, any>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -63,71 +69,153 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <>
-      <div className="my-3 flex flex-col gap-2 md:flex-row md:items-center">
-        {FacedFilter && <>{FacedFilter}</>}
-        <div className="flex gap-2">
-          {Create && <>{Create}</>}
+    <div className="flex min-h-screen flex-col space-y-4">
+      {/* Table Controls */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex-1">{FacedFilter}</div>
+        <div className="flex items-center gap-2">
+          {Create}
           <DataTableViewOptions table={table} />
         </div>
       </div>
-      <div className="my-2 w-full max-w-full overflow-x-auto rounded-md border bg-white shadow dark:bg-gray-900">
-        <Table className="w-full text-xs">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="whitespace-nowrap">
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className="whitespace-nowrap text-center"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+
+      {/* Table Container */}
+      <div className="relative rounded-md border bg-white shadow-sm dark:bg-gray-900">
+        <div className="overflow-x-auto">
+          <Table className="w-full">
+            {/* Header */}
+            <TableHeader className="sticky top-0 z-10 bg-white dark:bg-gray-900">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    if (header.column.id === 'status') {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          className="sticky right-[48px] bg-white dark:bg-gray-900 z-20"
+                          style={{
+                            right: 'var(--action-column-width, 48px)'
+                          }}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </TableHead>
+                      );
+                    }
+                    if (header.column.id === 'actions') {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          className="sticky right-0 bg-white dark:bg-gray-900 z-20"
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </TableHead>
+                      );
+                    }
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-16 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+
+            {/* Body */}
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell, index) => {
+                      if (cell.column.id === 'status') {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="sticky right-[48px] bg-white dark:bg-gray-900 z-20"
+                            style={{
+                              right: 'var(--action-column-width, 48px)'
+                            }}
+                          >
+                            {row.original.status && (
+                              <Status status={row.original.status} />
+                            )}
+                          </TableCell>
+                        );
+                      }
+                      if (cell.column.id === 'actions') {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="sticky right-0 bg-white dark:bg-gray-900 z-20"
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        );
+                      }
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className={`${
+                            index === 0
+                              ? "sticky left-0 bg-white dark:bg-gray-900"
+                              : ""
+                          } relative`}
+                        >
+                          <div className="overflow-hidden">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </div>
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
-      <div className="pt-3">
+      {/* Pagination */}
+      <div className="sticky bottom-0 bg-white py-4 dark:bg-gray-900">
         <DataTablePagination
           table={table}
           pagination={pagination}
           endPoint={endPoint}
         />
       </div>
-    </>
+    </div>
   );
 }

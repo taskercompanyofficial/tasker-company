@@ -24,7 +24,7 @@ export default function Form({
   complaint?: ComplaintsType;
   technician?: dataTypeIds[];
 }) {
-  const [tab, setTab] = useState("basic");
+  const [tab, setTab] = useState("advanced");
   const session = useSession();
   const token = session.data?.user?.token || "";
   const [history, setHistory] = useState<any[]>([]);
@@ -108,7 +108,7 @@ export default function Form({
       <Tabs defaultValue="basic" value={tab} onValueChange={setTab}>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <TabsList className="">
-            {["basic", "advanced", "files"].map((tab) => (
+            {["basic", "advanced", "files", "remarks", "history"].map((tab) => (
               <TabsTrigger key={tab} value={tab}>
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </TabsTrigger>
