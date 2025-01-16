@@ -49,7 +49,7 @@ export const ComplaintStatusOptions = [
     color: "149, 165, 166",
   },
   { value: "completed", label: "Completed", color: "39, 174, 96" },
-  { value: "pending-amount", label: "Pending Amount", color: "234, 84, 85" },
+  { value: "amount-pending", label: "Amount Pending", color: "234, 84, 85" },
   { value: "closed", label: "Closed", color: "41, 128, 185" },
   { value: "cancelled", label: "Cancelled", color: "192, 57, 43" },
 ];
