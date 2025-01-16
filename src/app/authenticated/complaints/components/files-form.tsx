@@ -5,6 +5,8 @@ import DocumentUploader from "@/components/document-uploader";
 import Link from "next/link";
 import { getImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
+import { auth } from "auth";
+import { useSession } from "next-auth/react";
 
 export default function FilesForm({
   data,
@@ -15,8 +17,8 @@ export default function FilesForm({
   setData: (data: any) => void;
   errors: any;
 }) {
-  const [selectedFile, setSelectedFile] = useState<any>(null);
-
+  const session = useSession();
+  const token = session?.data?.user?.token;
   const handleDocumentUpload = (files: any) => {
     if (files && files.length > 0) {
       // Parse files if they are JSON strings
@@ -52,10 +54,13 @@ export default function FilesForm({
   const handleDownloadFile = async (file: any) => {
     try {
       setDownloading(true);
-      const response = await fetch(getImageUrl(file.document_path));
+      const response = await fetch(getImageUrl(file.document_path), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
         if (response.status === 403) {
-          // Handle forbidden error
           console.error(
             "Access forbidden - you may not have permission to download this file",
           );
