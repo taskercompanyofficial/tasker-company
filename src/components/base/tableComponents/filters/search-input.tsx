@@ -55,7 +55,6 @@ export default function SearchInput() {
         onChange={handleSearch}
         value={searchValue}
         autoFocus={true}
-        icon={<SearchIcon className="h-4 w-4" />}
         className="w-full rounded bg-background"
       />
     </div>

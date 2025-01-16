@@ -22,8 +22,6 @@ import {
 import { useState } from "react";
 import { DataTablePagination } from "../common/Pagination";
 import { DataTableViewOptions } from "../common/columnToggle";
-import { Button } from "../ui/button";
-import { Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import Status from "./tableComponents/status";
 
 interface DataTableProps<TData, TValue> {
@@ -80,21 +78,21 @@ export function DataTable<
       </div>
 
       {/* Table Container */}
-      <div className="relative rounded-md border bg-white shadow-sm dark:bg-gray-900">
+      <div className="relative overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-900">
         <div className="overflow-x-auto">
           <Table className="w-full">
             {/* Header */}
-            <TableHeader className="sticky top-0 z-10 bg-white dark:bg-gray-900">
+            <TableHeader className="sticky top-0 z-10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    if (header.column.id === 'status') {
+                    if (header.column.id === "status") {
                       return (
                         <TableHead
                           key={header.id}
-                          className="sticky right-[48px] bg-white dark:bg-gray-900 z-20"
+                          className="sticky right-[48px] z-20"
                           style={{
-                            right: 'var(--action-column-width, 48px)'
+                            right: "var(--action-column-width, 48px)",
                           }}
                         >
                           {header.isPlaceholder
@@ -106,11 +104,11 @@ export function DataTable<
                         </TableHead>
                       );
                     }
-                    if (header.column.id === 'actions') {
+                    if (header.column.id === "actions") {
                       return (
                         <TableHead
                           key={header.id}
-                          className="sticky right-0 bg-white dark:bg-gray-900 z-20"
+                          className="sticky right-0 z-20"
                         >
                           {header.isPlaceholder
                             ? null
@@ -145,13 +143,13 @@ export function DataTable<
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell, index) => {
-                      if (cell.column.id === 'status') {
+                      if (cell.column.id === "status") {
                         return (
                           <TableCell
                             key={cell.id}
-                            className="sticky right-[48px] bg-white dark:bg-gray-900 z-20"
+                            className="sticky right-[48px] z-20"
                             style={{
-                              right: 'var(--action-column-width, 48px)'
+                              right: "var(--action-column-width, 48px)",
                             }}
                           >
                             {row.original.status && (
@@ -160,11 +158,11 @@ export function DataTable<
                           </TableCell>
                         );
                       }
-                      if (cell.column.id === 'actions') {
+                      if (cell.column.id === "actions") {
                         return (
                           <TableCell
                             key={cell.id}
-                            className="sticky right-0 bg-white dark:bg-gray-900 z-20"
+                            className="sticky right-0 z-20"
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
@@ -174,14 +172,7 @@ export function DataTable<
                         );
                       }
                       return (
-                        <TableCell
-                          key={cell.id}
-                          className={`${
-                            index === 0
-                              ? "sticky left-0 bg-white dark:bg-gray-900"
-                              : ""
-                          } relative`}
-                        >
+                        <TableCell key={cell.id}>
                           <div className="overflow-hidden">
                             {flexRender(
                               cell.column.columnDef.cell,
