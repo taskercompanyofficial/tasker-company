@@ -14,6 +14,6 @@ export default function Page() {
     return <LoadingScreen text="Loading your workspace..." />;
   }
 
-  router.push("/login");
+  // router.push("/login");
   return <LoadingScreen text="Redirecting to login..." />;
 }

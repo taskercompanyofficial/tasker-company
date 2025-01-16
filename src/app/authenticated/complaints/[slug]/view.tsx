@@ -20,6 +20,7 @@ import {
   FileCheck,
   Download,
   Printer,
+  Images
 } from "lucide-react";
 
 export default function ViewComplaint({ complaint }: { complaint: any }) {
@@ -54,6 +55,23 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
     window.print();
   };
 
+  const downloadAllImages = async () => {
+    const imageFiles = files.filter((file: any) => 
+      file.document_path.match(/\.(jpg|jpeg|png|gif|webp)$/i)
+    );
+
+    for (const file of imageFiles) {
+      const link = document.createElement('a');
+      link.href = getImageUrl(file.document_path);
+      link.download = file.file_name || 'image';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      // Add small delay between downloads
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-8 p-6 bg-gradient-to-b from-background to-muted/20">
       <Card className="p-8 shadow-2xl backdrop-blur-sm bg-background/95 rounded-xl border-2">
@@ -67,6 +85,14 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
               <Badge className="text-lg px-4 py-1 rounded-full" variant="secondary">{complaint.status}</Badge>
             </div>
             <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={downloadAllImages}
+                className="flex items-center gap-2 hover:scale-105 transition-transform"
+              >
+                <Images className="h-4 w-4" />
+                Download Images
+              </Button>
               <Button
                 variant="outline"
                 onClick={exportToExcel}
@@ -224,17 +250,19 @@ export default function ViewComplaint({ complaint }: { complaint: any }) {
                       className="overflow-hidden hover:shadow-2xl transition-all duration-500 group rounded-xl border-2"
                     >
                       {isImage ? (
-                        <div className="relative aspect-video group-hover:scale-105 transition-transform duration-500">
-                          <Image
-                            src={getImageUrl(file.document_path)}
-                            alt={file.document_type}
-                            fill
-                            className="object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                            <p className="text-white text-base font-semibold">{file.document_type}</p>
+                        <a href={getImageUrl(file.document_path)} target="_blank" rel="noopener noreferrer">
+                          <div className="relative aspect-video group-hover:scale-105 transition-transform duration-500">
+                            <Image
+                              src={getImageUrl(file.document_path)}
+                              alt={file.document_type}
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                              <p className="text-white text-base font-semibold">{file.document_type}</p>
+                            </div>
                           </div>
-                        </div>
+                        </a>
                       ) : (
                         <div className="flex items-center gap-4 p-6 group-hover:bg-muted/50 transition-all duration-300">
                           <FileText className="h-10 w-10 text-primary group-hover:scale-110 transition-transform" />
