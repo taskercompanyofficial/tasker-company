@@ -35,9 +35,13 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
   },
   {
     accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="#" />,
+    cell: ({ row, table }) => {
+      const pageSize = table.getState().pagination.pageSize;
+      const pageIndex = table.getState().pagination.pageIndex;
+      const rowIndex = row.index;
+      return pageIndex * pageSize + rowIndex + 1;
+    },
   },
   {
     accessorKey: "complain_num",
@@ -96,7 +100,7 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     cell: ({ row }) => {
       const applicant_adress = row.getValue("applicant_adress") as string;
       return <ReadMore text={applicant_adress} />;
-    }
+    },
   },
   {
     accessorKey: "description",
@@ -106,7 +110,7 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     cell: ({ row }) => {
       const description = row.getValue("description") as string;
       return <ReadMore text={description} />;
-    }
+    },
   },
 
   {
@@ -214,7 +218,7 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     cell: ({ row }) => {
       const working_details = row.getValue("working_details") as string;
       return <ReadMore text={working_details} />;
-    }
+    },
   },
   {
     accessorKey: "happy_call_remarks",
@@ -224,8 +228,9 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     cell: ({ row }) => {
       const happy_call_remarks = row.getValue("happy_call_remarks") as string;
       return <ReadMore text={happy_call_remarks} />;
-    }
-  }, {
+    },
+  },
+  {
     accessorKey: "created_at",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
