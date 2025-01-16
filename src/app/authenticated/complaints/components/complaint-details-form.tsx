@@ -7,6 +7,13 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { TextareaInput } from "@/components/TextareaInput";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ComplaintDetailsForm({
   data,
@@ -22,7 +29,6 @@ export default function ComplaintDetailsForm({
   const { data: branchesData, isLoading: branchesLoading } = useFetch<
     dataTypeIds[]
   >(`${API_URL}/crm/fetch-branches`);
-
 
   return (
     <div className="space-y-6 rounded-lg bg-white p-4 shadow-sm dark:bg-slate-900">
@@ -141,7 +147,9 @@ export default function ComplaintDetailsForm({
         <TextareaInput
           label="Working Details"
           placeholder="Enter any additional details..."
-          onChange={(e) => setData({ ...data, working_details: e.target.value })}
+          onChange={(e) =>
+            setData({ ...data, working_details: e.target.value })
+          }
           value={data.working_details}
           className="min-h-[120px] transition-all duration-200 hover:shadow-md"
         />
@@ -154,6 +162,80 @@ export default function ComplaintDetailsForm({
           value={data.happy_call_remarks}
           className="min-h-[120px] transition-all duration-200 hover:shadow-md"
         />
+      </div>
+      <div className="mt-6">
+        <h3 className="mb-4 text-sm font-semibold">
+          Lab/Service Provider Details
+        </h3>
+        <div className="flex flex-col gap-4">
+          <Collapsible>
+            <CollapsibleTrigger className="bg-gray-100 hover:bg-gray-50 flex w-full items-center justify-between rounded border p-1">
+              <span>Service Provider #1</span>
+              <ChevronDown className="h-5 w-5" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="p-4">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+                <SearchSelect
+                  options={[
+                    { value: "1", label: "Lab A" },
+                    { value: "2", label: "Lab B" },
+                    { value: "3", label: "Service Provider X" },
+                    { value: "4", label: "Service Provider Y" },
+                  ]}
+                  label="Lab/Service Provider"
+                  value={data.service_provider}
+                  onChange={(e) => setData({ ...data, service_provider: e })}
+                  width="full"
+                  className="mt-2 transition-all duration-200 hover:shadow-md"
+                />
+
+                <SearchSelect
+                  options={[
+                    { value: "pcb", label: "PCB Repair" },
+                    { value: "display", label: "Display Replacement" },
+                    { value: "chip", label: "Chip Level Service" },
+                    { value: "diagnostic", label: "Diagnostic Test" },
+                  ]}
+                  label="Work Type"
+                  value={data.work_type}
+                  onChange={(e) => setData({ ...data, work_type: e })}
+                  width="full"
+                  className="mt-2 transition-all duration-200 hover:shadow-md"
+                />
+
+                <LabelInputContainer
+                  label="Service Amount"
+                  placeholder="Enter amount to be paid"
+                  type="number"
+                  onChange={(e) =>
+                    setData({ ...data, service_amount: e.target.value })
+                  }
+                  value={data.service_amount}
+                  className="transition-all duration-200 hover:shadow-md"
+                />
+
+                <TextareaInput
+                  label="Work Description"
+                  placeholder="Enter details about the work to be done..."
+                  onChange={(e) =>
+                    setData({ ...data, work_description: e.target.value })
+                  }
+                  value={data.work_description}
+                  className="transition-all duration-200 hover:shadow-md"
+                />
+              </div>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  /* Add logic to add more service providers */
+                }}
+              >
+                Add Another Service Provider
+              </Button>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
       </div>
     </div>
   );

@@ -16,6 +16,8 @@ import { COMPLAINTS } from "@/lib/apiEndPoints";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Remarks from "../components/remarks";
+import History from "../components/history";
 
 export default function Form({
   complaint,
@@ -107,12 +109,18 @@ export default function Form({
     <div className="rounded-lg bg-white p-2 shadow-md dark:bg-slate-950 md:p-4">
       <Tabs defaultValue="basic" value={tab} onValueChange={setTab}>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <TabsList className="">
-            {["basic", "advanced", "files", "remarks", "history"].map((tab) => (
-              <TabsTrigger key={tab} value={tab}>
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </TabsTrigger>
-            ))}
+          <TabsList>
+            {["basic", "advanced", "attachments", "remarks", "history"].map(
+              (tab) => (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="min-w-[100px] flex-1"
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </TabsTrigger>
+              ),
+            )}
           </TabsList>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <div className="flex gap-1">
@@ -161,8 +169,14 @@ export default function Form({
             technician={technician}
           />
         </TabsContent>
-        <TabsContent value="files">
+        <TabsContent value="attachments">
           <FilesForm data={data} setData={updateData} errors={errors} />
+        </TabsContent>
+        <TabsContent value="remarks">
+          <Remarks />
+        </TabsContent>
+        <TabsContent value="history">
+          <History />
         </TabsContent>
       </Tabs>
 
