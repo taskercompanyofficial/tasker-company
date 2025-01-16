@@ -7,6 +7,7 @@ import { getImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
 import { auth } from "auth";
 import { useSession } from "next-auth/react";
+import myAxios from "@/lib/axios.config";
 
 export default function FilesForm({
   data,
@@ -54,21 +55,14 @@ export default function FilesForm({
   const handleDownloadFile = async (file: any) => {
     try {
       setDownloading(true);
-      const response = await fetch(getImageUrl(file.document_path), {
+      const response = await myAxios.get(getImageUrl(file.document_path), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        responseType: "blob",
       });
-      if (!response.ok) {
-        if (response.status === 403) {
-          console.error(
-            "Access forbidden - you may not have permission to download this file",
-          );
-          return;
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const blob = await response.blob();
+
+      const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -78,6 +72,12 @@ export default function FilesForm({
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error: any) {
+      if (error.response?.status === 403) {
+        console.error(
+          "Access forbidden - you may not have permission to download this file",
+        );
+        return;
+      }
       toast.error(error?.message || "Failed to download file");
     } finally {
       setDownloading(false);
