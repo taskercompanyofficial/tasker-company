@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,35 +12,39 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SearchSelect from "@/components/ui/search-select";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { SelectInput } from "@/components/SelectInput";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ApplianceType =
   | "AC"
-  | "Washing Machine"
-  | "Refrigerator"
+  | "Washing-Machine"
+  | "Refrigerator" 
   | "Oven"
   | "Microwave"
-  | "Water Dispenser";
+  | "Water-Dispenser"
+  | "TV"
+  | "Air-Purifier";
+
 type ProductType =
-  | "Indoor Unit"
-  | "Outdoor Unit"
-  | "Top Load"
-  | "Front Load"
-  | "Double Door"
-  | "Single Door"
+  | "Indoor-Unit"
+  | "Outdoor-Unit" 
+  | "Top-Load"
+  | "Front-Load"
+  | "Double-Door"
+  | "Single-Door"
   | "Built-in"
-  | "Counter Top"
-  | "Bottom Load";
+  | "Counter-Top"
+  | "Bottom-Load"
+  | "LED"
+  | "LCD"
+  | "Smart-TV"
+  | "HEPA-Filter"
+  | "Carbon-Filter";
+
+type PartStatus = "Pending" | "Ordered" | "Received" | "Cancelled" | "Returned";
 
 interface Part {
   id: number;
@@ -49,15 +53,19 @@ interface Part {
   used: boolean;
   appliance: ApplianceType;
   product: ProductType;
+  serialNumber?: string;
+  warranty?: string;
 }
 
 const PRODUCTS: Record<ApplianceType, ProductType[]> = {
-  AC: ["Indoor Unit", "Outdoor Unit"],
-  "Washing Machine": ["Top Load", "Front Load"],
-  Refrigerator: ["Double Door", "Single Door"],
-  Oven: ["Built-in", "Counter Top"],
-  Microwave: ["Counter Top"],
-  "Water Dispenser": ["Bottom Load", "Top Load"],
+  AC: ["Indoor-Unit", "Outdoor-Unit"],
+  "Washing-Machine": ["Top-Load", "Front-Load"],
+  Refrigerator: ["Double-Door", "Single-Door"],
+  Oven: ["Built-in", "Counter-Top"],
+  Microwave: ["Counter-Top"],
+  "Water-Dispenser": ["Bottom-Load", "Top-Load"],
+  TV: ["LED", "LCD", "Smart-TV"],
+  "Air-Purifier": ["HEPA-Filter", "Carbon-Filter"]
 } as const;
 
 const APPLIANCE_PARTS: Record<
@@ -65,28 +73,37 @@ const APPLIANCE_PARTS: Record<
   Partial<Record<ProductType, string[]>>
 > = {
   AC: {
-    "Indoor Unit": ["Evaporator Coil", "Blower Motor", "PCB", "Display"],
-    "Outdoor Unit": ["Compressor", "Condenser", "Fan Motor", "Capacitor"],
+    "Indoor-Unit": ["Evaporator Coil", "Blower Motor", "PCB", "Display", "Remote Control", "Air Filter"],
+    "Outdoor-Unit": ["Compressor", "Condenser", "Fan Motor", "Capacitor", "Refrigerant", "Control Board"],
   },
-  "Washing Machine": {
-    "Top Load": ["Agitator", "Lid Switch", "Timer", "Drain Pump"],
-    "Front Load": ["Door Lock", "Drum", "Shock Absorbers", "Belt"],
+  "Washing-Machine": {
+    "Top-Load": ["Agitator", "Lid Switch", "Timer", "Drain Pump", "Motor", "Control Panel"],
+    "Front-Load": ["Door Lock", "Drum", "Shock Absorbers", "Belt", "Heating Element", "Seal"],
   },
   Refrigerator: {
-    "Double Door": ["Compressor", "Defrost Timer", "Fan Motor", "Thermostat"],
-    "Single Door": ["Compressor", "Door Seal", "Thermostat", "Shelf"],
+    "Double-Door": ["Compressor", "Defrost Timer", "Fan Motor", "Thermostat", "Ice Maker", "Door Seal"],
+    "Single-Door": ["Compressor", "Door Seal", "Thermostat", "Shelf", "Crisper", "Light"],
   },
   Oven: {
-    "Built-in": ["Heating Element", "Thermostat", "Control Panel", "Fan"],
-    "Counter Top": ["Timer", "Heating Element", "Door Switch", "Tray"],
+    "Built-in": ["Heating Element", "Thermostat", "Control Panel", "Fan", "Door Hinge", "Light"],
+    "Counter-Top": ["Timer", "Heating Element", "Door Switch", "Tray", "Control Knob", "Glass"],
   },
   Microwave: {
-    "Counter Top": ["Magnetron", "Turntable", "Door Switch", "Control Panel"],
+    "Counter-Top": ["Magnetron", "Turntable", "Door Switch", "Control Panel", "Waveguide", "Transformer"],
   },
-  "Water Dispenser": {
-    "Bottom Load": ["Compressor", "Water Pump", "Cooling Tank", "Filter"],
-    "Top Load": ["Tap", "Float Valve", "Water Tank", "Filter"],
+  "Water-Dispenser": {
+    "Bottom-Load": ["Compressor", "Water Pump", "Cooling Tank", "Filter", "Tap", "Thermostat"],
+    "Top-Load": ["Tap", "Float Valve", "Water Tank", "Filter", "Cooling System", "Heating Element"],
   },
+  TV: {
+    "LED": ["Screen", "Power Board", "Main Board", "Backlight", "Speakers", "Remote"],
+    "LCD": ["Display Panel", "Inverter", "T-Con Board", "Power Supply", "Buttons", "Stand"],
+    "Smart-TV": ["Motherboard", "WiFi Module", "Display", "Power Board", "IR Sensor", "HDMI Ports"]
+  },
+  "Air-Purifier": {
+    "HEPA-Filter": ["Filter Element", "Fan", "Control Board", "Sensor", "Pre-filter", "Motor"],
+    "Carbon-Filter": ["Carbon Layer", "Fan Assembly", "Circuit Board", "Filter Frame", "UV Lamp", "Ionizer"]
+  }
 } as const;
 
 const BRANDS = [
@@ -98,6 +115,10 @@ const BRANDS = [
   "PEL",
   "Gree",
   "Kenwood",
+  "Sony",
+  "Panasonic",
+  "TCL",
+  "Philips"
 ] as const;
 
 type Brand = (typeof BRANDS)[number];
@@ -110,27 +131,36 @@ interface BrandPart {
   part: string;
   quantity: number;
   isCustom?: boolean;
+  status: PartStatus;
+  serialNumber?: string;
+  warranty?: string;
+  price?: number;
 }
 
 export default function Store() {
+  const [loading, setLoading] = useState(false);
   const [parts, setParts] = useState<Part[]>([]);
   const [brandParts, setBrandParts] = useState<BrandPart[]>([]);
 
   const [selectedAppliance, setSelectedAppliance] =
     useState<ApplianceType>("AC");
   const [selectedProduct, setSelectedProduct] =
-    useState<ProductType>("Indoor Unit");
+    useState<ProductType>("Indoor-Unit");
 
   const [newPart, setNewPart] = useState<{
     name: string;
     quantity: number;
     appliance: ApplianceType;
     product: ProductType;
+    serialNumber?: string;
+    warranty?: string;
   }>({
     name: "",
     quantity: 0,
     appliance: selectedAppliance,
     product: selectedProduct,
+    serialNumber: "",
+    warranty: ""
   });
 
   const [newBrandPart, setNewBrandPart] = useState<{
@@ -140,6 +170,10 @@ export default function Store() {
     part: string;
     quantity: number;
     isCustom: boolean;
+    status: PartStatus;
+    serialNumber?: string;
+    warranty?: string;
+    price?: number;
   }>({
     brand: "",
     appliance: selectedAppliance,
@@ -147,70 +181,76 @@ export default function Store() {
     part: "",
     quantity: 0,
     isCustom: false,
+    status: "Pending",
+    serialNumber: "",
+    warranty: "",
+    price: 0
   });
-
-  useEffect(() => {
-    setNewPart(prev => ({
-      ...prev,
-      name: "", // Reset part name when appliance/product changes
-      appliance: selectedAppliance,
-      product: selectedProduct
-    }));
-  }, [selectedAppliance, selectedProduct]);
-
-  useEffect(() => {
-    setNewBrandPart(prev => ({
-      ...prev,
-      appliance: selectedAppliance,
-      product: selectedProduct,
-      part: "" // Reset part when appliance/product changes
-    }));
-  }, [selectedAppliance, selectedProduct]);
 
   const handleAddPart = () => {
     if (newPart.name && newPart.quantity > 0) {
-      setParts([
-        ...parts,
-        {
-          id: parts.length + 1,
-          name: newPart.name,
-          quantity: newPart.quantity,
-          used: false,
+      setLoading(true);
+      setTimeout(() => {
+        setParts([
+          ...parts,
+          {
+            id: parts.length + 1,
+            name: newPart.name,
+            quantity: newPart.quantity,
+            used: false,
+            appliance: selectedAppliance,
+            product: selectedProduct,
+            serialNumber: newPart.serialNumber,
+            warranty: newPart.warranty
+          },
+        ]);
+        setNewPart({
+          name: "",
+          quantity: 0,
           appliance: selectedAppliance,
           product: selectedProduct,
-        },
-      ]);
-      setNewPart({
-        name: "",
-        quantity: 0,
-        appliance: selectedAppliance,
-        product: selectedProduct,
-      });
+          serialNumber: "",
+          warranty: ""
+        });
+        setLoading(false);
+      }, 500);
     }
   };
 
   const handleAddBrandPart = () => {
     if (newBrandPart.brand && newBrandPart.part && newBrandPart.quantity > 0) {
-      setBrandParts([
-        ...brandParts,
-        {
-          id: brandParts.length + 1,
-          brand: newBrandPart.brand as Brand,
-          appliance: newBrandPart.appliance,
-          product: newBrandPart.product,
-          part: newBrandPart.part,
-          quantity: newBrandPart.quantity,
-          isCustom: newBrandPart.isCustom,
-        },
-      ]);
-      setNewBrandPart({
-        brand: "",
-        appliance: selectedAppliance,
-        product: selectedProduct,
-        part: "",
-        quantity: 0,
-        isCustom: false,
-      });
+      setLoading(true);
+      setTimeout(() => {
+        setBrandParts([
+          ...brandParts,
+          {
+            id: brandParts.length + 1,
+            brand: newBrandPart.brand as Brand,
+            appliance: newBrandPart.appliance,
+            product: newBrandPart.product,
+            part: newBrandPart.part,
+            quantity: newBrandPart.quantity,
+            isCustom: newBrandPart.isCustom,
+            status: newBrandPart.status,
+            serialNumber: newBrandPart.serialNumber,
+            warranty: newBrandPart.warranty,
+            price: newBrandPart.price
+          },
+        ]);
+        setNewBrandPart({
+          brand: "",
+          appliance: selectedAppliance,
+          product: selectedProduct,
+          part: "",
+          quantity: 0,
+          isCustom: false,
+          status: "Pending",
+          serialNumber: "",
+          warranty: "",
+          price: 0
+        });
+        setLoading(false);
+      }, 500);
     }
   };
 
@@ -233,7 +273,6 @@ export default function Store() {
               }}
               className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
             >
-              
               <SelectInput
                 options={
                   Object.keys(APPLIANCE_PARTS).map((appliance) => ({
@@ -241,9 +280,11 @@ export default function Store() {
                     value: appliance,
                   })) || []
                 }
-                onChange={(value: string) =>
-                  setSelectedAppliance(value as ApplianceType)
-                }
+                onChange={(value: string) => {
+                  setSelectedAppliance(value as ApplianceType);
+                  setSelectedProduct(PRODUCTS[value as ApplianceType][0]);
+                  setNewPart((prev) => ({ ...prev, name: "" }));
+                }}
                 selected={selectedAppliance}
                 label="Search Appliance"
               />
@@ -255,9 +296,10 @@ export default function Store() {
                     value: product,
                   })) || []
                 }
-                onChange={(value: string) =>
-                  setSelectedProduct(value as ProductType)
-                }
+                onChange={(value: string) => {
+                  setSelectedProduct(value as ProductType);
+                  setNewPart((prev) => ({ ...prev, name: "" }));
+                }}
                 selected={selectedProduct}
                 label="Search Type"
               />
@@ -294,56 +336,68 @@ export default function Store() {
               />
               <br />
               <div className="flex items-center justify-end">
-                <Button type="submit">Add</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Adding..." : "Add"}
+                </Button>
               </div>
             </form>
 
             <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Appliance</TableHead>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Part Name</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead>Used</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {parts.map((part) => (
-                    <TableRow key={part.id}>
-                      <TableCell>{part.appliance}</TableCell>
-                      <TableCell>{part.product}</TableCell>
-                      <TableCell>{part.name}</TableCell>
-                      <TableCell>{part.quantity}</TableCell>
-                      <TableCell>
-                        <Checkbox
-                          checked={part.used}
-                          onCheckedChange={() =>
-                            setParts(
-                              parts.map((p) =>
-                                p.id === part.id ? { ...p, used: !p.used } : p,
-                              ),
-                            )
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() =>
-                            setParts(parts.filter((p) => p.id !== part.id))
-                          }
-                        >
-                          Remove
-                        </Button>
-                      </TableCell>
+              {loading ? (
+                <div className="space-y-3">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Appliance</TableHead>
+                      <TableHead>Product</TableHead>
+                      <TableHead>Part Name</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Used</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {parts.map((part) => (
+                      <TableRow key={part.id}>
+                        <TableCell>{part.appliance}</TableCell>
+                        <TableCell>{part.product}</TableCell>
+                        <TableCell>{part.name}</TableCell>
+                        <TableCell>{part.quantity}</TableCell>
+                        <TableCell>
+                          <Checkbox
+                            checked={part.used}
+                            onCheckedChange={() =>
+                              setParts(
+                                parts.map((p) =>
+                                  p.id === part.id
+                                    ? { ...p, used: !p.used }
+                                    : p,
+                                ),
+                              )
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() =>
+                              setParts(parts.filter((p) => p.id !== part.id))
+                            }
+                          >
+                            Remove
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </div>
           </div>
         </TabsContent>
@@ -359,71 +413,51 @@ export default function Store() {
               }}
               className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
             >
-              <div className="space-y-2">
-                <SearchSelect
-                  value={newBrandPart.brand}
-                  onChange={(value: string) =>
-                    setNewBrandPart({ ...newBrandPart, brand: value })
-                  }
-                  options={BRANDS.map((brand) => ({
-                    label: brand,
-                    value: brand,
-                  }))}
-                  label="Search brands"
-                  width="full"
-                />
-              </div>
+              <SearchSelect
+                value={newBrandPart.brand}
+                onChange={(value: string) =>
+                  setNewBrandPart({ ...newBrandPart, brand: value })
+                }
+                options={BRANDS.map((brand) => ({
+                  label: brand,
+                  value: brand,
+                }))}
+                label="Search brands"
+                width="full"
+              />
 
-              <div className="space-y-2">
-                <Label>Appliance Type</Label>
-                <Select
-                  value={newBrandPart.appliance}
-                  onValueChange={(value: ApplianceType) => {
-                    setNewBrandPart({
-                      ...newBrandPart,
-                      appliance: value,
-                      product: PRODUCTS[value][0],
-                      part: "", // Reset part when appliance changes
-                    });
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Appliance" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(APPLIANCE_PARTS).map((appliance) => (
-                      <SelectItem key={appliance} value={appliance}>
-                        {appliance}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <SelectInput
+                options={Object.keys(APPLIANCE_PARTS).map((appliance) => ({
+                  label: appliance,
+                  value: appliance,
+                }))}
+                onChange={(value: string) => {
+                  setNewBrandPart({
+                    ...newBrandPart,
+                    appliance: value as ApplianceType,
+                    product: PRODUCTS[value as ApplianceType][0],
+                    part: "",
+                  });
+                }}
+                selected={newBrandPart.appliance}
+                label="Appliance Type"
+              />
 
-              <div className="space-y-2">
-                <Label>Product Type</Label>
-                <Select
-                  value={newBrandPart.product}
-                  onValueChange={(value: ProductType) =>
-                    setNewBrandPart({ 
-                      ...newBrandPart, 
-                      product: value,
-                      part: "", // Reset part when product changes
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PRODUCTS[newBrandPart.appliance].map((product) => (
-                      <SelectItem key={product} value={product}>
-                        {product}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <SelectInput
+                options={PRODUCTS[newBrandPart.appliance].map((product) => ({
+                  label: product,
+                  value: product,
+                }))}
+                onChange={(value: string) =>
+                  setNewBrandPart({
+                    ...newBrandPart,
+                    product: value as ProductType,
+                    part: "",
+                  })
+                }
+                selected={newBrandPart.product}
+                label="Product Type"
+              />
 
               <div className="space-y-2">
                 {newBrandPart.isCustom ? (
@@ -474,6 +508,24 @@ export default function Store() {
                 </div>
               </div>
 
+              <SelectInput
+                options={[
+                  { label: "Pending", value: "Pending" },
+                  { label: "Ordered", value: "Ordered" },
+                  { label: "Received", value: "Received" },
+                  { label: "Cancelled", value: "Cancelled" },
+                  { label: "Returned", value: "Returned" }
+                ]}
+                onChange={(value: string) =>
+                  setNewBrandPart({
+                    ...newBrandPart,
+                    status: value as PartStatus,
+                  })
+                }
+                selected={newBrandPart.status}
+                label="Status"
+              />
+
               <div className="space-y-2">
                 <div className="flex gap-2">
                   <LabelInputContainer
@@ -489,50 +541,83 @@ export default function Store() {
                     }
                     placeholder="Enter quantity"
                   />
-                  <Button type="submit">Add</Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Adding..." : "Add"}
+                  </Button>
                 </div>
               </div>
             </form>
 
             <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Brand</TableHead>
-                    <TableHead>Appliance</TableHead>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Part Name</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead>Custom</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {brandParts.map((part) => (
-                    <TableRow key={part.id}>
-                      <TableCell>{part.brand}</TableCell>
-                      <TableCell>{part.appliance}</TableCell>
-                      <TableCell>{part.product}</TableCell>
-                      <TableCell>{part.part}</TableCell>
-                      <TableCell>{part.quantity}</TableCell>
-                      <TableCell>{part.isCustom ? "Yes" : "No"}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() =>
-                            setBrandParts(
-                              brandParts.filter((p) => p.id !== part.id),
-                            )
-                          }
-                        >
-                          Remove
-                        </Button>
-                      </TableCell>
+              {loading ? (
+                <div className="space-y-3">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Brand</TableHead>
+                      <TableHead>Appliance</TableHead>
+                      <TableHead>Product</TableHead>
+                      <TableHead>Part Name</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Custom</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {brandParts.map((part) => (
+                      <TableRow key={part.id}>
+                        <TableCell>{part.brand}</TableCell>
+                        <TableCell>{part.appliance}</TableCell>
+                        <TableCell>{part.product}</TableCell>
+                        <TableCell>{part.part}</TableCell>
+                        <TableCell>{part.quantity}</TableCell>
+                        <TableCell>
+                          <SelectInput
+                            options={[
+                              { label: "Pending", value: "Pending" },
+                              { label: "Ordered", value: "Ordered" },
+                              { label: "Received", value: "Received" },
+                              { label: "Cancelled", value: "Cancelled" },
+                              { label: "Returned", value: "Returned" }
+                            ]}
+                            onChange={(value: string) =>
+                              setBrandParts(
+                                brandParts.map((p) =>
+                                  p.id === part.id
+                                    ? { ...p, status: value as PartStatus }
+                                    : p,
+                                ),
+                              )
+                            }
+                            selected={part.status}
+                            label=""
+                          />
+                        </TableCell>
+                        <TableCell>{part.isCustom ? "Yes" : "No"}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() =>
+                              setBrandParts(
+                                brandParts.filter((p) => p.id !== part.id),
+                              )
+                            }
+                          >
+                            Remove
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </div>
           </div>
         </TabsContent>
