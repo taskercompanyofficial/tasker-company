@@ -130,6 +130,9 @@ export default function Form({
           </TabsList>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <div className="flex gap-1">
+              <p className="text-sm text-muted-foreground">
+                {complaint?.complain_num}
+              </p>
               <Button
                 variant="outline"
                 size="sm"
