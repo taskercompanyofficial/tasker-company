@@ -83,7 +83,7 @@ export default function SearchSelect({
   };
 
   return (
-    <div className={cn("space-y-1 pt-1", className)}>
+    <div className={cn("space-y-1 pt-1 mt-2", className)}>
       {/* Label */}
       {label && (
         <Label

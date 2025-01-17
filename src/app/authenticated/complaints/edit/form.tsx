@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Remarks from "../components/remarks";
 import History from "../components/history";
+import Store from "../components/strore";
 
 export default function Form({
   complaint,
@@ -110,17 +111,22 @@ export default function Form({
       <Tabs defaultValue="basic" value={tab} onValueChange={setTab}>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <TabsList>
-            {["basic", "advanced", "attachments", "remarks", "history"].map(
-              (tab) => (
-                <TabsTrigger
-                  key={tab}
-                  value={tab}
-                  className="min-w-[100px] flex-1"
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </TabsTrigger>
-              ),
-            )}
+            {[
+              "basic",
+              "advanced",
+              "attachments",
+              "store",
+              "remarks",
+              "history",
+            ].map((tab) => (
+              <TabsTrigger
+                key={tab}
+                value={tab}
+                className="min-w-[100px] flex-1"
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <div className="flex gap-1">
@@ -171,6 +177,9 @@ export default function Form({
         </TabsContent>
         <TabsContent value="attachments">
           <FilesForm data={data} setData={updateData} errors={errors} />
+        </TabsContent>
+        <TabsContent value="store">
+          <Store />
         </TabsContent>
         <TabsContent value="remarks">
           <Remarks />

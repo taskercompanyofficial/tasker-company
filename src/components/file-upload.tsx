@@ -134,6 +134,10 @@ export function FileUpload({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
         className={`relative flex min-h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-xl bg-gray-50 p-4 text-slate-300 transition-colors duration-200 dark:bg-slate-800 ${isDragging ? "border-2 border-slate-600 bg-slate-700" : ""} `}
       >
         <input
