@@ -149,8 +149,8 @@ export default function BasicForm({
           className="bg-gray-50"
         />
         <TextareaInput
-          label="Description"
-          placeholder="Descrbe the issue..."
+          label="Fault"
+          placeholder="Describe the fault..."
           maxLength={250}
           value={data.description}
           onChange={(e) => setData({ ...data, description: e.target.value })}

@@ -66,7 +66,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 🔧 *Service Information*
 *Branch:* ${data.branch_name || "N/A"}
 *Type:* ${data.complaint_type}
-*Fault:* ${data.description}
+*Complaint:* ${data.description}
 
 *Created:* ${new Date(data.created_at).toLocaleDateString()}
 -------------------`;

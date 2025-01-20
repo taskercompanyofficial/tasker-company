@@ -9,6 +9,7 @@ export const getRoleOptions = [
   { value: "sales-assistant", label: "Sales Assistant" },
   { value: "cso", label: "CSO" },
   { value: "csr", label: "CSR" },
+  { value: "helper", label: "Helper" },
 ];
 
 export const statusOptions = [
@@ -70,6 +71,10 @@ export const warrantyTypeOptions = [
 
 export const complaintTypeOptions = [
   // Free Installation, paid installation, warranty, revenue, serivce, warrenty+revenue, others
+  { value: "new-ac-free-installation", label: "New AC Free Installation" },
+  { value: "old-ac-free-installation", label: "Old AC Free Installation" },
+  { value: "old-c/o-free-installation", label: "Old C/O Free Installation" },
+  { value: "old-c/o-installation", label: "Old C/O Installation" },
   { value: "free-installation", label: "Free Installation" },
   { value: "paid-installation", label: "Paid Installation" },
   { value: "warranty", label: "Warranty" },

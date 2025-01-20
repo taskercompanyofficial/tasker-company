@@ -154,12 +154,12 @@ export default function ComplaintDetailsForm({
           className="min-h-[120px] transition-all duration-200 hover:shadow-md"
         />
         <TextareaInput
-          label="Happy Call Remarks"
-          placeholder="Enter happy call remarks..."
+          label="Additional Comment For Technition"
+          placeholder="Enter the comment for technician"
           onChange={(e) =>
-            setData({ ...data, happy_call_remarks: e.target.value })
+            setData({ ...data, comments_for_technician: e.target.value })
           }
-          value={data.happy_call_remarks}
+          value={data.comments_for_technician}
           className="min-h-[120px] transition-all duration-200 hover:shadow-md"
         />
       </div>

@@ -61,7 +61,7 @@ export default function Form({
     complaint_type: complaint?.complaint_type || "",
     provided_services: complaint?.provided_services || "",
     warranty_type: complaint?.warranty_type || "",
-    happy_call_remarks: complaint?.happy_call_remarks || "",
+    comments_for_technician: complaint?.technician || "",
     files: complaint?.files || [],
   });
   const router = useRouter();
