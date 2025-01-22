@@ -8,7 +8,7 @@ export default function Status({ status }: { status: string }) {
 
   return (
     <div
-      className="whitespace-nowrap rounded px-2 py-0.5 text-xs text-white shadow"
+      className="rounded px-2 py-0.5 text-xs text-white shadow"
       style={{ backgroundColor: `rgb(${statusOption.color})` }}
     >
       <span className="text-xs text-white">{statusOption.label}</span>

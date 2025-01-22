@@ -112,6 +112,10 @@ function ChartContent({ data }: { data: Record<string, { count: number }> }) {
               tickLine={false}
               axisLine={false}
               interval={0}
+              className="uppercase"
+              tickFormatter={(value) => {
+                return value.split(' ').map((word: string) => word[0]).join('');
+              }}
             />
             <YAxis
               tickLine={false}

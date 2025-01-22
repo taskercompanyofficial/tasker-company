@@ -16,3 +16,4 @@ export const BRANCHES = "/crm/branches";
 export const BRANDS = "/crm/authorized-brands";
 export const WORKERS = "/crm/staff";
 export const USERS = "/crm/users";
+export const ATTENDANCE = "/crm/attendance";

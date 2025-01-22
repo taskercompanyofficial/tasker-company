@@ -26,12 +26,17 @@ export function formatDate(
   date: Date | string | number,
   opts: Intl.DateTimeFormatOptions = {},
 ) {
+  if (!date) return '';
+  
+  const parsedDate = new Date(date);
+  if (isNaN(parsedDate.getTime())) return '';
+
   return new Intl.DateTimeFormat("en-US", {
-    month: opts.month ?? "long",
+    month: opts.month ?? "long", 
     day: opts.day ?? "numeric",
     year: opts.year ?? "numeric",
     ...opts,
-  }).format(new Date(date));
+  }).format(parsedDate);
 }
 
 export const getImageUrl = (path: string): string => {

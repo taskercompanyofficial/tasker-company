@@ -147,7 +147,7 @@ export function DataTable<
                         return (
                           <TableCell
                             key={cell.id}
-                            className="sticky right-[48px] z-20"
+                            className="sticky right-[48px] z-20 bg-white"
                             style={{
                               right: "var(--action-column-width, 48px)",
                             }}
@@ -162,7 +162,7 @@ export function DataTable<
                         return (
                           <TableCell
                             key={cell.id}
-                            className="sticky right-0 z-20"
+                            className="sticky right-0 z-20 bg-white"
                           >
                             {flexRender(
                               cell.column.columnDef.cell,

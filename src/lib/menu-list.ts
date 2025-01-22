@@ -3,6 +3,7 @@ import { AiFillProduct } from "react-icons/ai";
 import {
   Briefcase,
   ClipboardList,
+  Clock,
   Handshake,
   Layers,
   MapPin,
@@ -54,6 +55,13 @@ export function getMenuList(
           label: "Complaints",
           active: pathname.includes("/authenticated//complaints"),
           icon: ClipboardList,
+          submenus: [],
+        },
+        {
+          href: "/authenticated/attendance",
+          label: "Attendance",
+          active: pathname === "/authenticated/attendance",
+          icon: Clock,
           submenus: [],
         },
       ],

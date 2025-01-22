@@ -340,3 +340,20 @@ type FetchResult<T> = {
   error: Error | null;
   isLoading: boolean;
 };
+
+export type AttendanceType = {
+  id: number;
+  staff_id: string;
+  check_in: string;
+  check_in_location: string;
+  check_in_longitude: string;
+  check_in_latitude: string;
+  check_out: string;
+  check_out_location: string;
+  check_out_longitude: string;
+  check_out_latitude: string;
+  total_hours: string;
+  status: string;
+};
+
+
