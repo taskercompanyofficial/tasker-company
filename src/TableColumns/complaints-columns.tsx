@@ -251,7 +251,7 @@ export const ComplaintsColumns = (): ColumnDef<ComplaintsType>[] => [
     ),
     cell: ({ row }) => {
       const status = String(row.getValue("status"));
-      return <Status status={status} />;
+      return <Status status={status}  />;
     },
   },
   {

@@ -93,7 +93,7 @@ export const AttendanceColumns = (): ColumnDef<AttendanceType>[] => [
     ),
     cell: ({ row }) => {
       const status = String(row.getValue("status"));
-      return <Status status={status} />;
+      return <Status status={status}  />;
     },
   },    
   {
