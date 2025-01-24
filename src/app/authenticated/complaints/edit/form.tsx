@@ -1,7 +1,7 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import BasicForm from "../components/basic-form";
 import { ComplaintsType, dataTypeIds } from "@/types";
 import useForm from "@/hooks/use-fom";
@@ -33,6 +33,14 @@ export default function Form({
   const token = session.data?.user?.token || "";
   const [history, setHistory] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [lastSaveTime, setLastSaveTime] = useState(Date.now());
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('autoSaveEnabled') !== 'false';
+    }
+    return true;
+  });
 
   const { data, setData, processing, put, errors } = useForm({
     brand_complaint_no: complaint?.brand_complaint_no || "",
@@ -67,21 +75,21 @@ export default function Form({
     send_message_to_customer: false,
     send_message_to_technician: false,
   });
-  useEffect(() => {
-    setData({
-      ...data,
-      send_message_to_technician:
-        complaint?.technician === data.technician ? true : false,
-    });
-  }, [data.technician]);
+
   const router = useRouter();
-  const onSubmit = () => {
+  
+  const onSubmit = useCallback(() => {
+    if (!hasUnsavedChanges) return;
+    
     put(
       `${COMPLAINTS}/${complaint?.id}`,
       {
         onSuccess: (response) => {
           toast.success(response.message);
+          setHasUnsavedChanges(false);
+          setLastSaveTime(Date.now());
           router.refresh();
+          
         },
         onError: (error) => {
           toast.error(error.message);
@@ -89,7 +97,50 @@ export default function Form({
       },
       token,
     );
-  };
+  }, [hasUnsavedChanges, put, complaint?.id, token, router]);
+
+  // Toggle autosave
+  const toggleAutoSave = useCallback(() => {
+    setAutoSaveEnabled(prev => {
+      const newValue = !prev;
+      localStorage.setItem('autoSaveEnabled', String(newValue));
+      return newValue;
+    });
+  }, []);
+
+  // Auto-save every 10 seconds if enabled and there are changes
+  useEffect(() => {
+    if (!autoSaveEnabled) return;
+
+    const autoSaveInterval = setInterval(() => {
+      if (hasUnsavedChanges && Date.now() - lastSaveTime >= 10000) {
+        onSubmit();
+      }
+    }, 1000);
+
+    return () => clearInterval(autoSaveInterval);
+  }, [hasUnsavedChanges, lastSaveTime, onSubmit, autoSaveEnabled]);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      send_message_to_technician:
+        complaint?.technician === data.technician ? true : false,
+    });
+  }, [data.technician]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
+
   // Function to update data with history tracking
   const updateData = (newData: any) => {
     // Add current state to history
@@ -98,6 +149,7 @@ export default function Form({
     setHistory(newHistory);
     setCurrentIndex(newHistory.length - 1);
     setData(newData);
+    setHasUnsavedChanges(true);
   };
 
   // Undo function
@@ -105,6 +157,7 @@ export default function Form({
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       setData(history[currentIndex - 1]);
+      setHasUnsavedChanges(true);
     }
   };
 
@@ -113,6 +166,7 @@ export default function Form({
     if (currentIndex < history.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setData(history[currentIndex + 1]);
+      setHasUnsavedChanges(true);
     }
   };
 
@@ -120,56 +174,84 @@ export default function Form({
     <div className="rounded-lg bg-white p-2 shadow-md dark:bg-slate-950 md:p-4">
       <Tabs defaultValue="basic" value={tab} onValueChange={setTab}>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <TabsList>
-            {[
-              "basic",
-              "advanced",
-              "attachments",
-              "store",
-              "remarks",
-              "history",
-            ].map((tab) => (
-              <TabsTrigger
-                key={tab}
-                value={tab}
-                className="min-w-[100px] flex-1"
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList className="min-w-max">
+              {[
+                "basic",
+                "advanced", 
+                "attachments",
+                "store",
+                "remarks",
+                "history",
+              ].map((tab) => (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="min-w-[100px] flex-1"
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <div className="flex gap-1">
-              <p className="text-sm text-muted-foreground">
-                {complaint?.complain_num}
-              </p>
-              <Checkbox
-                checked={data.send_message_to_customer}
-                onCheckedChange={() =>
-                  setData({
-                    ...data,
-                    send_message_to_customer: !data.send_message_to_customer,
-                  })
-                }
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={undo}
-                disabled={currentIndex <= 0}
-              >
-                <Undo2 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={redo}
-                disabled={currentIndex >= history.length - 1}
-              >
-                <Redo2 className="h-4 w-4" />
-              </Button>
+            <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-sm text-muted-foreground">
+                  {complaint?.complain_num}
+                </p>
+                <div className="flex items-center gap-1">
+                  <Checkbox
+                    id="send-message"
+                    checked={data.send_message_to_customer}
+                    onCheckedChange={() =>
+                      setData({
+                        ...data,
+                        send_message_to_customer: !data.send_message_to_customer,
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="send-message"
+                    className="text-sm text-muted-foreground"
+                  >
+                    Send Message
+                  </label>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Checkbox
+                    id="auto-save"
+                    checked={autoSaveEnabled}
+                    onCheckedChange={toggleAutoSave}
+                  />
+                  <label
+                    htmlFor="auto-save"
+                    className="text-sm text-muted-foreground"
+                  >
+                    Auto Save
+                  </label>
+                </div>
+              </div>
+              <div className="flex gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={undo}
+                  disabled={currentIndex <= 0}
+                >
+                  <Undo2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={redo}
+                  disabled={currentIndex >= history.length - 1}
+                >
+                  <Redo2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-            <div className="flex-grow md:flex-grow-0">
+            <div className="w-full md:w-auto">
               <SelectInput
                 options={ComplaintStatusOptions}
                 selected={data.status}
@@ -177,10 +259,10 @@ export default function Form({
               />
             </div>
             <SubmitBtn
-              className={`${buttonVariants({ effect: "shineHover" })} w-full md:w-auto`}
+              className={`${buttonVariants({ effect: "shineHover" })} w-full md:w-auto ${hasUnsavedChanges ? 'animate-pulse' : ''}`}
               processing={processing}
               size={"sm"}
-              label={complaint ? "Save Changes" : "Create Complaint"}
+              label={hasUnsavedChanges ? "Save Changes*" : (complaint ? "Save Changes" : "Create Complaint")}
               onClick={onSubmit}
             />
           </div>
@@ -213,22 +295,32 @@ export default function Form({
 
       {/* Impressive Footer */}
       <div className="mt-6 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 dark:from-slate-800 dark:to-slate-900">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center space-x-2">
             <Info className="h-5 w-5 text-blue-500" />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Last updated: {new Date().toLocaleDateString()}
+              Last updated: {new Date(lastSaveTime).toLocaleString()}
             </span>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center gap-4">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Changes saved: {history.length}
             </div>
-            <div className="h-4 w-px bg-gray-300 dark:bg-gray-700" />
+            <div className="hidden sm:block h-4 w-px bg-gray-300 dark:bg-gray-700" />
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Form completion: {Object.values(data).filter(Boolean).length}/
               {Object.keys(data).length}
             </div>
+            {hasUnsavedChanges && autoSaveEnabled && (
+              <div className="text-sm text-red-500">
+                * Unsaved changes (Auto-saving in {Math.max(0, Math.ceil((10000 - (Date.now() - lastSaveTime)) / 1000))}s)
+              </div>
+            )}
+            {hasUnsavedChanges && !autoSaveEnabled && (
+              <div className="text-sm text-red-500">
+                * Unsaved changes (Auto-save disabled)
+              </div>
+            )}
           </div>
         </div>
       </div>

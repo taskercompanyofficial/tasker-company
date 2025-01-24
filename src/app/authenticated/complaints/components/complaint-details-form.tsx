@@ -119,31 +119,42 @@ export default function ComplaintDetailsForm({
             <Skeleton className="h-12 w-full" />
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="space-y-2">
           {technician ? (
-            <SearchSelect
-              options={technician}
-              label="Technician"
-              value={data.technician}
-              onChange={(e) => setData({ ...data, technician: e })}
-              width="full"
-              className="transition-all duration-200 hover:shadow-md"
-            />
+            <div className="flex-1">
+              <SearchSelect
+                options={technician}
+                label="Technician"
+                value={data.technician}
+                onChange={(e) => setData({ ...data, technician: e })}
+                width="full"
+                className="transition-all duration-200 hover:shadow-md"
+              />
+            </div>
           ) : (
-            <div className="space-y-2">
+            <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-12 w-full" />
             </div>
           )}
-          <Checkbox
-            checked={data.send_message_to_technician}
-            onCheckedChange={() =>
-              setData({
-                ...data,
-                send_message_to_technician: !data.send_message_to_technician,
-              })
-            }
-          />
+          <div className="flex items-center">
+            <Checkbox
+              id="send-message-tech"
+              checked={data.send_message_to_technician}
+              onCheckedChange={() =>
+                setData({
+                  ...data,
+                  send_message_to_technician: !data.send_message_to_technician,
+                })
+              }
+            />
+            <label 
+              htmlFor="send-message-tech"
+              className="text-sm text-gray-600 dark:text-gray-400"
+            >
+              Send Message
+            </label>
+          </div>
         </div>
         <LabelInputContainer
           label="Amount"

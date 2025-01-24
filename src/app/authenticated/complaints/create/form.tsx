@@ -17,6 +17,7 @@ export default function Form() {
   const token = session.data?.user?.token || "";
   const [history, setHistory] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const { data, setData, processing, post, errors } = useForm({
     applicant_name: "",
@@ -40,6 +41,7 @@ export default function Form() {
       {
         onSuccess: (response) => {
           toast.success(response.message);
+          setHasUnsavedChanges(false);
           router.push("/authenticated/complaints/edit/" + response.data.id);
         },
         onError: (error) => {
@@ -58,6 +60,7 @@ export default function Form() {
     setHistory(newHistory);
     setCurrentIndex(newHistory.length - 1);
     setData(newData);
+    setHasUnsavedChanges(true);
   };
 
   // Undo function
@@ -65,6 +68,7 @@ export default function Form() {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       setData(history[currentIndex - 1]);
+      setHasUnsavedChanges(true);
     }
   };
 
@@ -73,8 +77,22 @@ export default function Form() {
     if (currentIndex < history.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setData(history[currentIndex + 1]);
+      setHasUnsavedChanges(true);
     }
   };
+
+  // Handle unsaved changes warning
+  React.useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   return (
     <div className="rounded-lg bg-white p-2 shadow-md dark:bg-slate-950 md:p-4">
@@ -141,6 +159,11 @@ export default function Form() {
               Form completion: {Object.values(data).filter(Boolean).length}/
               {Object.keys(data).length}
             </div>
+            {hasUnsavedChanges && (
+              <div className="text-sm text-yellow-500">
+                You have unsaved changes
+              </div>
+            )}
           </div>
         </div>
       </div>
