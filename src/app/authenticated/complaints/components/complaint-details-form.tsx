@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function ComplaintDetailsForm({
   data,
@@ -118,22 +119,32 @@ export default function ComplaintDetailsForm({
             <Skeleton className="h-12 w-full" />
           </div>
         )}
-
-        {technician ? (
-          <SearchSelect
-            options={technician}
-            label="Technician"
-            value={data.technician}
-            onChange={(e) => setData({ ...data, technician: e })}
-            width="full"
-            className="transition-all duration-200 hover:shadow-md"
+        <div className="flex gap-2">
+          {technician ? (
+            <SearchSelect
+              options={technician}
+              label="Technician"
+              value={data.technician}
+              onChange={(e) => setData({ ...data, technician: e })}
+              width="full"
+              className="transition-all duration-200 hover:shadow-md"
+            />
+          ) : (
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          )}
+          <Checkbox
+            checked={data.send_message_to_technician}
+            onCheckedChange={() =>
+              setData({
+                ...data,
+                send_message_to_technician: !data.send_message_to_technician,
+              })
+            }
           />
-        ) : (
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-12 w-full" />
-          </div>
-        )}
+        </div>
         <LabelInputContainer
           label="Amount"
           placeholder="Amount"
@@ -169,7 +180,7 @@ export default function ComplaintDetailsForm({
         </h3>
         <div className="flex flex-col gap-4">
           <Collapsible>
-            <CollapsibleTrigger className="bg-gray-100 hover:bg-gray-50 flex w-full items-center justify-between rounded border p-1">
+            <CollapsibleTrigger className="flex w-full items-center justify-between rounded border bg-gray-100 p-1 hover:bg-gray-50">
               <span>Service Provider #1</span>
               <ChevronDown className="h-5 w-5" />
             </CollapsibleTrigger>

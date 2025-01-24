@@ -5,6 +5,9 @@ const client = new Client();
 
 export const fetchSuggestions = async (query: string) => {
   if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || !query) {
+    console.log("Missing API key or empty query");
+    console.log(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+    console.log(query);
     return [];
   }
 
@@ -17,12 +20,13 @@ export const fetchSuggestions = async (query: string) => {
     });
 
     if (!response.data.predictions) {
+      console.log("No predictions found in response");
       return [];
     }
 
     return response.data.predictions;
   } catch (error) {
-    console.error("Error fetching Google Places suggestions:", error);
+    console.log("Error fetching Google Places suggestions:", error);
     return [];
-  }
+  } 
 };

@@ -8,9 +8,7 @@ import { dataTypeIds } from "@/types";
 import { API_URL } from "@/lib/apiEndPoints";
 import useFetch from "@/hooks/usefetch";
 import SearchSelect from "@/components/ui/search-select";
-import { fetchSuggestions } from "@/lib/google";
-import { useEffect, useState } from "react";
-import { PlaceData } from "@googlemaps/google-maps-services-js";
+import AddressTextarea from "./address-textarea";
 
 export default function BasicForm({
   data,
@@ -24,11 +22,7 @@ export default function BasicForm({
   const { data: brandsData, isLoading: brandsLoading } = useFetch<
     dataTypeIds[]
   >(`${API_URL}/crm/fetch-authorized-brands`);
-  const [suggestions, setSuggestions] = useState<Partial<PlaceData>[]>([]);
-  useEffect(() => {
-    const result = fetchSuggestions(data.applicant_adress);
-    console.log(result);
-  }, [data.applicant_adress]);
+ 
   return (
     <div>
       <div className="w-full space-y-2">
@@ -143,17 +137,10 @@ export default function BasicForm({
           onChange={(value) => setData({ ...data, complaint_type: value })}
           selected={data.complaint_type}
         />
-        {suggestions.length > 0 && <div>{JSON.stringify(suggestions)}</div>}
-        <TextareaInput
-          label="Address"
-          placeholder="Enter applicant address..."
-          maxLength={250}
+        <AddressTextarea
           value={data.applicant_adress}
-          onChange={(e) =>
-            setData({ ...data, applicant_adress: e.target.value })
-          }
           errorMessage={errors.applicant_adress}
-          className="bg-gray-50"
+          onChange={(value: string) => setData({ ...data, applicant_adress: value })}
         />
         <TextareaInput
           label="Fault"

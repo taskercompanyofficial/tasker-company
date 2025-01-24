@@ -1,7 +1,7 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BasicForm from "../components/basic-form";
 import { ComplaintsType, dataTypeIds } from "@/types";
 import useForm from "@/hooks/use-fom";
@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import Remarks from "../components/remarks";
 import History from "../components/history";
 import Store from "../components/strore";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function Form({
   complaint,
@@ -63,7 +64,16 @@ export default function Form({
     warranty_type: complaint?.warranty_type || "",
     comments_for_technician: complaint?.technician || "",
     files: complaint?.files || [],
+    send_message_to_customer: false,
+    send_message_to_technician: false,
   });
+  useEffect(() => {
+    setData({
+      ...data,
+      send_message_to_technician:
+        complaint?.technician === data.technician ? true : false,
+    });
+  }, [data.technician]);
   const router = useRouter();
   const onSubmit = () => {
     put(
@@ -133,6 +143,15 @@ export default function Form({
               <p className="text-sm text-muted-foreground">
                 {complaint?.complain_num}
               </p>
+              <Checkbox
+                checked={data.send_message_to_customer}
+                onCheckedChange={() =>
+                  setData({
+                    ...data,
+                    send_message_to_customer: !data.send_message_to_customer,
+                  })
+                }
+              />
               <Button
                 variant="outline"
                 size="sm"
