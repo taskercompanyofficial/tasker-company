@@ -74,6 +74,7 @@ export default function Form({
     files: complaint?.files || [],
     send_message_to_customer: false,
     send_message_to_technician: false,
+    message_type: "complaint_create_template",
   });
 
   const router = useRouter();
@@ -217,6 +218,11 @@ export default function Form({
                   >
                     Send Message
                   </label>
+                  <SelectInput
+                    options={[{label: "Create Complaint", value: "complaint_create_template"}, {label: "Update Complaint", value: "update_complaint"}]}
+                    selected={data.message_type}
+                    onChange={(e) => updateData({ ...data, message_type: e })}
+                  />
                 </div>
                 <div className="flex items-center gap-1">
                   <Checkbox
