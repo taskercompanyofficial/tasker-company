@@ -147,7 +147,7 @@ export default function SendMessageCustomerBtn({
           )}
         </Button>
       </CredenzaTrigger>
-      <CredenzaContent className="w-[95vw] max-w-[500px] sm:w-[90vw] md:w-[500px]">
+      <CredenzaContent className="w-[95vw] max-w-[500px] sm:w-[90vw] md:w-[500px] max-h-[80vh] overflow-y-auto">
         <div className="flex flex-col gap-2 p-2 sm:gap-3 sm:p-3 md:gap-4 md:p-4">
           Sending Message to {to}
           <SelectInput
