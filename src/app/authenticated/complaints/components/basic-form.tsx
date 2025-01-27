@@ -81,6 +81,7 @@ export default function BasicForm({
             id="applicant-whatsapp"
             placeholder="Applicant whatsapp"
             label="Whatsapp"
+            required
             value={data.applicant_whatsapp}
             onChange={(e) =>
               setData({ ...data, applicant_whatsapp: e.target.value })

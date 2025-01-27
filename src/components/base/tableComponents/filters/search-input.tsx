@@ -1,7 +1,6 @@
 "use client";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { debounce } from "lodash";
-import { SearchIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 

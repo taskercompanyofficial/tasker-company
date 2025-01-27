@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/tooltip";
 import revalidate from "../revalidate";
 import { Search } from "lucide-react";
-import { Input } from "../ui/input";
 import { User } from "@/types";
 import { SidebarTrigger } from "../ui/sidebar";
 import { useState } from "react";
+import SearchInput from "../base/tableComponents/filters/search-input";
 
 export default function Navbar({ user }: { user: User | null }) {
   const [isSpinning, setIsSpinning] = useState(false);
@@ -51,11 +51,7 @@ export default function Navbar({ user }: { user: User | null }) {
           </div>
           <div className="relative ml-auto hidden flex-1 md:block md:grow-0">
             <Search className="absolute left-2.5 top-[15px] h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
+            <SearchInput />
           </div>
           <UserNav user={user} />
         </div>
