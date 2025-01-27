@@ -84,3 +84,8 @@ export const complaintTypeOptions = [
   { value: "warrenty-revenue", label: "Warrenty+Revenue" },
   { value: "other", label: "Other" },
 ];
+
+export const MessageTypeOptions = [
+  { value: "auto_pay_reminder_2", label: "Update Complaint" },
+  { value: "complaint_create_template", label: "Complaint Create Template" },
+];

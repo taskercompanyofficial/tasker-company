@@ -203,6 +203,8 @@ export type ComplaintsType = {
   happy_call_remarks: string | null;
   status: string;
   files: any;
+  send_message_to_customer: boolean;
+  message_type: string;
   created_at: string;
   updated_at: string;
 };

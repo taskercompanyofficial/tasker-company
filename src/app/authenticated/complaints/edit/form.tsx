@@ -20,6 +20,7 @@ import Remarks from "../components/remarks";
 import History from "../components/history";
 import Store from "../components/strore";
 import { Checkbox } from "@/components/ui/checkbox";
+import SendMessageCustomerBtn from "../components/send-message-cutomer-btn";
 
 export default function Form({
   complaint,
@@ -36,13 +37,14 @@ export default function Form({
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [lastSaveTime, setLastSaveTime] = useState(Date.now());
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('autoSaveEnabled') !== 'false';
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("autoSaveEnabled") !== "false";
     }
     return true;
   });
 
   const { data, setData, processing, put, errors } = useForm({
+    complain_num: complaint?.complain_num,
     brand_complaint_no: complaint?.brand_complaint_no || "",
     applicant_name: complaint?.applicant_name || "",
     applicant_email: complaint?.applicant_email || "",
@@ -72,16 +74,15 @@ export default function Form({
     warranty_type: complaint?.warranty_type || "",
     comments_for_technician: complaint?.technician || "",
     files: complaint?.files || [],
-    send_message_to_customer: false,
     send_message_to_technician: false,
-    message_type: "complaint_create_template",
+    message_type: "update_complaint",
   });
 
   const router = useRouter();
-  
+
   const onSubmit = useCallback(() => {
     if (!hasUnsavedChanges) return;
-    
+
     put(
       `${COMPLAINTS}/${complaint?.id}`,
       {
@@ -90,7 +91,6 @@ export default function Form({
           setHasUnsavedChanges(false);
           setLastSaveTime(Date.now());
           router.refresh();
-          
         },
         onError: (error) => {
           toast.error(error.message);
@@ -102,9 +102,9 @@ export default function Form({
 
   // Toggle autosave
   const toggleAutoSave = useCallback(() => {
-    setAutoSaveEnabled(prev => {
+    setAutoSaveEnabled((prev) => {
       const newValue = !prev;
-      localStorage.setItem('autoSaveEnabled', String(newValue));
+      localStorage.setItem("autoSaveEnabled", String(newValue));
       return newValue;
     });
   }, []);
@@ -134,12 +134,12 @@ export default function Form({
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges) {
         e.preventDefault();
-        e.returnValue = '';
+        e.returnValue = "";
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
   // Function to update data with history tracking
@@ -179,7 +179,7 @@ export default function Form({
             <TabsList className="min-w-max">
               {[
                 "basic",
-                "advanced", 
+                "advanced",
                 "attachments",
                 "store",
                 "remarks",
@@ -201,42 +201,6 @@ export default function Form({
                 <p className="text-sm text-muted-foreground">
                   {complaint?.complain_num}
                 </p>
-                <div className="flex items-center gap-1">
-                  <Checkbox
-                    id="send-message"
-                    checked={data.send_message_to_customer}
-                    onCheckedChange={() =>
-                      setData({
-                        ...data,
-                        send_message_to_customer: !data.send_message_to_customer,
-                      })
-                    }
-                  />
-                  <label
-                    htmlFor="send-message"
-                    className="text-sm text-muted-foreground"
-                  >
-                    Send Message
-                  </label>
-                  <SelectInput
-                    options={[{label: "Create Complaint", value: "complaint_create_template"}, {label: "Update Complaint", value: "update_complaint"}]}
-                    selected={data.message_type}
-                    onChange={(e) => updateData({ ...data, message_type: e })}
-                  />
-                </div>
-                <div className="flex items-center gap-1">
-                  <Checkbox
-                    id="auto-save"
-                    checked={autoSaveEnabled}
-                    onCheckedChange={toggleAutoSave}
-                  />
-                  <label
-                    htmlFor="auto-save"
-                    className="text-sm text-muted-foreground"
-                  >
-                    Auto Save
-                  </label>
-                </div>
               </div>
               <div className="flex gap-1">
                 <Button
@@ -264,13 +228,35 @@ export default function Form({
                 onChange={(e) => updateData({ ...data, status: e })}
               />
             </div>
-            <SubmitBtn
-              className={`${buttonVariants({ effect: "shineHover" })} w-full md:w-auto ${hasUnsavedChanges ? 'animate-pulse' : ''}`}
-              processing={processing}
-              size={"sm"}
-              label={hasUnsavedChanges ? "Save Changes*" : (complaint ? "Save Changes" : "Create Complaint")}
-              onClick={onSubmit}
-            />
+            <div className="flex items-center gap-2">
+              <SendMessageCustomerBtn complaint={data} to={data.applicant_whatsapp} />
+              <div className="flex items-center gap-1">
+                <Checkbox
+                  id="auto-save"
+                  checked={autoSaveEnabled}
+                  onCheckedChange={toggleAutoSave}
+                />
+                <label
+                  htmlFor="auto-save"
+                  className="text-sm text-muted-foreground"
+                >
+                  Auto Save
+                </label>
+              </div>
+              <SubmitBtn
+                className={`${buttonVariants({ effect: "shineHover" })} w-full md:w-auto ${hasUnsavedChanges ? "animate-pulse" : ""}`}
+                processing={processing}
+                size={"sm"}
+                label={
+                  hasUnsavedChanges
+                    ? "Save Changes*"
+                    : complaint
+                      ? "Save Changes"
+                      : "Create Complaint"
+                }
+                onClick={onSubmit}
+              />
+            </div>
           </div>
         </div>
         <Separator className="my-2" />
@@ -312,14 +298,19 @@ export default function Form({
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Changes saved: {history.length}
             </div>
-            <div className="hidden sm:block h-4 w-px bg-gray-300 dark:bg-gray-700" />
+            <div className="hidden h-4 w-px bg-gray-300 dark:bg-gray-700 sm:block" />
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Form completion: {Object.values(data).filter(Boolean).length}/
               {Object.keys(data).length}
             </div>
             {hasUnsavedChanges && autoSaveEnabled && (
               <div className="text-sm text-red-500">
-                * Unsaved changes (Auto-saving in {Math.max(0, Math.ceil((10000 - (Date.now() - lastSaveTime)) / 1000))}s)
+                * Unsaved changes (Auto-saving in{" "}
+                {Math.max(
+                  0,
+                  Math.ceil((10000 - (Date.now() - lastSaveTime)) / 1000),
+                )}
+                s)
               </div>
             )}
             {hasUnsavedChanges && !autoSaveEnabled && (
