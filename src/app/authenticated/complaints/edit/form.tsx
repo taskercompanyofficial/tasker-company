@@ -75,7 +75,6 @@ export default function Form({
     comments_for_technician: complaint?.technician || "",
     files: complaint?.files || [],
     send_message_to_technician: false,
-    message_type: "update_complaint",
   });
 
   const router = useRouter();
@@ -90,6 +89,7 @@ export default function Form({
           toast.success(response.message);
           setHasUnsavedChanges(false);
           setLastSaveTime(Date.now());
+          setData({ ...data, send_message_to_technician: false });
           router.refresh();
         },
         onError: (error) => {
@@ -117,7 +117,7 @@ export default function Form({
       if (hasUnsavedChanges && Date.now() - lastSaveTime >= 10000) {
         onSubmit();
       }
-    }, 1000);
+    }, 10000);
 
     return () => clearInterval(autoSaveInterval);
   }, [hasUnsavedChanges, lastSaveTime, onSubmit, autoSaveEnabled]);
@@ -229,7 +229,10 @@ export default function Form({
               />
             </div>
             <div className="flex items-center gap-2">
-              <SendMessageCustomerBtn complaint={data} to={data.applicant_whatsapp} />
+              <SendMessageCustomerBtn
+                complaint={data}
+                to={data.applicant_whatsapp}
+              />
               <div className="flex items-center gap-1">
                 <Checkbox
                   id="auto-save"
