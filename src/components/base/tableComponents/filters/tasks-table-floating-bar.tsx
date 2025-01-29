@@ -1,12 +1,8 @@
 import * as React from "react";
-import {
-  Cross2Icon,
-  DownloadIcon,
-  ReloadIcon,
-} from "@radix-ui/react-icons";
+import { Cross2Icon, DownloadIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { type Table } from "@tanstack/react-table";
 import { toast } from "sonner";
-import html2canvas from 'html2canvas';
+import html2canvas from "html2canvas";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -44,9 +40,10 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
   }, [table]);
 
   const copyToClipboard = (rows: any[]) => {
-    const formattedText = rows.map(row => {
-      const data = row.original;
-      return `
+    const formattedText = rows
+      .map((row) => {
+        const data = row.original;
+        return `
 📋 *Complaint #${data.complain_num}*
 *Brand Ref:* ${data.brand_complaint_no}
 
@@ -54,6 +51,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 *Name:* ${data.applicant_name}
 *Phone:* ${data.applicant_phone}
 *WhatsApp:* ${data.applicant_whatsapp || "N/A"}
+*Extra Numbers:* ${data.extra_numbers || "N/A"}
 *Address:* ${data.applicant_adress}
 
 📦 *Product Details*
@@ -70,7 +68,8 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
 
 *Created:* ${new Date(data.created_at).toLocaleDateString()}
 -------------------`;
-    }).join("\n\n");
+      })
+      .join("\n\n");
 
     navigator.clipboard.writeText(formattedText);
     toast.success("Details copied to clipboard");
@@ -80,7 +79,7 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
     setActiveMethod("generate-image");
     startTransition(async () => {
       try {
-        const container = document.createElement('div');
+        const container = document.createElement("div");
         container.style.cssText = `
           padding: 2rem;
           background: #f8fafc;
@@ -89,8 +88,8 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
           left: -9999px;
           font-family: system-ui, -apple-system, sans-serif;
         `;
-        
-        rows.forEach(row => {
+
+        rows.forEach((row) => {
           const data = row.original;
           container.innerHTML += `
             <div class="complaint-card" style="
@@ -161,8 +160,8 @@ export function TasksTableFloatingBar({ table }: TasksTableFloatingBarProps) {
         document.body.appendChild(container);
         const canvas = await html2canvas(container);
         const image = canvas.toDataURL("image/png", 1.0);
-        
-        const downloadLink = document.createElement('a');
+
+        const downloadLink = document.createElement("a");
         downloadLink.download = `complaint-details-${Date.now()}.png`;
         downloadLink.href = image;
         downloadLink.click();
