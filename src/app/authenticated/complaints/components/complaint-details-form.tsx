@@ -7,14 +7,8 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { TextareaInput } from "@/components/TextareaInput";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import Vendors from "./vendors";
 
 export default function ComplaintDetailsForm({
   data,
@@ -99,7 +93,7 @@ export default function ComplaintDetailsForm({
           placeholder="MQ Number"
           onChange={(e) => setData({ ...data, mq_nmb: e.target.value })}
           value={data.mq_nmb}
-          className="transition-all duration-200 hover:shadow-md"
+          className="transition-all duration-200"
         />
       </div>
 
@@ -111,7 +105,7 @@ export default function ComplaintDetailsForm({
             value={data.branch_id}
             onChange={(e) => setData({ ...data, branch_id: e })}
             width="full"
-            className="transition-all duration-200 hover:shadow-md"
+            className="transition-all duration-200"
           />
         ) : (
           <div className="space-y-2">
@@ -128,7 +122,7 @@ export default function ComplaintDetailsForm({
                 value={data.technician}
                 onChange={(e) => setData({ ...data, technician: e })}
                 width="full"
-                className="transition-all duration-200 hover:shadow-md"
+                className="transition-all duration-200"
               />
             </div>
           ) : (
@@ -148,7 +142,7 @@ export default function ComplaintDetailsForm({
                 })
               }
             />
-            <label 
+            <label
               htmlFor="send-message-tech"
               className="text-sm text-gray-600 dark:text-gray-400"
             >
@@ -161,7 +155,7 @@ export default function ComplaintDetailsForm({
           placeholder="Amount"
           onChange={(e) => setData({ ...data, amount: e.target.value })}
           value={data.amount}
-          className="transition-all duration-200 hover:shadow-md"
+          className="transition-all duration-200"
         />
       </div>
 
@@ -173,7 +167,7 @@ export default function ComplaintDetailsForm({
             setData({ ...data, working_details: e.target.value })
           }
           value={data.working_details}
-          className="min-h-[120px] transition-all duration-200 hover:shadow-md"
+          className="min-h-[120px] transition-all duration-200"
         />
         <TextareaInput
           label="Additional Comment For Technition"
@@ -182,83 +176,10 @@ export default function ComplaintDetailsForm({
             setData({ ...data, comments_for_technician: e.target.value })
           }
           value={data.comments_for_technician}
-          className="min-h-[120px] transition-all duration-200 hover:shadow-md"
+          className="min-h-[120px] transition-all duration-200"
         />
       </div>
-      <div className="mt-6">
-        <h3 className="mb-4 text-sm font-semibold">
-          Lab/Service Provider Details
-        </h3>
-        <div className="flex flex-col gap-4">
-          <Collapsible>
-            <CollapsibleTrigger className="flex w-full items-center justify-between rounded border bg-gray-100 p-1 hover:bg-gray-50">
-              <span>Service Provider #1</span>
-              <ChevronDown className="h-5 w-5" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="p-4">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-                <SearchSelect
-                  options={[
-                    { value: "1", label: "Lab A" },
-                    { value: "2", label: "Lab B" },
-                    { value: "3", label: "Service Provider X" },
-                    { value: "4", label: "Service Provider Y" },
-                  ]}
-                  label="Lab/Service Provider"
-                  value={data.service_provider}
-                  onChange={(e) => setData({ ...data, service_provider: e })}
-                  width="full"
-                  className="mt-2 transition-all duration-200 hover:shadow-md"
-                />
-
-                <SearchSelect
-                  options={[
-                    { value: "pcb", label: "PCB Repair" },
-                    { value: "display", label: "Display Replacement" },
-                    { value: "chip", label: "Chip Level Service" },
-                    { value: "diagnostic", label: "Diagnostic Test" },
-                  ]}
-                  label="Work Type"
-                  value={data.work_type}
-                  onChange={(e) => setData({ ...data, work_type: e })}
-                  width="full"
-                  className="mt-2 transition-all duration-200 hover:shadow-md"
-                />
-
-                <LabelInputContainer
-                  label="Service Amount"
-                  placeholder="Enter amount to be paid"
-                  type="number"
-                  onChange={(e) =>
-                    setData({ ...data, service_amount: e.target.value })
-                  }
-                  value={data.service_amount}
-                  className="transition-all duration-200 hover:shadow-md"
-                />
-
-                <TextareaInput
-                  label="Work Description"
-                  placeholder="Enter details about the work to be done..."
-                  onChange={(e) =>
-                    setData({ ...data, work_description: e.target.value })
-                  }
-                  value={data.work_description}
-                  className="transition-all duration-200 hover:shadow-md"
-                />
-              </div>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  /* Add logic to add more service providers */
-                }}
-              >
-                Add Another Service Provider
-              </Button>
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-      </div>
+      <Vendors />
     </div>
   );
 }
